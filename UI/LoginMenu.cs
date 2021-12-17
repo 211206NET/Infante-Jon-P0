@@ -1,4 +1,7 @@
+using System.Text.RegularExpressions;
+
 namespace UI;
+
 public class LoginMenu {
     private IUBL _bl;
 
@@ -6,15 +9,15 @@ public class LoginMenu {
         _bl = bl;
     }
     public void Start(){
-        Console.WriteLine("Welcome to Jon's Used Hardware Store!");
+        Console.WriteLine("\nWelcome to Jon's Used Hardware Store!\n");
         bool exit = false;
         while(!exit){
-            Console.WriteLine("=============Login Menu=============");
+            WriteColor("=============[Login Menu]=============", ConsoleColor.DarkCyan);
             Console.WriteLine("What would you like to do?");
             Console.WriteLine("[1] Sign Up");
             Console.WriteLine("[2] Login as User");
             Console.WriteLine("[3] Sign in as Administrator");
-            Console.WriteLine("[x] Exit");            
+            WriteColor("\n           [Enter x to Exit]", ConsoleColor.DarkRed);
             Console.WriteLine("====================================");
 
             string input = Console.ReadLine();
@@ -50,5 +53,24 @@ public class LoginMenu {
                     break;
             }   
         }
+    }
+    static void WriteColor(string message, ConsoleColor color){
+        var pieces = Regex.Split(message, @"(\[[^\]]*\])");
+
+        for(int i=0;i<pieces.Length;i++)
+        {
+            string piece = pieces[i];
+            
+            if (piece.StartsWith("[") && piece.EndsWith("]"))
+            {
+                Console.ForegroundColor = color;
+                piece = piece.Substring(1,piece.Length-2);          
+            }
+            
+            Console.Write(piece);
+            Console.ResetColor();
+        }
+        
+        Console.WriteLine();
     }
 }
