@@ -1,23 +1,23 @@
-using System.Text.RegularExpressions;
-
 namespace UI;
 
 public class LoginMenu {
     private IUBL _bl;
+    private ColorWrite _cw;
 
     public LoginMenu(IUBL bl){
         _bl = bl;
+        _cw = new ColorWrite();
     }
     public void Start(){
         Console.WriteLine("\nWelcome to Jon's Used Hardware Store!\n");
         bool exit = false;
         while(!exit){
-            WriteColor("=============[Login Menu]=============", ConsoleColor.DarkCyan);
+            _cw.WriteColor("=============[Login Menu]=============", ConsoleColor.DarkCyan);
             Console.WriteLine("What would you like to do?");
             Console.WriteLine("[1] Sign Up");
             Console.WriteLine("[2] Login as User");
             Console.WriteLine("[3] Sign in as Administrator");
-            WriteColor("\n           [Enter x to Exit]", ConsoleColor.DarkRed);
+            _cw.WriteColor("\n\t   Enter [x] to [Exit]", ConsoleColor.DarkRed);
             Console.WriteLine("====================================");
 
             string input = Console.ReadLine();
@@ -26,24 +26,38 @@ public class LoginMenu {
                 case "1":
                     Console.WriteLine("Username: ");
                     string username = Console.ReadLine();
-                    Console.WriteLine("Password: ");
-                    string password = Console.ReadLine();
+                    List<User> users = _bl.GetAllUsers();
+                    bool userFound = false;
+                    foreach(User user in users){
+                        if (user.Username == username){
+                            Console.WriteLine("\nUser already registered!\n");
+                            userFound = true;
+                            break;
+                        }
+                    }
+                    if (!userFound){
+                        Console.WriteLine("Password: ");
+                        string password = Console.ReadLine();
 
-                    User newUser = new User{
-                        Username = username,
-                        Password = password,
-                    };
+                        User newUser = new User{
+                            Username = username,
+                            Password = password,
+                            };
 
-                    _bl.AddUser(newUser);
+                            _bl.AddUser(newUser);
+                    }
 
                     break;
                 case "2":
-                    List<User> users = _bl.GetAllUsers();
-                    foreach(User user in users){
-                        Console.WriteLine(user.Username + " " +  user.Password);
-                    }
+                    // List<User> users = _bl.GetAllUsers();
+                    // foreach(User user in users){
+                    //     Console.WriteLine(user.Username + " " +  user.Password);
+                    // }
                     break;
                 case "3":
+                    AdminMenu admin = new AdminMenu();
+                    admin.Start();
+
                     break;
                 case "x":
                     exit = true;
@@ -54,23 +68,5 @@ public class LoginMenu {
             }   
         }
     }
-    static void WriteColor(string message, ConsoleColor color){
-        var pieces = Regex.Split(message, @"(\[[^\]]*\])");
 
-        for(int i=0;i<pieces.Length;i++)
-        {
-            string piece = pieces[i];
-            
-            if (piece.StartsWith("[") && piece.EndsWith("]"))
-            {
-                Console.ForegroundColor = color;
-                piece = piece.Substring(1,piece.Length-2);          
-            }
-            
-            Console.Write(piece);
-            Console.ResetColor();
-        }
-        
-        Console.WriteLine();
-    }
 }
