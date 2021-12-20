@@ -53,8 +53,8 @@ public class AdminMenu {
                                     Console.WriteLine($"    Address: {allStores[i].Address}");
                             }
                             }
-                        bool loop = false;
-                        while (!loop){
+                        bool valid = false;
+                        while (!valid){
                             _cw.WriteColor("\nSelect one from the store's index to view or edit it's products.\nOr press [r] to [Return] to the Admin Menu.", ConsoleColor.DarkYellow);
                             string select = Console.ReadLine();
                             int index;
@@ -63,7 +63,7 @@ public class AdminMenu {
                                     Console.WriteLine("Please select a valid input!");
                                 }
                             else{
-                                loop = true;
+                                valid = true;
                             }
                                 
                     }
