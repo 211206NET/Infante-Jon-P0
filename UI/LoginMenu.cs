@@ -12,13 +12,13 @@ public class LoginMenu {
         Console.WriteLine("\nWelcome to Jon's Used Hardware Store!\n");
         bool exit = false;
         while(!exit){
-            _cw.WriteColor("=============[Login Menu]=============", ConsoleColor.DarkCyan);
+            _cw.WriteColor("==============[Login Menu]==============", ConsoleColor.DarkCyan);
             Console.WriteLine("What would you like to do?");
             Console.WriteLine("[1] Sign Up");
             Console.WriteLine("[2] Login as User");
             Console.WriteLine("[3] Sign in as Administrator");
-            _cw.WriteColor("\n\t   Enter [x] to [Exit]", ConsoleColor.DarkRed);
-            Console.WriteLine("====================================");
+            _cw.WriteColor("\n\t    Enter [x] to [Exit]", ConsoleColor.DarkRed);
+            Console.WriteLine("======================================");
 
             string input = Console.ReadLine();
 
@@ -55,8 +55,17 @@ public class LoginMenu {
                     // }
                     break;
                 case "3":
-                    AdminMenu admin = new AdminMenu();
-                    admin.Start();
+                    Console.WriteLine("\nPlease enter your admin key to continue.");
+                    string inp = Console.ReadLine();
+                    if (inp == "emily"){
+                        Console.WriteLine("\nLogged in to admin account.");
+                        AdminMenu admin = new AdminMenu();
+                        admin.Start();
+                    }
+                    else{
+                        Console.WriteLine("\nIncorrect key!");
+                    }
+
 
                     break;
                 case "x":
