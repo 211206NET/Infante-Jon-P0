@@ -46,13 +46,33 @@ public class LoginMenu {
 
                             _bl.AddUser(newUser);
                     }
-
                     break;
                 case "2":
-                    // List<User> users = _bl.GetAllUsers();
-                    // foreach(User user in users){
-                    //     Console.WriteLine(user.Username + " " +  user.Password);
-                    // }
+                    Console.WriteLine("\nWhat is your username?");
+                    string getUsername = Console.ReadLine();
+                    List<User> currUsers = _bl.GetAllUsers();
+                    bool found = false;
+                    string userPassword = "";
+                    foreach(User currUser in currUsers){
+                        if (currUser.Username == getUsername){
+                            found = true;
+                            userPassword = currUser.Password;
+                            }
+                        }
+                    if (found == false){
+                        Console.WriteLine("\nUsername not found!\n");
+                    }
+                    else{
+                        Console.WriteLine("Password");
+                        string getPassword = Console.ReadLine();
+                        if (getPassword == userPassword){
+                            Console.WriteLine("\nLogin successful!\n");
+                            //Profile Menu initialization        
+                        }
+                        else{
+                            Console.WriteLine("\nIncorrect password.\n");
+                        }
+                    }
                     break;
                 case "3":
                     Console.WriteLine("\nPlease enter your admin key to continue.");
@@ -63,19 +83,16 @@ public class LoginMenu {
                         admin.Start();
                     }
                     else{
-                        Console.WriteLine("\nIncorrect key!");
+                        Console.WriteLine("\nIncorrect key!\n");
                     }
-
-
                     break;
                 case "x":
                     exit = true;
                     break;
                 default:
-                    Console.WriteLine("I did not expect that command! Please try again with a valid input.");
+                    Console.WriteLine("\nI did not expect that command! Please try again with a valid input.");
                     break;
             }   
         }
     }
-
 }

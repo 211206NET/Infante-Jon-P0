@@ -43,35 +43,34 @@ public class AdminMenu {
                     break;
                 case "2":
                     List<Store> allStores = _bl.GetAllStores();
-                            if(allStores.Count == 0){
-                                Console.WriteLine("No stores found!");
+                        if(allStores.Count == 0){
+                            Console.WriteLine("No stores found!");
+                        }
+                        else{
+                            Console.WriteLine("\nHere are all your stores!\n");
+                            for(int i = 0; i < allStores.Count; i++){
+                                Console.WriteLine($"[{i}] Store: {allStores[i].Name}\n    City: {allStores[i].City}, State: {allStores[i].State}");
+                                Console.WriteLine($"    Address: {allStores[i].Address}");
+                            }
+                        }
+                    bool valid = false;
+                    while (!valid){
+                        _cw.WriteColor("\nSelect the store's index to view or edit it's products.\nOr enter [r] to [Return] to the Admin Menu.", ConsoleColor.DarkYellow);
+                        string select = Console.ReadLine();
+                        int index;
+                        if (select == "r"){
+                            valid = true;
+                            }
+                        else {
+                            if(!int.TryParse(select, out index)){
+                                Console.WriteLine("Please select a valid input!");
                             }
                             else{
-                                Console.WriteLine("\nHere are all your stores!");
-                                for(int i = 0; i < allStores.Count; i++){
-                                    Console.WriteLine($"[{i}] Store: {allStores[i].Name}\n    City: {allStores[i].City}, State: {allStores[i].State}");
-                                    Console.WriteLine($"    Address: {allStores[i].Address}");
-                                }
-                            }
-                        bool valid = false;
-                        while (!valid){
-                            _cw.WriteColor("\nSelect the store's index to view or edit it's products.\nOr enter [r] to [Return] to the Admin Menu.", ConsoleColor.DarkYellow);
-                            string select = Console.ReadLine();
-                            int index;
-                            if (select == "r"){
+                                Console.WriteLine(index);
                                 valid = true;
-                               }
-                            else {
-                             if(!int.TryParse(select, out index)){
-                                    Console.WriteLine("Please select a valid input!");
-                                }
-                                else{
-                                    Console.WriteLine(index);
-                                    valid = true;
-                                }  
-                            }
-                        }                  
-    
+                            }  
+                        }
+                    }                  
                     break;
                 case "r":
                     exit = true;

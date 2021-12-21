@@ -1,5 +1,5 @@
-
 namespace BL;
+
 public class StoreBL {
     private StoreRepo _dl;
 
