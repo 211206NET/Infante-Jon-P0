@@ -2,7 +2,6 @@ namespace Models;
 
 public class Store {
     
-
     public Store(){}
 
     public string Name { get; set;}
@@ -11,5 +10,8 @@ public class Store {
     public string City { get; set; }
     
     public string State { get; set; }
+
+    public List<Product> Products { get; set; }
+
 
 }

@@ -1,5 +1,8 @@
 namespace UI;
-
+/// <summary>
+/// Able to write default and another color in one line. 
+/// Uses regex to detect strings between chars '[' and ']'
+/// </summary>
 public class ColorWrite {
     public void WriteColor(string message, ConsoleColor color){
         var pieces = Regex.Split(message, @"(\[[^\]]*\])");

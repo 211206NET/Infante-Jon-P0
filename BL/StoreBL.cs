@@ -21,5 +21,33 @@ public class StoreBL {
     public void AddStore(Store storeToAdd){
         _dl.AddStore(storeToAdd);
     }
+    /// <summary>
+    /// Adds a product to the current selected store
+    /// </summary>
+    /// <param name="index">index of the store in the store list</param>
+    /// <param name="productToAdd">product we are adding to the store</param>
+    public void AddProduct(int index, Product productToAdd){
+        _dl.AddProduct(index, productToAdd);
+    }
+    /// <summary>
+    /// Deletes a product from the current selected store and product index
+    /// </summary>
+    /// <param name="storeIndex">Store's current index</param>
+    /// <param name="prodIndex">Product's current index</param>
+    public void DeleteProduct(int storeIndex, int prodIndex){
+        _dl.DeleteProduct(storeIndex, prodIndex);
+
+    }
+    /// <summary>
+    /// Edits and updates the product selected in the current store
+    /// </summary>
+    /// <param name="storeIndex">Current store index</param>
+    /// <param name="prodIndex">Index of the product to edit</param>
+    /// <param name="description">Product's new description</param>
+    /// <param name="price">Product's new price</param>
+    /// <param name="quantity">Product's new quantity</param>
+    public void EditProduct(int storeIndex, int prodIndex, string description, string price, string quantity){
+        _dl.EditProduct(storeIndex, prodIndex, description, price, quantity);
+    }
 
 }

@@ -59,12 +59,14 @@ public class LoginMenu {
                             userPassword = currUser.Password;
                             }
                         }
+                    //If the current username is not found in the database
                     if (found == false){
                         Console.WriteLine("\nUsername not found!\n");
                     }
                     else{
                         Console.WriteLine("Password");
                         string getPassword = Console.ReadLine();
+                        //Validates for the correct password
                         if (getPassword == userPassword){
                             Console.WriteLine("\nLogin successful!\n");
                             //Profile Menu initialization        
@@ -79,6 +81,7 @@ public class LoginMenu {
                     string inp = Console.ReadLine();
                     if (inp == "emily"){
                         Console.WriteLine("\nLogged in to admin account.");
+                        //Opens up admin menu
                         AdminMenu admin = new AdminMenu();
                         admin.Start();
                     }
