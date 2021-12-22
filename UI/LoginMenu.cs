@@ -2,6 +2,7 @@ namespace UI;
 
 public class LoginMenu {
     private IUBL _bl;
+    
     private ColorWrite _cw;
 
     public LoginMenu(IUBL bl){
@@ -12,13 +13,13 @@ public class LoginMenu {
         Console.WriteLine("\nWelcome to Jon's Used Hardware Franchise!");
         bool exit = false;
         while(!exit){
-            _cw.WriteColor("\n=================[Login Menu]=================", ConsoleColor.DarkCyan);
+            _cw.WriteColor("\n==================[Login Menu]=================", ConsoleColor.DarkCyan);
             Console.WriteLine("What would you like to do?\n");
             Console.WriteLine("[1] Sign Up");
             Console.WriteLine("[2] Login as User");
             Console.WriteLine("[3] Login as Administrator");
             _cw.WriteColor("\n\t      Enter [x] to [Exit]", ConsoleColor.DarkRed);
-            Console.WriteLine("============================================");
+            Console.WriteLine("=============================================");
 
             string? input = Console.ReadLine();
 
@@ -56,23 +57,25 @@ public class LoginMenu {
                     foreach(User currUser in currUsers){
                         if (currUser.Username == getUsername){
                             found = true;
-                            userPassword = currUser.Password;
+                            userPassword = currUser.Password!;
                             }
                         }
                     //If the current username is not found in the database
                     if (found == false){
-                        Console.WriteLine("\nUsername not found!\n");
+                        Console.WriteLine("\nUsername not found!");
                     }
                     else{
                         Console.WriteLine("Password");
                         string? getPassword = Console.ReadLine();
                         //Validates for the correct password
                         if (getPassword == userPassword){
-                            Console.WriteLine("\nLogin successful!\n");
-                            //Profile Menu initialization        
+                            Console.WriteLine("\nLogin successful!");
+                            //User Menu initialization
+                            UserMenu uMenu = new UserMenu();
+                            uMenu.Start(getUsername!);        
                         }
                         else{
-                            Console.WriteLine("\nIncorrect password.\n");
+                            Console.WriteLine("\nIncorrect password.");
                         }
                     }
                     break;

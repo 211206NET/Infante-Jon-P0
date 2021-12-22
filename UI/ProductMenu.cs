@@ -1,4 +1,3 @@
-using CustomExceptions;
 namespace UI;
 public class ProductMenu {
     private StoreBL _bl;
@@ -11,8 +10,8 @@ public class ProductMenu {
     public void Start(int index){
                 //Find our current products list
                 List<Store> allStores = _bl.GetAllStores();
-                Store currStore = allStores[index];
-                List<Product> allProducts = currStore.Products;
+                Store currStore = allStores[index]!;
+                List<Product> allProducts = currStore.Products!;
 
 
                     bool valid = false;
@@ -125,13 +124,13 @@ public class ProductMenu {
                 else {
                     //Desciption denoted by beginning letter of each paramater in product
                     if (descriptor == "d"){
-                        return cProduct.Description;
+                        return cProduct.Description!;
                     }
                     else if (descriptor == "p"){
-                        return cProduct.Price;
+                        return cProduct.Price!;
                     }
                     else if (descriptor == "q"){
-                        return cProduct.Quantity;
+                        return cProduct.Quantity!;
                     }
                     else {
                         return "";

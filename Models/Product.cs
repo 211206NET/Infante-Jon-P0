@@ -6,12 +6,12 @@ public class Product {
 
     public Product(){}
 
-    public string Name { get; set;}
+    public string? Name { get; set;}
 
-    public string Description {get; set;}
+    public string? Description {get; set;}
 
-    private string _price;
-    public string Price{ 
+    private string? _price;
+    public string? Price{ 
         
         get => _price;
         
@@ -22,11 +22,11 @@ public class Product {
                 throw new InputInvalidException("Price must be a number.");
             }
             this._price = value;
-        }
+            }
         }
 
-    private string _quantity;
-    public string Quantity{ 
+    private string? _quantity;
+    public string? Quantity{ 
         
         get => _quantity;
         
@@ -38,7 +38,5 @@ public class Product {
             }
             this._quantity = value;
         }
-        }
-    
-
+    }
 }

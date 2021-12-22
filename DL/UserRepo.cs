@@ -6,7 +6,7 @@ public class UserRepo : IURepo{
     public UserRepo(){
     }
     //make path from UI folder to file location
-    private string filePath = "../DL/Users.json";
+    private string? filePath = "../DL/Users.json";
 
     /// <summary>
     /// Gets all users from a file
@@ -14,9 +14,9 @@ public class UserRepo : IURepo{
     /// <returns>List of all users</returns>
     public List<User> GetAllUsers(){
         //returns all restaurants written in the file
-        string jsonString = File.ReadAllText(filePath);
-        List<User> jsonDeserialized = JsonSerializer.Deserialize<List<User>>(jsonString);
-        return jsonDeserialized;
+        string jsonString = File.ReadAllText(filePath!);
+        List<User> jsonDeserialized = JsonSerializer.Deserialize<List<User>>(jsonString)!;
+        return jsonDeserialized!;
     }   
 
     /// <summary>
@@ -26,8 +26,8 @@ public class UserRepo : IURepo{
     public void AddUser(User userToAdd){
         List<User> allUsers = GetAllUsers();
         allUsers.Add(userToAdd);
-        string jsonString = JsonSerializer.Serialize(allUsers);
-        File.WriteAllText(filePath, jsonString);
+        string jsonString = JsonSerializer.Serialize(allUsers)!;
+        File.WriteAllText(filePath!, jsonString!);
 
     }
  

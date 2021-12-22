@@ -1,4 +1,3 @@
-using CustomExceptions;
 namespace UI;
 
 public class StoreMenu {
@@ -13,7 +12,7 @@ public class StoreMenu {
         bool exit = false;
         List<Store> allStores = _bl.GetAllStores();
         Store currStore = allStores[index];
-        List<Product> products = currStore.Products;
+        List<Product> products = currStore.Products!;
         while(!exit){
             _cw.WriteColor("\n==================[Store Menu]=================", ConsoleColor.DarkCyan);
             Console.WriteLine($"Store: {currStore.Name}\n");

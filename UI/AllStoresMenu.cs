@@ -21,9 +21,10 @@ public class AllStoresMenu {
             //Found stores
             else{   
             _cw.WriteColor("\n=================[All Stores]=================", ConsoleColor.DarkCyan);
-            for(int i = 0; i < allStores.Count; i++){
-                Console.WriteLine($"[{i}] Store: {allStores[i].Name}\n    City: {allStores[i].City}, State: {allStores[i].State}");
-                Console.WriteLine($"    Address: {allStores[i].Address}");
+            int i = 0;
+            foreach(Store store in allStores){
+                Console.WriteLine($"[{i}] {store.ToString()}");
+                i++;
             }
             _cw.WriteColor("\nSelect the store's index to view its details.\n   Or enter [r] to [Return] to the Admin Menu.", ConsoleColor.DarkYellow);
             Console.WriteLine("=============================================");

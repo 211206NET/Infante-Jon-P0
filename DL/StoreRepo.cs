@@ -14,8 +14,8 @@ public class StoreRepo{
     /// <returns>List of all stores</returns>
     public List<Store> GetAllStores(){
         //returns all restaurants written in the file
-        string jsonString = File.ReadAllText(filePath);
-        List<Store> jsonDeserialized = JsonSerializer.Deserialize<List<Store>>(jsonString);
+        string jsonString = File.ReadAllText(filePath)!;
+        List<Store> jsonDeserialized = JsonSerializer.Deserialize<List<Store>>(jsonString)!;
         return jsonDeserialized;
     }   
 
@@ -49,14 +49,14 @@ public class StoreRepo{
         public void DeleteProduct(int storeIndex, int prodIndex){
             List<Store> allStores = GetAllStores();
             Store currStore = allStores[storeIndex];
-            currStore.Products.RemoveAt(prodIndex);
+            currStore.Products!.RemoveAt(prodIndex);
             string jsonString = JsonSerializer.Serialize(allStores);
             File.WriteAllText(filePath, jsonString);
         }       
         public void EditProduct(int storeIndex, int prodIndex, string description, string price, string quantity){
             List<Store> allStores = GetAllStores();
             Store currStore = allStores[storeIndex];
-            Product currProduct = currStore.Products[prodIndex];
+            Product currProduct = currStore.Products![prodIndex];
             currProduct.Description = description;
             currProduct.Price = price;
             currProduct.Quantity = quantity;
