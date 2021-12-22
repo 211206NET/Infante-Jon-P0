@@ -20,12 +20,12 @@ public class LoginMenu {
             _cw.WriteColor("\n\t    Enter [x] to [Exit]", ConsoleColor.DarkRed);
             Console.WriteLine("======================================");
 
-            string input = Console.ReadLine();
+            string? input = Console.ReadLine();
 
             switch (input){
                 case "1":
                     Console.WriteLine("Username: ");
-                    string username = Console.ReadLine();
+                    string? username = Console.ReadLine();
                     List<User> users = _bl.GetAllUsers();
                     bool userFound = false;
                     foreach(User user in users){
@@ -37,11 +37,11 @@ public class LoginMenu {
                     }
                     if (!userFound){
                         Console.WriteLine("Password: ");
-                        string password = Console.ReadLine();
+                        string? password = Console.ReadLine();
 
                         User newUser = new User{
-                            Username = username,
-                            Password = password,
+                            Username = username!,
+                            Password = password!,
                             };
 
                             _bl.AddUser(newUser);
@@ -49,7 +49,7 @@ public class LoginMenu {
                     break;
                 case "2":
                     Console.WriteLine("\nWhat is your username?");
-                    string getUsername = Console.ReadLine();
+                    string? getUsername = Console.ReadLine();
                     List<User> currUsers = _bl.GetAllUsers();
                     bool found = false;
                     string userPassword = "";
@@ -65,7 +65,7 @@ public class LoginMenu {
                     }
                     else{
                         Console.WriteLine("Password");
-                        string getPassword = Console.ReadLine();
+                        string? getPassword = Console.ReadLine();
                         //Validates for the correct password
                         if (getPassword == userPassword){
                             Console.WriteLine("\nLogin successful!\n");
@@ -78,7 +78,7 @@ public class LoginMenu {
                     break;
                 case "3":
                     Console.WriteLine("\nPlease enter your admin key to continue.");
-                    string inp = Console.ReadLine();
+                    string? inp = Console.ReadLine();
                     if (inp == "emily"){
                         Console.WriteLine("\nLogged in to admin account.");
                         //Opens up admin menu

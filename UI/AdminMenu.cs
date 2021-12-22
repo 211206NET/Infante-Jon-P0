@@ -18,24 +18,24 @@ public class AdminMenu {
             _cw.WriteColor("\n  Enter [r] to [Return] to the Login Menu", ConsoleColor.DarkYellow);
             Console.WriteLine("======================================");
             
-            string input = Console.ReadLine();
+            string? input = Console.ReadLine();
 
             switch (input){
                 case "1":
                     Console.WriteLine("Name: ");
-                    string name = Console.ReadLine();
+                    string? name = Console.ReadLine();
                     Console.WriteLine("City: ");
-                    string city = Console.ReadLine();
+                    string? city = Console.ReadLine();
                     Console.WriteLine("State: ");
-                    string state = Console.ReadLine();
+                    string? state = Console.ReadLine();
                     Console.WriteLine("Address: ");
-                    string address = Console.ReadLine();
+                    string? address = Console.ReadLine();
 
                     Store newStore= new Store{
-                        Name = name,
-                        City = city,
-                        State = state,
-                        Address = address
+                        Name = name!,
+                        City = city!,
+                        State = state!,
+                        Address = address!
                     };
                     //Adds a store to the list of stores
                     _bl.AddStore(newStore);
@@ -72,7 +72,7 @@ public class AdminMenu {
                 bool valid = false;
                 while (!valid){
                     _cw.WriteColor("\nSelect the store's index to view or edit it's products.\nOr enter [r] to [Return] to the Admin Menu.", ConsoleColor.DarkYellow);
-                    string select = Console.ReadLine();
+                    string? select = Console.ReadLine();
                     int index;
                     //Returns to menu
                     if (select == "r"){

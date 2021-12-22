@@ -20,25 +20,25 @@ public class StoreMenu {
             Console.WriteLine("[2] List all products");
             _cw.WriteColor("\n   Enter [r] to [Return] to the Admin Menu", ConsoleColor.DarkYellow);
             Console.WriteLine("========================================");
-            string input = Console.ReadLine();
+            string? input = Console.ReadLine();
 
             switch (input){
                 //Adding a new product
                 case "1": 
                     Console.WriteLine("Name: ");
-                    string name = Console.ReadLine();
+                    string? name = Console.ReadLine();
                     Console.WriteLine("Description: ");
-                    string description = Console.ReadLine();
+                    string? description = Console.ReadLine();
                     Console.WriteLine("Price: ");
-                    string price = Console.ReadLine();
+                    string? price = Console.ReadLine();
                     Console.WriteLine("Quantity: ");
-                    string quantity = Console.ReadLine();
+                    string? quantity = Console.ReadLine();
 
                    Product newProduct= new Product{
-                        Name = name,
-                        Description = description,
-                        Price = price,
-                        Quantity = quantity
+                        Name = name!,
+                        Description = description!,
+                        Price = price!,
+                        Quantity = quantity!
                     };
                     //Add a product to the store
                     _bl.AddProduct(index, newProduct);
@@ -70,15 +70,15 @@ public class StoreMenu {
                 int i = 0;
                 //Iterate over each product
                 foreach(Product prod in allProducts){
-                    Console.WriteLine($"[{i}]  {prod.Name}  ${prod.Price} || Quantity: {prod.Quantity}\n     {prod.Description}");
+                    Console.WriteLine($"[{i}]  {prod.Name} | ${prod.Price} || Quantity: {prod.Quantity}\n     {prod.Description}");
                     i++;
                 }
                 bool valid = false;
                 while (!valid){
                     Console.WriteLine("\nSelect the product's index to edit it.");
-                    _cw.WriteColor("Enter the [d] key to [delete] an item by its index.", ConsoleColor.DarkRed);
+                    _cw.WriteColor("Enter the [d] key to [Delete] an item by its index.", ConsoleColor.DarkRed);
                     _cw.WriteColor("Or enter [r] to [Return] to the Store Menu.", ConsoleColor.DarkYellow);
-                    string select = Console.ReadLine();
+                    string? select = Console.ReadLine();
                     int prodIndex;
                     //Return to the Product Menu
                     if (select == "r"){
@@ -91,7 +91,7 @@ public class StoreMenu {
                             Console.WriteLine($"[{j}]  {prod.Name}");
                             j++;
                         }
-                        string indexSelection = Console.ReadLine();
+                        string? indexSelection = Console.ReadLine();
                         if(!int.TryParse(indexSelection, out prodIndex)){
                             Console.WriteLine("Please select a valid input!");
                         }
@@ -111,15 +111,15 @@ public class StoreMenu {
                             //Get our current product selected
                             Product currProduct = allProducts[prodIndex];
                             Console.WriteLine($"\n{currProduct.Name}\n\nEdit Description: ");
-                            string newDescription = Console.ReadLine();
+                            string? newDescription = Console.ReadLine();
                             Console.WriteLine("Edit Price: ");
-                            string newPrice = Console.ReadLine();
+                            string? newPrice = Console.ReadLine();
                             Console.WriteLine("Edit Quantity: ");
-                            string newQuantity = Console.ReadLine();
+                            string? newQuantity = Console.ReadLine();
                             //If the input from the user is blank, keep the current product's information
-                            newDescription = isEmpty(currProduct, "d", newDescription);
-                            newPrice = isEmpty(currProduct, "p", newPrice);
-                            newQuantity = isEmpty(currProduct, "q", newQuantity);
+                            newDescription = isEmpty(currProduct, "d", newDescription!);
+                            newPrice = isEmpty(currProduct, "p", newPrice!);
+                            newQuantity = isEmpty(currProduct, "q", newQuantity!);
 
                             _bl.EditProduct(index, prodIndex, newDescription, newPrice, newQuantity);                        
                         }  
