@@ -16,7 +16,7 @@ public class LoginMenu {
             Console.WriteLine("What would you like to do?");
             Console.WriteLine("[1] Sign Up");
             Console.WriteLine("[2] Login as User");
-            Console.WriteLine("[3] Sign in as Administrator");
+            Console.WriteLine("[3] Login as Administrator");
             _cw.WriteColor("\n\t    Enter [x] to [Exit]", ConsoleColor.DarkRed);
             Console.WriteLine("======================================");
 
