@@ -5,6 +5,11 @@ public interface IUBL
 
     void AddUser(User usertToAdd);
 
+    int GetCurrentUser(string userName);
+
     void AddProductOrder(int currUserIndex, ProductOrder currProdOrder);
+
+    void DeleteProductOrder(int currUserIndex, int prodIndex);
+    
 
 }

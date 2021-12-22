@@ -23,12 +23,36 @@ public class UserBL : IUBL
         _dl.AddUser(userToAdd);
     }
     /// <summary>
+    /// Returns the index of the current user
+    /// </summary>
+    /// <param name="userName">current user logged in</param>
+    public int GetCurrentUser(string userName){
+        return _dl.GetCurrentUser(userName);
+    }
+    /// <summary>
     /// Adds a product order to the user's shopping list
     /// </summary>
     /// <param name="currUserIndex">User's index in the user list</param>
     /// <param name="currProdOrder">New product order to be added to the user's shopping cart</param>
     public void AddProductOrder(int currUserIndex, ProductOrder currProdOrder){
         _dl.AddProductOrder(currUserIndex, currProdOrder);
+    }
+    /// <summary>
+    /// Edits an existing product's order by quantity
+    /// </summary>
+    /// <param name="currUserIndex">Current user's index</param>
+    /// <param name="prodOrderIndex">Product order's index in the shopping cart</param>
+    /// <param name="quantity">New quantity to be update to</param>
+    public void EditProductOrder(int currUserIndex, int prodOrderIndex, string quantity){
+        _dl.EditProductOrder(currUserIndex, prodOrderIndex, quantity);
+    }
+    /// <summary>
+    /// Deletes a product from your shopping list
+    /// </summary>
+    /// <param name="currUserIndex">current index of the user</param>
+    /// <param name="prodIndex">Product to delete at index</param>
+    public void DeleteProductOrder(int currUserIndex, int prodIndex){
+        _dl.DeleteProductOrder(currUserIndex, prodIndex);
     }
 
 }

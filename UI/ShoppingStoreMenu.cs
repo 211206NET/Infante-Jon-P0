@@ -70,17 +70,7 @@ public class ShoppingStoreMenu {
                                         }
                                         else{
                                             //Get the current user's index
-                                            List<User> users = _iubl.GetAllUsers();
-                                            int currIndex = 0;
-                                            int j = 0;
-                                            foreach(User user in users){
-                                                if (user.Username == userName){
-                                                    currIndex = j;
-                                                }
-                                                else{
-                                                    j++;
-                                                }
-                                            }
+                                            int currIndex = _iubl.GetCurrentUser(userName);
                                             //Get total quantity and price of current product
                                             int prodPrice = int.Parse(selectedProduct.Price!);
                                             string newQuantity = (prodQuantity - userInt).ToString();

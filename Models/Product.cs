@@ -32,7 +32,7 @@ public class Product {
         
         set {
             int newQ;
-            //checks if the string is a valid integere
+            //checks if the string is a valid integer
             if (!(int.TryParse(value, out newQ))){
                 throw new InputInvalidException("Quantity must be an integer.");
             }
