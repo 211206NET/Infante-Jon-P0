@@ -23,7 +23,7 @@ public class UserMenu {
             switch (input){
                 case "1":
                     AllShoppingStoresMenu allSSMenu= new AllShoppingStoresMenu(_bl);
-                    allSSMenu.Start();
+                    allSSMenu.Start(userName);
                     break;
                 case "2":
                     break;

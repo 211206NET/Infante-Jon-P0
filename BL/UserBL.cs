@@ -22,5 +22,13 @@ public class UserBL : IUBL
     public void AddUser(User userToAdd){
         _dl.AddUser(userToAdd);
     }
+    /// <summary>
+    /// Adds a product order to the user's shopping list
+    /// </summary>
+    /// <param name="currUserIndex">User's index in the user list</param>
+    /// <param name="currProdOrder">New product order to be added to the user's shopping cart</param>
+    public void AddProductOrder(int currUserIndex, ProductOrder currProdOrder){
+        _dl.AddProductOrder(currUserIndex, currProdOrder);
+    }
 
 }

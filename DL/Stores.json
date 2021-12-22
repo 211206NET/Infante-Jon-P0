@@ -1,1 +1,1 @@
-[{"Name":"Atlantic","Address":"500 new boulevard","City":"Atlantic City","State":"NJ","Products":[{"Name":"hey","Description":"hey","Price":"66","Quantity":"9"},{"Name":"Iphone 13","Description":"nice","Price":"66","Quantity":"9"}]}]
+[{"Name":"Atlantic","Address":"500 new boulevard","City":"Atlantic City","State":"NJ","Products":[{"Name":"hey","Description":"hey","Price":"66","Quantity":"0"},{"Name":"Iphone 13","Description":"nice","Price":"66","Quantity":"3"}]},{"Name":"Pacifico","Address":"611 Jones St","City":"SF","State":"CA","Products":null}]

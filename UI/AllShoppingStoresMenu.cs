@@ -8,7 +8,7 @@ public class AllShoppingStoresMenu {
         _bl = bl;
         _cw = new ColorWrite();
     }  
-    public void Start(){  
+    public void Start(string userName){  
         
         List<Store> allStores = _bl.GetAllStores();
             bool exit = false;
@@ -42,7 +42,7 @@ public class AllShoppingStoresMenu {
                             exit = true;
                             //Opens up store product menu
                             ShoppingStoreMenu ssMenu = new ShoppingStoreMenu();
-                            ssMenu.Start(index);
+                            ssMenu.Start(index, userName);
                         }  
                         //Index out of range
                         else{

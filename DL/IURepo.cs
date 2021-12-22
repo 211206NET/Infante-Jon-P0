@@ -7,5 +7,7 @@ public interface IURepo {
     List<User> GetAllUsers();
 
     void AddUser(User userToAdd);
+    
+    void AddProductOrder(int currUserIndex, ProductOrder currProdOrder);
 
 }

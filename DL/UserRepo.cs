@@ -30,5 +30,18 @@ public class UserRepo : IURepo{
         File.WriteAllText(filePath!, jsonString!);
 
     }
+
+    public void AddProductOrder(int currUserIndex, ProductOrder currProdOrder){
+        List<User> allUsers = GetAllUsers();
+        User currUser = allUsers[currUserIndex!];
+        if(currUser.ShoppingCart == null)
+            {
+            currUser.ShoppingCart = new List<ProductOrder>();
+            }
+        currUser.ShoppingCart.Add(currProdOrder!);
+        string jsonString = JsonSerializer.Serialize(allUsers)!;
+        File.WriteAllText(filePath!, jsonString!);
+    
+    }
  
 }
