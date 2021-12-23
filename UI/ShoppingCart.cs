@@ -26,13 +26,12 @@ public class ShoppingCart {
             List<ProductOrder> allProductOrders = users[currUserIndex].ShoppingCart!;
             int i = 0;
             _cw.WriteColor("\n================[Shopping Cart]================", ConsoleColor.DarkCyan);
-            Console.WriteLine("What would you like to do?\n");
                 foreach(ProductOrder pOrder in allProductOrders!){
                     Console.WriteLine($"[{i}]  {pOrder.ItemName} | Quantity: {pOrder.Quantity}\n     Total Price: ${pOrder.TotalPrice} ");
                     i++;
                 }
                     if (i == 0){
-                        Console.WriteLine("Shopping Cart Empty!");
+                        Console.WriteLine("\t     Shopping Cart Empty!");
                     }
             Console.WriteLine("\nSelect a product's index to edit it's amount");
             _cw.WriteColor(" Enter the [d] key to [Delete] an order by index", ConsoleColor.DarkRed);
@@ -41,8 +40,8 @@ public class ShoppingCart {
 
             string? input = Console.ReadLine();
             int prodOrderIndex;
-            //Method for getting the matching product fromthe current product order index
-            ArrayList GetProduct(int prodIndex){
+            //Method for getting the matching product from the current product order index
+            ArrayList GetProduct(int prodOrderIndex){
                 ArrayList tempArray = new ArrayList();
                 List<Store> allStores = _bl.GetAllStores();
                 //Splits the current product order's id to get the store id and product id
@@ -50,12 +49,11 @@ public class ShoppingCart {
                 int storeIndex = int.Parse(splitString[0]);
                 int storeProdIndex = int.Parse(splitString[1]);
                 Product productSelected = allStores[storeIndex].Products![storeProdIndex];
-
+                //Adding objects to non-generic list
                 tempArray.Add(productSelected);
                 tempArray.Add(storeIndex);
                 tempArray.Add(storeProdIndex);
-
-
+                //Returns arraylist
                 return tempArray;
                 }
             if (input == "d"){  
@@ -111,7 +109,6 @@ public class ShoppingCart {
                             Console.WriteLine("New Quantity: ");
                             reEnter:
                             string? newQuantity = Console.ReadLine();
-                            //add check to see if quantity is above the store's product quantity
                             //Gets the current product by product order index
                             ArrayList prod2Array = GetProduct(prodOrderIndex);
                             Product productSelected = (Product)prod2Array[0]!;
