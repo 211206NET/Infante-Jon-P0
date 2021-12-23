@@ -1,3 +1,5 @@
+using System.Collections; 
+
 namespace UI;
 
 public class ShoppingCart {
@@ -39,6 +41,23 @@ public class ShoppingCart {
 
             string? input = Console.ReadLine();
             int prodOrderIndex;
+            //Method for getting the matching product fromthe current product order index
+            ArrayList GetProduct(int prodIndex){
+                ArrayList tempArray = new ArrayList();
+                List<Store> allStores = _bl.GetAllStores();
+                //Splits the current product order's id to get the store id and product id
+                string[] splitString = allProductOrders[prodOrderIndex]!.ID!.Split('#');
+                int storeIndex = int.Parse(splitString[0]);
+                int storeProdIndex = int.Parse(splitString[1]);
+                Product productSelected = allStores[storeIndex].Products![storeProdIndex];
+
+                tempArray.Add(productSelected);
+                tempArray.Add(storeIndex);
+                tempArray.Add(storeProdIndex);
+
+
+                return tempArray;
+                }
             if (input == "d"){  
                 int j = 0;
                 if (i == 0){
@@ -58,6 +77,18 @@ public class ShoppingCart {
                         if (prodOrderIndex >= 0 && prodOrderIndex < allProductOrders.Count){
                             //Calls the business logic of deleting a product by both indices
                             _iubl.DeleteProductOrder(currUserIndex, prodOrderIndex);
+                            //Gets the current product by product order index
+                            ArrayList prodArray = GetProduct(prodOrderIndex);
+                            Product productSelected = (Product)prodArray[0]!;
+                            int sIndex = (int)prodArray[1]!;
+                            int sProdIndex = (int)prodArray[2]!;
+                            //Calculating the new quantity
+                            int prodOrderQuantity = int.Parse(allProductOrders[prodOrderIndex].Quantity!);
+                            int prodQuantity = int.Parse(productSelected.Quantity!);
+                            string newProdQuantity = (prodQuantity! + prodOrderQuantity!).ToString();
+                            //Puts the correct amount of stock back in the store
+                            _bl.EditProduct(sIndex, sProdIndex, productSelected.Description!, productSelected.Price!, newProdQuantity);
+
                         }
                         else{
                             Console.WriteLine("\nPlease select an index within range!");
@@ -81,14 +112,14 @@ public class ShoppingCart {
                             reEnter:
                             string? newQuantity = Console.ReadLine();
                             //add check to see if quantity is above the store's product quantity
-                            List<Store> allStores = _bl.GetAllStores();
-                            //Splits the current product order's id to get the store id and product id
-                            string[] splitString = allProductOrders[prodOrderIndex]!.ID!.Split('#');
-                            int storeIndex = int.Parse(splitString[0]);
-                            int storeProdIndex = int.Parse(splitString[1]);
-                            Product productSelected = allStores[storeIndex].Products![storeProdIndex];
+                            //Gets the current product by product order index
+                            ArrayList prod2Array = GetProduct(prodOrderIndex);
+                            Product productSelected = (Product)prod2Array[0]!;
+                            int storeIndex = (int)prod2Array[1]!;
+                            int storeProdIndex = (int)prod2Array[2]!;
+                            
                             int newQ = int.Parse(newQuantity!);
-                            int oldQ = int.Parse(productSelected.Quantity!);
+                            int oldQ = int.Parse(productSelected!.Quantity!);
                             int currentPOrderQuantity = int.Parse(allProductOrders[prodOrderIndex].Quantity!);
                             try {
                                 //Tries for invalid quantity type
@@ -126,4 +157,5 @@ public class ShoppingCart {
         }
 
     }
+
  }
