@@ -24,8 +24,8 @@ public class ShoppingCart {
                             Console.WriteLine($"[{i}]  {pOrder.ItemName} | Quantity: {pOrder.Quantity} || {pOrder.Date}\n     Total Price: ${pOrder.TotalPrice} ");
                             i++;
                     }
-            Console.WriteLine("\n   Select the product's index to edit it's quantity.");
-            _cw.WriteColor("\nEnter the [d] key to [Delete] an order by index.", ConsoleColor.DarkRed);
+            Console.WriteLine("\nSelect a product's index to edit it's amount");
+            _cw.WriteColor(" Enter the [d] key to [Delete] an order by index", ConsoleColor.DarkRed);
             _cw.WriteColor("  Or Enter [r] to [Return] to the Profile Menu", ConsoleColor.DarkYellow);
             Console.WriteLine("=============================================");
 
@@ -44,7 +44,6 @@ public class ShoppingCart {
                     //Valid index found to delete the product
                     else {
                         if (prodOrderIndex >= 0 && prodOrderIndex < allProductOrders.Count){
-                            exit = true;
                             //Calls the business logic of deleting a product by both indices
                             _iubl.DeleteProductOrder(currUserIndex, prodOrderIndex);
                         }
@@ -65,7 +64,6 @@ public class ShoppingCart {
                     else{
                         //Check if index is in range
                         if (prodOrderIndex >= 0 && prodOrderIndex < allProductOrders.Count){
-                            exit = true;
                             Console.WriteLine("New Quantity: ");
                             reEnter:
                             string? newQuantity = Console.ReadLine();

@@ -37,7 +37,7 @@ public class ShoppingStoreMenu {
                         _cw.WriteColor("  Or enter [r] to [Return] to the the User Menu.", ConsoleColor.DarkYellow);
                         Console.WriteLine("=============================================");
                         string? select = Console.ReadLine();
-                        int prodIndex;
+                        int prodIndex = 0;
                         //Return to the Product Menu
                         if (select == "r"){
                             valid = true;

@@ -1,1 +1,1 @@
-[{"Username":"Jon","Password":"nice","ShoppingCart":null}]
+[{"Username":"Jon","Password":"nice","ShoppingCart":[{"ItemName":"Iphone 13","TotalPrice":"330","Quantity":"5","Date":"12/22/2021 6:54:32 PM"},{"ItemName":"Iphone 13","TotalPrice":"66","Quantity":"1","Date":"12/22/2021 7:01:04 PM"}]}]
