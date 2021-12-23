@@ -12,7 +12,7 @@ public class UserMenu {
         bool exit = false;
         while(!exit){
             _cw.WriteColor("\n==================[User Menu]==================", ConsoleColor.DarkCyan);
-            Console.WriteLine("What would you like to do?\n");
+            Console.WriteLine($"What would you like to do {userName}?\n");
             Console.WriteLine("[1] Browse Stores");
             Console.WriteLine("[2] View Profile");
             _cw.WriteColor("\n      Enter [r] to [Return] to the Login Menu", ConsoleColor.DarkYellow);

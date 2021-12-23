@@ -12,7 +12,6 @@ public class StoreMenu {
         bool exit = false;
         List<Store> allStores = _bl.GetAllStores();
         Store currStore = allStores[index];
-        List<Product> products = currStore.Products!;
         while(!exit){
             _cw.WriteColor("\n==================[Store Menu]=================", ConsoleColor.DarkCyan);
             Console.WriteLine($"Store: {currStore.Name}\n");
@@ -24,7 +23,19 @@ public class StoreMenu {
 
             switch (input){
                 //Adding a new product
-                case "1": 
+                case "1":
+                    //initialize products list
+                    if (currStore.Products == null){
+                        currStore.Products = new List<Product>();
+                     }
+                    List<Product> products = currStore.Products!; 
+                    int id = 0;
+                    //get new product id
+                    if (products.Count > 0){
+                        foreach (Product product in products){
+                            id++;
+                        }
+                    }
                     Console.WriteLine("Name: ");
                     string? name = Console.ReadLine();
                     Console.WriteLine("Description: ");
@@ -37,6 +48,7 @@ public class StoreMenu {
                     string? quantity = Console.ReadLine();
                     try{
                     Product newProduct= new Product{
+                        ID = id!,
                         Name = name!,
                         Description = description!,
                         Price = price!,
@@ -55,7 +67,7 @@ public class StoreMenu {
                     }
                     //Add a product to the store
                     
-                    Console.WriteLine($"{name} has been added to the current store!");
+                    Console.WriteLine($"\n{name} has been added to the current store!");
                     break;
                 case "2":
                     ProductMenu prodMenu = new ProductMenu(_bl);

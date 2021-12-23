@@ -29,9 +29,11 @@ public class LoginMenu {
                     string? username = Console.ReadLine();
                     List<User> users = _bl.GetAllUsers();
                     bool userFound = false;
+                    int id = 0;
                     foreach(User user in users){
+                        id++;
                         if (user.Username == username){
-                            Console.WriteLine("\nUser already registered!\n");
+                            Console.WriteLine("\nUser already registered!");
                             userFound = true;
                             break;
                         }
@@ -41,12 +43,16 @@ public class LoginMenu {
                         string? password = Console.ReadLine();
 
                         User newUser = new User{
+                            ID = id!,
                             Username = username!,
                             Password = password!,
                             };
 
                             _bl.AddUser(newUser);
+                        UserMenu newuMenu = new UserMenu();
+                        newuMenu.Start(username!);   
                     }
+
                     break;
                 case "2":
                     Console.WriteLine("\nWhat is your username?");

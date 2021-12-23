@@ -16,13 +16,21 @@ public class ShoppingCart {
         while(!exit){
             List<User> users = _iubl.GetAllUsers();
             int currUserIndex = _iubl.GetCurrentUser(userName);
+            User currUser = users[currUserIndex!];
+            if(currUser.ShoppingCart == null)
+                {
+                currUser.ShoppingCart = new List<ProductOrder>();
+                }
             List<ProductOrder> allProductOrders = users[currUserIndex].ShoppingCart!;
             int i = 0;
             _cw.WriteColor("\n================[Shopping Cart]================", ConsoleColor.DarkCyan);
-                    Console.WriteLine("What would you like to do?\n");
-                        foreach(ProductOrder pOrder in allProductOrders!){
-                            Console.WriteLine($"[{i}]  {pOrder.ItemName} | Quantity: {pOrder.Quantity} || {pOrder.Date}\n     Total Price: ${pOrder.TotalPrice} ");
-                            i++;
+            Console.WriteLine("What would you like to do?\n");
+                foreach(ProductOrder pOrder in allProductOrders!){
+                    Console.WriteLine($"[{i}]  {pOrder.ItemName} | Quantity: {pOrder.Quantity}\n     Total Price: ${pOrder.TotalPrice} ");
+                    i++;
+                }
+                    if (i == 0){
+                        Console.WriteLine("Shopping Cart Empty!");
                     }
             Console.WriteLine("\nSelect a product's index to edit it's amount");
             _cw.WriteColor(" Enter the [d] key to [Delete] an order by index", ConsoleColor.DarkRed);
@@ -33,6 +41,10 @@ public class ShoppingCart {
             int prodOrderIndex;
             if (input == "d"){  
                 int j = 0;
+                if (i == 0){
+                    Console.WriteLine("\nThere are no orders to delete!");
+                }
+                else{
                     foreach(ProductOrder prodOrder in allProductOrders){
                         Console.WriteLine($"[{j}]  {prodOrder.ItemName}");
                         j++;
@@ -50,7 +62,8 @@ public class ShoppingCart {
                         else{
                             Console.WriteLine("\nPlease select an index within range!");
                             }
-                    }
+                        }
+                 }
                 }
             //Returns to Profile Menu
             else if (input == "r"){
@@ -67,20 +80,47 @@ public class ShoppingCart {
                             Console.WriteLine("New Quantity: ");
                             reEnter:
                             string? newQuantity = Console.ReadLine();
+                            //add check to see if quantity is above the store's product quantity
+                            List<Store> allStores = _bl.GetAllStores();
+                            //Splits the current product order's id to get the store id and product id
+                            string[] splitString = allProductOrders[prodOrderIndex]!.ID!.Split('#');
+                            int storeIndex = int.Parse(splitString[0]);
+                            int storeProdIndex = int.Parse(splitString[1]);
+                            Product productSelected = allStores[storeIndex].Products![storeProdIndex];
+                            int newQ = int.Parse(newQuantity!);
+                            int oldQ = int.Parse(productSelected.Quantity!);
+                            int currentPOrderQuantity = int.Parse(allProductOrders[prodOrderIndex].Quantity!);
                             try {
+                                //Tries for invalid quantity type
                                 _iubl.EditProductOrder(currUserIndex, prodOrderIndex, newQuantity!);
+                                //If the quantity is over the product stock's limit
+                                if (newQ > (oldQ + currentPOrderQuantity)){
+                                    //Gets total amount of products from the current amount in the product order and the current amount in stock
+                                    Console.WriteLine(@$"The amount you selected is too high!" + 
+                                    $"\nThe maximum amount you can order of this product is {(currentPOrderQuantity + oldQ)}");
+                                    //reset the product order to its original value
+                                    _iubl.EditProductOrder(currUserIndex, prodOrderIndex, currentPOrderQuantity.ToString()!);
+                                    goto reEnter;
                                 }
+                                else{
+                                    Console.WriteLine("Your shopping cart item has been updated!");
+                                    //Update store product with new quantity.
+                                    _bl.EditProduct(storeIndex, storeProdIndex, productSelected.Description!, productSelected.Price!, ((oldQ + currentPOrderQuantity) - newQ).ToString());
+
+                                }
+                            }
                             catch(InputInvalidException ex){
                                 Console.WriteLine(ex.Message);
                                 goto reEnter;
 
-                             }
-                        }
+                            }
+                        }   
+                    
                         //Index out of range
                         else{
                             Console.WriteLine("\nPlease select an index within range!");
                         }         
-                }
+                    }
            
             }
         }

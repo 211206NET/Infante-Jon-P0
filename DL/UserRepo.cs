@@ -59,9 +59,9 @@ public class UserRepo : IURepo{
         User currUser = allUsers[currUserIndex!];
         if(currUser.ShoppingCart == null)
             {
-            currUser.ShoppingCart = new List<ProductOrder>();
+                currUser.ShoppingCart = new List<ProductOrder>();
             }
-        currUser.ShoppingCart.Add(currProdOrder!);
+        currUser.ShoppingCart!.Add(currProdOrder!);
         string jsonString = JsonSerializer.Serialize(allUsers)!;
         File.WriteAllText(filePath!, jsonString!);
     
@@ -78,11 +78,11 @@ public class UserRepo : IURepo{
         ProductOrder currProduct = allProdOrders[prodOrderIndex]!;
         //Calculating the new total amount
         int intQuantity = int.Parse(quantity);
-        float currentTotal = float.Parse(currProduct.TotalPrice!);
+        decimal currentTotal = decimal.Parse(currProduct.TotalPrice!);
         int currentQuantity = int.Parse(currProduct.Quantity!);
-        float itemPrice = (currentTotal / currentQuantity);
+        decimal itemPrice = (currentTotal / currentQuantity);
         string newTotal = (itemPrice * intQuantity).ToString();
-        //Declaring new quantity and total
+        //Declaring new quantity, total
         currProduct.TotalPrice = newTotal;
         currProduct.Quantity = quantity;
         string jsonString = JsonSerializer.Serialize(allUsers);

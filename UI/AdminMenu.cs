@@ -31,7 +31,14 @@ public class AdminMenu {
                     Console.WriteLine("Address: ");
                     string? address = Console.ReadLine();
 
+                    int id = 0;
+                    List<Store> allStores = _bl.GetAllStores();
+                    foreach(Store store in allStores){
+                        id++;
+                    }
+
                     Store newStore= new Store{
+                        ID = id!,
                         Name = name!,
                         City = city!,
                         State = state!,

@@ -6,6 +6,8 @@ public class ProductOrder {
 
     public ProductOrder(){}
 
+    public string? ID { get; set; }
+
     public string? ItemName { get; set; }
 
     public string? TotalPrice { get; set; }
@@ -24,8 +26,6 @@ public class ProductOrder {
             this._quantity = value;
         }
     }
-
-    public string? Date { get; set; }
 
 
 }

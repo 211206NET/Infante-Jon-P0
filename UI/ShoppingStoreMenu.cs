@@ -57,7 +57,7 @@ public class ShoppingStoreMenu {
                                     string? userInput = Console.ReadLine();
                                     int userInt;
                                     if(!int.TryParse(userInput, out userInt!)){
-                                        Console.WriteLine("Please select a valid input!");
+                                        Console.WriteLine("\nPlease select a valid input!");
                                     }
                                     else{
                                         int prodQuantity = int.Parse(selectedProduct.Quantity!);
@@ -72,23 +72,28 @@ public class ShoppingStoreMenu {
                                             //Get the current user's index
                                             int currIndex = _iubl.GetCurrentUser(userName);
                                             //Get total quantity and price of current product
-                                            int prodPrice = int.Parse(selectedProduct.Price!);
+                                            decimal prodPrice = decimal.Parse(selectedProduct.Price!);
                                             string newQuantity = (prodQuantity - userInt).ToString();
                                             //Updates quantity remaining of the product
                                             _bl.EditProduct(index, prodIndex, selectedProduct.Description!, selectedProduct.Price!, newQuantity);
                                             //Add product order to user's shopping cart
-                                            string currTime = DateTime.Now.ToString();
+                                            //get new productorder id
+                                            string prodID = selectedProduct.ID.ToString()!;
+                                            string id = $"{currStore.ID.ToString()}#{prodID.ToString()!}"; 
                                             ProductOrder currOrder = new ProductOrder{
+                                                    ID = id!,
                                                     ItemName = selectedProduct.Name!,
                                                     TotalPrice = (userInt * prodPrice).ToString(),
                                                     Quantity = (userInt!).ToString(),
-                                                    Date = currTime!
                                                 };
                                             _iubl.AddProductOrder(currIndex, currOrder);
                                         }
                                     }
                                     
                                     valid = true;
+                                }
+                                else{
+                                    Console.WriteLine("\nPlease select an index within range!");
                                 }
                             }
                         }

@@ -6,6 +6,7 @@ public class Product {
 
     public Product(){}
 
+    public int? ID { get; set; }
     public string? Name { get; set;}
 
     public string? Description {get; set;}
@@ -16,10 +17,10 @@ public class Product {
         get => _price;
         
         set {
-            float newP;
+            decimal newP;
             //Checks if the string is a valid float number
-            if (!(float.TryParse(value, out newP))){
-                throw new InputInvalidException("Price must be a number.");
+            if (!(decimal.TryParse(value, out newP))){
+                throw new InputInvalidException("Price must be a Decimal value.");
             }
             this._price = value;
             }
