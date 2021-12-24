@@ -54,8 +54,19 @@ public class UserBL : IUBL
     public void DeleteProductOrder(int currUserIndex, int prodIndex){
         _dl.DeleteProductOrder(currUserIndex, prodIndex);
     }
-
+    /// <summary>
+    /// Adds a store order to the user's order list
+    /// </summary>
+    /// <param name="currUserIndex">Current user's index to parse</param>
+    /// <param name="currStoreOrder">Store order to add</param>
     public void AddUserStoreOrder(int currUserIndex, StoreOrder currStoreOrder){
         _dl.AddUserStoreOrder(currUserIndex, currStoreOrder);
+    }
+    /// <summary>
+    /// Clears the user's shopping cart
+    /// </summary>
+    /// <param name="currUserIndex">Current user's index to parse</param>
+    public void ClearShoppingCart(int currUserIndex){
+        _dl.ClearShoppingCart(currUserIndex);
     }
 }

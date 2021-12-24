@@ -18,6 +18,6 @@ public interface IURepo {
     
     void AddUserStoreOrder(int currUserIndex, StoreOrder currStoreOrder);
 
-
+    void ClearShoppingCart(int currUserIndex);
 
 }

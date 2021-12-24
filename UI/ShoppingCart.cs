@@ -124,6 +124,8 @@ public class ShoppingCart {
                         };
                     //Adds to current user's store order list
                     _iubl.AddUserStoreOrder(currUserIndex, userStoreOrder);
+                    //Emptys current user's shopping cart
+                    _iubl.ClearShoppingCart(currUserIndex);
                     //Get each corresponding store from each product's ID and add to a dictionary
                     Dictionary<int, List<ProductOrder>> storeOrdersToPlace = new Dictionary<int,List<ProductOrder>>();
                     foreach(ProductOrder pOrder in allProductOrders){
@@ -189,7 +191,8 @@ public class ShoppingCart {
                             int storeIndex = (int)prod2Array[1]!;
                             int storeProdIndex = (int)prod2Array[2]!;
                             //Parsing to calculate new total quantity
-                            int newQ = int.Parse(newQuantity!);
+                            int newQ;
+                            int.TryParse(newQuantity!, out newQ);
                             int oldQ = int.Parse(productSelected!.Quantity!);
                             int currentPOrderQuantity = int.Parse(allProductOrders[prodOrderIndex].Quantity!);
                             try {

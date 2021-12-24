@@ -20,9 +20,16 @@ public class ProductOrder {
         set {
             int newQ;
             //checks if the string is a valid integer
-            if (!(int.TryParse(value, out newQ))){
-                throw new InputInvalidException("Quantity must be an integer.");
-            }
+
+                if (!(int.TryParse(value, out newQ))){
+                    throw new InputInvalidException("\nQuantity must be an integer. Please enter a valid input: ");
+                }
+                else{
+                    if (newQ <= 0){
+                        throw new InputInvalidException("\nQuantity must greater than 0. Please enter a valid amount:");
+                    }
+                }
+            
             this._quantity = value;
         }
     }

@@ -87,7 +87,12 @@ public class UserRepo : IURepo{
         currProduct.Quantity = quantity;
         string jsonString = JsonSerializer.Serialize(allUsers);
         File.WriteAllText(filePath!, jsonString!);
-    }   
+    }
+    /// <summary>
+    /// Delete's a product order from the user's shopping cart
+    /// </summary>
+    /// <param name="currUserIndex">Current user's index to parse user list</param>
+    /// <param name="prodIndex">Current product orders' index</param>
     public void DeleteProductOrder(int currUserIndex, int prodIndex){
         List<User> allUsers = GetAllUsers();
         List<ProductOrder> allProdOrders = allUsers[currUserIndex].ShoppingCart!;
@@ -95,7 +100,11 @@ public class UserRepo : IURepo{
         string jsonString = JsonSerializer.Serialize(allUsers);
         File.WriteAllText(filePath!, jsonString!);
     }
-
+    /// <summary>
+    /// Adds a store order to the user's store order list
+    /// </summary>
+    /// <param name="currUserIndex">Current user's index to parse user list</param>
+    /// <param name="currStoreOrder">Store order to add</param>
     public void AddUserStoreOrder(int currUserIndex, StoreOrder currStoreOrder){
         List<User> allUsers = GetAllUsers();
         User currUser = allUsers[currUserIndex];
@@ -105,6 +114,16 @@ public class UserRepo : IURepo{
         currUser.FinishedOrders.Add(currStoreOrder);
         string jsonString = JsonSerializer.Serialize(allUsers);
         File.WriteAllText(filePath!, jsonString!);
-    }     
- 
+    }
+    /// <summary>
+    /// Clears a user's shopping cart
+    /// </summary>
+    /// <param name="currUserIndex">Current user's index to parse list</param>
+    public void ClearShoppingCart(int currUserIndex){
+        List<User> allUsers = GetAllUsers();
+        User currUser = allUsers[currUserIndex];
+        currUser.ShoppingCart!.Clear();
+        string jsonString = JsonSerializer.Serialize(allUsers);
+        File.WriteAllText(filePath!, jsonString!);
+    }
 }

@@ -14,6 +14,6 @@ public interface IUBL
     void DeleteProductOrder(int currUserIndex, int prodIndex);
     
     void AddUserStoreOrder(int currUserIndex, StoreOrder currStoreOrder);
-
+    void ClearShoppingCart(int currUserIndex);
 
 }
