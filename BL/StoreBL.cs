@@ -49,5 +49,13 @@ public class StoreBL {
     public void EditProduct(int storeIndex, int prodIndex, string description, string price, string quantity){
         _dl.EditProduct(storeIndex, prodIndex, description, price, quantity);
     }
+    /// <summary>
+    /// Takes the current lists of product orders, packages them in a store order and adds to list
+    /// </summary>
+    /// <param name="storeIndex">Index of current store selected</param>
+    /// <param name="storeOrderToAdd">Store order packaged and ready to add</param>
+    public void AddStoreOrder(int storeIndex, StoreOrder storeOrderToAdd){
+        _dl.AddStoreOrder(storeIndex, storeOrderToAdd);
+    }
 
 }

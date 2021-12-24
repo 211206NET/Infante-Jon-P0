@@ -1,1 +1,1 @@
-[{"ID":0,"Username":"Jon","Password":"nice","ShoppingCart":[]}]
+[{"ID":0,"Username":"Jon","Password":"nice","ShoppingCart":[{"ID":"1#0","ItemName":"Pixel 4","TotalPrice":"1599.98","Quantity":"2"},{"ID":"0#0","ItemName":"IPhone 11","TotalPrice":"899.99","Quantity":"1"}],"FinishedOrders":[{"ID":0,"userID":0,"Date":"12/24/2021 4:00:11 PM","TotalAmount":2499.97,"Orders":[{"ID":"1#0","ItemName":"Pixel 4","TotalPrice":"1599.98","Quantity":"2"},{"ID":"0#0","ItemName":"IPhone 11","TotalPrice":"899.99","Quantity":"1"}]}]}]

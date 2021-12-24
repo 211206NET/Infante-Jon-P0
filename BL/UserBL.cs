@@ -55,4 +55,7 @@ public class UserBL : IUBL
         _dl.DeleteProductOrder(currUserIndex, prodIndex);
     }
 
+    public void AddUserStoreOrder(int currUserIndex, StoreOrder currStoreOrder){
+        _dl.AddUserStoreOrder(currUserIndex, currStoreOrder);
+    }
 }

@@ -14,7 +14,7 @@ public class AllShoppingStoresMenu {
             bool exit = false;
             while (!exit){
                 if(allStores.Count == 0){
-                    Console.WriteLine("No stores found!");
+                    Console.WriteLine("\nNo stores found!");
                     exit = true;
                 }
                 else{

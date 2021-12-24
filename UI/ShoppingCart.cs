@@ -6,7 +6,6 @@ public class ShoppingCart {
     private StoreBL _bl;
     private UserBL _iubl;
     private ColorWrite _cw;
-
     public ShoppingCart(){
         _bl = new StoreBL();
         IURepo repo = new UserRepo();
@@ -19,8 +18,7 @@ public class ShoppingCart {
             List<User> users = _iubl.GetAllUsers();
             int currUserIndex = _iubl.GetCurrentUser(userName);
             User currUser = users[currUserIndex!];
-            if(currUser.ShoppingCart == null)
-                {
+            if(currUser.ShoppingCart == null){
                 currUser.ShoppingCart = new List<ProductOrder>();
                 }
             List<ProductOrder> allProductOrders = users[currUserIndex].ShoppingCart!;
@@ -34,10 +32,11 @@ public class ShoppingCart {
                         Console.WriteLine("\t     Shopping Cart Empty!");
                     }
             Console.WriteLine("\nSelect a product's index to edit it's amount");
+            _cw.WriteColor("Enter the [c] key to [Checkout] and place your order", ConsoleColor.DarkGreen);
             _cw.WriteColor(" Enter the [d] key to [Delete] an order by index", ConsoleColor.DarkRed);
             _cw.WriteColor("  Or Enter [r] to [Return] to the Profile Menu", ConsoleColor.DarkYellow);
             Console.WriteLine("=============================================");
-
+            //Get user input selection
             string? input = Console.ReadLine();
             int prodOrderIndex;
             //Method for getting the matching product from the current product order index
@@ -56,6 +55,7 @@ public class ShoppingCart {
                 //Returns arraylist
                 return tempArray;
                 }
+            //Delete branch
             if (input == "d"){  
                 int j = 0;
                 if (i == 0){
@@ -92,15 +92,89 @@ public class ShoppingCart {
                             Console.WriteLine("\nPlease select an index within range!");
                             }
                         }
-                 }
                 }
+            }
+            //checkout for each product corresponding to the user's orders and each store's orders
+            else if (input == "c"){
+                if(currUser.FinishedOrders == null) {
+                    currUser.FinishedOrders = new List<StoreOrder>();
+                    }
+                if (allProductOrders.Count == 0){
+                    Console.WriteLine("\nYou have no items to checkout!");
+                }
+                //Orders found to place
+                else{
+                    int id = 0;
+                    foreach(StoreOrder sOrder in currUser.FinishedOrders!){
+                        id++;
+                    }
+                    //Make new list of product orders to add to the store order and calculate total
+                    decimal userpOrdersTotal = 0;
+                    //Get all the current products to add to the store order
+                    foreach(ProductOrder checkoutProduct in allProductOrders){
+                        userpOrdersTotal += decimal.Parse(checkoutProduct.TotalPrice!);
+                    } 
+                    string currTime = DateTime.Now.ToString();
+                    StoreOrder userStoreOrder = new StoreOrder{
+                        ID = id!,
+                        userID = currUserIndex!,
+                        TotalAmount = userpOrdersTotal!,
+                        Date = currTime!,
+                        Orders = allProductOrders!
+                        };
+                    //Adds to current user's store order list
+                    _iubl.AddUserStoreOrder(currUserIndex, userStoreOrder);
+                    //Get each corresponding store from each product's ID and add to a dictionary
+                    Dictionary<int, List<ProductOrder>> storeOrdersToPlace = new Dictionary<int,List<ProductOrder>>();
+                    foreach(ProductOrder pOrder in allProductOrders){
+                        string[] getID = pOrder.ID!.Split('#');
+                        int currStoreIndex = int.Parse(getID[0]);
+                        if (storeOrdersToPlace.ContainsKey(currStoreIndex)){
+                            storeOrdersToPlace[currStoreIndex].Add(pOrder);
+                            }
+                        else{
+                            List<ProductOrder> listP = new List<ProductOrder>();
+                            listP.Add(pOrder);
+                            storeOrdersToPlace.Add(currStoreIndex, listP);
+                        }
+                    }
+                    //Iterate over dictionary with store indexes and corresponding product
+                    List<Store> allStores = _bl.GetAllStores();
+                    foreach(KeyValuePair<int, List<ProductOrder>> kv in storeOrdersToPlace){
+                        if(allStores[kv.Key].AllOrders == null) {
+                            allStores[kv.Key].AllOrders = new List<StoreOrder>();
+                            }   
+                        int sid = 0;
+                        //Get amount of orders in the current store and get new id to apply
+                        foreach(StoreOrder currSOrder in allStores[kv.Key].AllOrders!){
+                            sid++;
+                        }
+                        //calcuate total order value for list of product orders
+                        decimal StoreOrderTotalValue = 0;
+                        foreach(ProductOrder pOrd in kv.Value){
+                            StoreOrderTotalValue += decimal.Parse(pOrd.TotalPrice!);
+                        }
+                        StoreOrder storeOrderToAdd = new StoreOrder{
+                            ID = sid!,
+                            userID = currUserIndex!,
+                            TotalAmount = StoreOrderTotalValue!,
+                            Date = currTime!,
+                            Orders = kv.Value!
+                        };
+                        //Adds store order to current selected store
+                        _bl.AddStoreOrder(kv.Key, storeOrderToAdd);
+                    }
+
+                }
+            }
             //Returns to Profile Menu
             else if (input == "r"){
                 exit = true;
             }
+            //Gets index of a current product, or invalid input
             else {
                 if(!int.TryParse(input, out prodOrderIndex)){
-                        Console.WriteLine("Please select a valid input!");
+                        Console.WriteLine("\nPlease select a valid input!");
                     }
                     //Valid index found to edit a product
                     else{
@@ -114,7 +188,7 @@ public class ShoppingCart {
                             Product productSelected = (Product)prod2Array[0]!;
                             int storeIndex = (int)prod2Array[1]!;
                             int storeProdIndex = (int)prod2Array[2]!;
-                            
+                            //Parsing to calculate new total quantity
                             int newQ = int.Parse(newQuantity!);
                             int oldQ = int.Parse(productSelected!.Quantity!);
                             int currentPOrderQuantity = int.Parse(allProductOrders[prodOrderIndex].Quantity!);
@@ -131,25 +205,21 @@ public class ShoppingCart {
                                     goto reEnter;
                                 }
                                 else{
-                                    Console.WriteLine("Your shopping cart item has been updated!");
+                                    Console.WriteLine("\nYour shopping cart item has been updated!");
                                     //Update store product with new quantity.
                                     _bl.EditProduct(storeIndex, storeProdIndex, productSelected.Description!, productSelected.Price!, ((oldQ + currentPOrderQuantity) - newQ).ToString());
-
                                 }
                             }
                             catch(InputInvalidException ex){
                                 Console.WriteLine(ex.Message);
                                 goto reEnter;
-
                             }
-                        }   
-                    
+                        }                  
                         //Index out of range
                         else{
                             Console.WriteLine("\nPlease select an index within range!");
                         }         
                     }
-           
             }
         }
 

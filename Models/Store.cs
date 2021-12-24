@@ -5,6 +5,7 @@ public class Store {
     public Store(){}
 
     public int? ID { get; set; }
+
     public string? Name { get; set;}
 
     public string? Address{ get; set;}
@@ -14,6 +15,8 @@ public class Store {
     public string? State { get; set; }
 
     public List<Product>? Products { get; set; }
+
+    public List<StoreOrder>? AllOrders { get; set; }
 
     public override string ToString(){
           return ($"Store: {this.Name}\n    City: {this.City}, State: {this.State}\n    Address: {this.Address}");

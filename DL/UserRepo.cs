@@ -94,6 +94,17 @@ public class UserRepo : IURepo{
         allProdOrders!.RemoveAt(prodIndex);
         string jsonString = JsonSerializer.Serialize(allUsers);
         File.WriteAllText(filePath!, jsonString!);
+    }
+
+    public void AddUserStoreOrder(int currUserIndex, StoreOrder currStoreOrder){
+        List<User> allUsers = GetAllUsers();
+        User currUser = allUsers[currUserIndex];
+        if(currUser.FinishedOrders == null) {
+            currUser.FinishedOrders = new List<StoreOrder>();
+        }
+        currUser.FinishedOrders.Add(currStoreOrder);
+        string jsonString = JsonSerializer.Serialize(allUsers);
+        File.WriteAllText(filePath!, jsonString!);
     }     
  
 }
