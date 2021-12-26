@@ -24,7 +24,6 @@ public class UserProfileMenu {
                 case "1":
                     ShoppingCart sCart = new ShoppingCart();
                     sCart.Start(userName!);  
-
                     break;
                 case "2":
                     break;

@@ -80,6 +80,7 @@ public class ShoppingStoreMenu {
                                             //Add product order to user's shopping cart
                                             //get new productorder id
                                             string prodID = selectedProduct.ID.ToString()!;
+                                            //Product Order's ID includes the current store's id and the current product's id. 
                                             string id = $"{currStore.ID.ToString()}#{prodID.ToString()!}"; 
                                             ProductOrder currOrder = new ProductOrder{
                                                     ID = id!,

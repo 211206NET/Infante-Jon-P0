@@ -62,6 +62,7 @@ public class ShoppingCart {
                 if (i == 0){
                     Console.WriteLine("\nThere are no orders to delete!");
                 }
+                //Print list of products to delete from
                 else{
                     foreach(ProductOrder prodOrder in allProductOrders){
                         Console.WriteLine($"[{j}]  {prodOrder.ItemName}");
@@ -74,7 +75,7 @@ public class ShoppingCart {
                     //Valid index found to delete the product
                     else {
                         if (prodOrderIndex >= 0 && prodOrderIndex < allProductOrders.Count){
-                            //Calls the business logic of deleting a product by both indices
+                            //Calls the business logic of deleting a product order from the shopping cart by both indices
                             _iubl.DeleteProductOrder(currUserIndex, prodOrderIndex);
                             //Gets the current product by product order index
                             ArrayList prodArray = GetProduct(prodOrderIndex);
@@ -171,7 +172,6 @@ public class ShoppingCart {
                         //Adds store order to current selected store
                         _bl.AddStoreOrder(kv.Key, storeOrderToAdd);
                     }
-
                 }
             }
             //Returns to Profile Menu
@@ -193,7 +193,7 @@ public class ShoppingCart {
                         //Gets the current product by product order index
                         ArrayList prod2Array = GetProduct(prodOrderIndex);
                         Product productSelected = (Product)prod2Array[0]!;
-                        //storeIndex and the store product index is found from the prodect order's 
+                        //storeIndex and the store's product index is found from the prodect order's 
                         //string ID
                         int storeIndex = (int)prod2Array[1]!;
                         int storeProdIndex = (int)prod2Array[2]!;
@@ -232,9 +232,7 @@ public class ShoppingCart {
                         Console.WriteLine("\nPlease select an index within range!");
                     }         
                 }
+            }
         }
-        }
-
     }
-
- }
+}
