@@ -24,7 +24,7 @@ public class AllShoppingStoresMenu {
                     Console.WriteLine($"[{i}] {store.ToString()}");
                     i++;
                 }
-                _cw.WriteColor("\n    Select the store's index to browse.\n   Or enter [r] to [Return] to the User Menu.", ConsoleColor.DarkYellow);
+                _cw.WriteColor("\n     Select the store's index to browse.\n   Or enter [r] to [Return] to the User Menu.", ConsoleColor.DarkYellow);
                 Console.WriteLine("=============================================");
                 string? select = Console.ReadLine();
                 int index;
@@ -39,7 +39,6 @@ public class AllShoppingStoresMenu {
                     }
                     else{
                         if (index >= 0 && index < allStores.Count){
-                            exit = true;
                             //Opens up store product menu
                             ShoppingStoreMenu ssMenu = new ShoppingStoreMenu();
                             ssMenu.Start(index, userName);

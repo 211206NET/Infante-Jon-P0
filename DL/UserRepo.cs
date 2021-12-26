@@ -73,9 +73,15 @@ public class UserRepo : IURepo{
     /// <param name="prodOrderIndex">Index of the product in the shopping cart</param>
     /// <param name="quantity">New Updates quantity</param>
     public void EditProductOrder(int currUserIndex, int prodOrderIndex, string quantity){
+        //Selected the currrent product based off the users index and the product order's index in the shopping cart
         List<User> allUsers = GetAllUsers();
         List<ProductOrder> allProdOrders = allUsers[currUserIndex].ShoppingCart!;
         ProductOrder currProduct = allProdOrders[prodOrderIndex]!;
+        string oldQuantity = currProduct.Quantity!;
+        //First check to throw exception if quantity is not an integer
+        currProduct.Quantity = quantity;
+        //Replacing the old quantity back in for calculations
+        currProduct.Quantity = oldQuantity;
         //Calculating the new total amount
         int intQuantity = int.Parse(quantity);
         decimal currentTotal = decimal.Parse(currProduct.TotalPrice!);

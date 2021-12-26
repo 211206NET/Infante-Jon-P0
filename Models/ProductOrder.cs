@@ -28,7 +28,7 @@ public class ProductOrder {
                     if (newQ <= 0){
                         throw new InputInvalidException("\nQuantity must greater than 0. Please enter a valid amount:");
                     }
-                }
+                }            
             
             this._quantity = value;
         }

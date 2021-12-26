@@ -13,13 +13,14 @@ public class ShoppingStoreMenu {
         _cw = new ColorWrite();
     }
     public void Start(int index, string userName){
-                //Find our current products list
-                List<Store> allStores = _bl.GetAllStores();
-                Store currStore = allStores[index]!;
-                List<Product> allProducts = currStore.Products!;
 
                     bool valid = false;
                     while (!valid){
+                        //Find our current products list
+                        List<Store> allStores = _bl.GetAllStores();
+                        Store currStore = allStores[index]!;
+                        List<Product> allProducts = currStore.Products!;
+                        //If the products list hasn't been initialzied or is empty
                         if(allProducts == null || allProducts.Count == 0){
                             Console.WriteLine("\nNo products found!");
                             valid = true;
@@ -34,7 +35,7 @@ public class ShoppingStoreMenu {
                             i++;
                         }
                         Console.WriteLine("\nSelect the product's index to make a purchase.");
-                        _cw.WriteColor("  Or enter [r] to [Return] to the the User Menu.", ConsoleColor.DarkYellow);
+                        _cw.WriteColor("Or enter [r] to [Return] to the the list of Stores", ConsoleColor.DarkYellow);
                         Console.WriteLine("=============================================");
                         string? select = Console.ReadLine();
                         int prodIndex = 0;
@@ -44,7 +45,7 @@ public class ShoppingStoreMenu {
                             }
                         else {
                             if(!int.TryParse(select, out prodIndex)){
-                                Console.WriteLine("Please select a valid input!");
+                                Console.WriteLine("\nPlease select a valid input!");
                             }
                             //Valid index found to edit a product
                             else{
@@ -89,9 +90,8 @@ public class ShoppingStoreMenu {
                                             _iubl.AddProductOrder(currIndex, currOrder);
                                         }
                                     }
-                                    
-                                    valid = true;
                                 }
+                                //Integer out of range of the product list's index
                                 else{
                                     Console.WriteLine("\nPlease select an index within range!");
                                 }

@@ -15,7 +15,7 @@ public class UserMenu {
             Console.WriteLine($"What would you like to do {userName}?\n");
             Console.WriteLine("[1] Browse Stores");
             Console.WriteLine("[2] View Profile");
-            _cw.WriteColor("\n      Enter [r] to [Return] to the Login Menu", ConsoleColor.DarkYellow);
+            _cw.WriteColor("\n     Enter [r] to [Return] to the Login Menu", ConsoleColor.DarkYellow);
             Console.WriteLine("=============================================");
 
             string? input = Console.ReadLine();
