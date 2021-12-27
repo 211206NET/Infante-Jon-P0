@@ -2,11 +2,9 @@ namespace UI;
 
 public class AllShoppingStoresMenu {
     private StoreBL _bl;
-    private ColorWrite _cw;
 
     public AllShoppingStoresMenu(StoreBL bl){
         _bl = bl;
-        _cw = new ColorWrite();
     }  
     public void Start(string userName){  
         
@@ -18,13 +16,13 @@ public class AllShoppingStoresMenu {
                     exit = true;
                 }
                 else{
-                _cw.WriteColor("\n==================[All Stores]=================", ConsoleColor.DarkCyan);
+                ColorWrite.wc("\n==================[All Stores]=================", ConsoleColor.DarkCyan);
                 int i = 0;
                 foreach(Store store in allStores){
                     Console.WriteLine($"[{i}] {store.ToString()}");
                     i++;
                 }
-                _cw.WriteColor("\n     Select the store's index to browse.\n   Or enter [r] to [Return] to the User Menu.", ConsoleColor.DarkYellow);
+                ColorWrite.wc("\n     Select the store's index to browse.\n   Or enter [r] to [Return] to the User Menu.", ConsoleColor.DarkYellow);
                 Console.WriteLine("=============================================");
                 string? select = Console.ReadLine();
                 int index;

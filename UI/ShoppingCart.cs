@@ -5,12 +5,10 @@ namespace UI;
 public class ShoppingCart {
     private StoreBL _bl;
     private UserBL _iubl;
-    private ColorWrite _cw;
     public ShoppingCart(){
         _bl = new StoreBL();
         IURepo repo = new UserRepo();
         _iubl = new UserBL(repo);
-        _cw = new ColorWrite();
     }
     public void Start(string userName){
         bool exit = false;
@@ -23,7 +21,7 @@ public class ShoppingCart {
                 }
             List<ProductOrder> allProductOrders = users[currUserIndex].ShoppingCart!;
             int i = 0;
-            _cw.WriteColor("\n================[Shopping Cart]================", ConsoleColor.DarkCyan);
+            ColorWrite.wc("\n================[Shopping Cart]================", ConsoleColor.DarkCyan);
                 foreach(ProductOrder pOrder in allProductOrders!){
                     Console.WriteLine($"[{i}]  {pOrder.ItemName} | Quantity: {pOrder.Quantity}\n     Total Price: ${pOrder.TotalPrice} ");
                     i++;
@@ -32,9 +30,9 @@ public class ShoppingCart {
                         Console.WriteLine("\t     Shopping Cart Empty!");
                     }
             Console.WriteLine("\nSelect a product's index to edit it's amount");
-            _cw.WriteColor("Enter the [c] key to [Checkout] and place your order", ConsoleColor.DarkGreen);
-            _cw.WriteColor(" Enter the [d] key to [Delete] an order by index", ConsoleColor.DarkRed);
-            _cw.WriteColor("  Or Enter [r] to [Return] to the Profile Menu", ConsoleColor.DarkYellow);
+            ColorWrite.wc("Enter the [c] key to [Checkout] and place your order", ConsoleColor.DarkGreen);
+            ColorWrite.wc(" Enter the [d] key to [Delete] an order by index", ConsoleColor.DarkRed);
+            ColorWrite.wc("  Or Enter [r] to [Return] to the Profile Menu", ConsoleColor.DarkYellow);
             Console.WriteLine("=============================================");
             //Get user input selection
             string? input = Console.ReadLine();

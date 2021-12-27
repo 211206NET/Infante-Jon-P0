@@ -3,22 +3,20 @@ namespace UI;
 public class LoginMenu {
     private IUBL _bl;
     
-    private ColorWrite _cw;
 
     public LoginMenu(IUBL bl){
         _bl = bl;
-        _cw = new ColorWrite();
     }
     public void Start(){
         Console.WriteLine("\nWelcome to Jon's Used Hardware Franchise!");
         bool exit = false;
         while(!exit){
-            _cw.WriteColor("\n==================[Login Menu]=================", ConsoleColor.DarkCyan);
+            ColorWrite.wc("\n==================[Login Menu]=================", ConsoleColor.DarkCyan);
             Console.WriteLine("What would you like to do?\n");
             Console.WriteLine("[1] Sign Up");
             Console.WriteLine("[2] Login as User");
             Console.WriteLine("[3] Login as Administrator");
-            _cw.WriteColor("\n\t        Enter [x] to [Exit]", ConsoleColor.DarkRed);
+            ColorWrite.wc("\n\t        Enter [x] to [Exit]", ConsoleColor.DarkRed);
             Console.WriteLine("=============================================");
 
             string? input = Console.ReadLine();

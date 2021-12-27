@@ -4,13 +4,11 @@ namespace UI;
 public class ShoppingStoreMenu {
     private StoreBL _bl;
     private  UserBL _iubl;
-    private ColorWrite _cw;
 
     public ShoppingStoreMenu(){
         _bl = new StoreBL();
         IURepo repo = new UserRepo();
         _iubl = new UserBL(repo);
-        _cw = new ColorWrite();
     }
     public void Start(int index, string userName){
 
@@ -26,7 +24,7 @@ public class ShoppingStoreMenu {
                             valid = true;
                             }
                         else{
-                        _cw.WriteColor("\n================[All Products]=================", ConsoleColor.DarkCyan);
+                        ColorWrite.wc("\n================[All Products]=================", ConsoleColor.DarkCyan);
                         Console.WriteLine($"{currStore.Name}\n");
                         int i = 0;
                         //Iterate over each product
@@ -35,7 +33,7 @@ public class ShoppingStoreMenu {
                             i++;
                         }
                         Console.WriteLine("\nSelect the product's index to make a purchase.");
-                        _cw.WriteColor("Or enter [r] to [Return] to the the list of Stores", ConsoleColor.DarkYellow);
+                        ColorWrite.wc("Or enter [r] to [Return] to the the list of Stores", ConsoleColor.DarkYellow);
                         Console.WriteLine("=============================================");
                         string? select = Console.ReadLine();
                         int prodIndex = 0;

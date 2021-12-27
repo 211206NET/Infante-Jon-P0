@@ -1,21 +1,19 @@
 namespace UI;
 public class AdminMenu {
-    private ColorWrite _cw;
     private StoreBL _bl;
 
     public AdminMenu(){
         _bl = new StoreBL();
-        _cw = new ColorWrite();
     }
 
     public void Start(){
         bool exit = false;
         while(!exit){
-            _cw.WriteColor("\n=================[Admin Menu]=================", ConsoleColor.DarkCyan);
+            ColorWrite.wc("\n=================[Admin Menu]=================", ConsoleColor.DarkCyan);
             Console.WriteLine("What would you like to do?\n");
             Console.WriteLine("[1] Add a new Store");
             Console.WriteLine("[2] View all Stores");            
-            _cw.WriteColor("\n  Enter [r] to [Return] to the Login Menu", ConsoleColor.DarkYellow);
+            ColorWrite.wc("\n  Enter [r] to [Return] to the Login Menu", ConsoleColor.DarkYellow);
             Console.WriteLine("============================================");
             
             string? input = Console.ReadLine();

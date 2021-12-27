@@ -2,20 +2,18 @@ namespace UI;
 
 public class UserProfileMenu {
     private StoreBL _bl;
-    private ColorWrite _cw;
 
     public UserProfileMenu(){
         _bl = new StoreBL();
-        _cw = new ColorWrite();
     }
     public void Start(string userName){
         bool exit = false;
         while(!exit){
-            _cw.WriteColor("\n=================[Profile Menu]=================", ConsoleColor.DarkCyan);
+            ColorWrite.wc("\n=================[Profile Menu]=================", ConsoleColor.DarkCyan);
             Console.WriteLine("What would you like to do?\n");
             Console.WriteLine("[1] Shopping Cart");
             Console.WriteLine("[2] Previous Orders");
-            _cw.WriteColor("\n      Enter [r] to [Return] to the User Menu", ConsoleColor.DarkYellow);
+            ColorWrite.wc("\n      Enter [r] to [Return] to the User Menu", ConsoleColor.DarkYellow);
             Console.WriteLine("=============================================");
 
             string? input = Console.ReadLine();

@@ -1,25 +1,23 @@
 namespace UI;
 public class ProductMenu {
     private StoreBL _bl;
-    private ColorWrite _cw;
 
     public ProductMenu(StoreBL bl){
         _bl = bl;
-        _cw = new ColorWrite();
     }
     public void Start(int index){
-                //Find our current products list
-                List<Store> allStores = _bl.GetAllStores();
-                Store currStore = allStores[index]!;
-                List<Product> allProducts = currStore.Products!;
                 bool valid = false;
                 while (!valid){
+                    //Find our current products list
+                    List<Store> allStores = _bl.GetAllStores();
+                    Store currStore = allStores[index]!;
+                    List<Product> allProducts = currStore.Products!;
                     if(allProducts == null || allProducts.Count == 0){
                         Console.WriteLine("\nNo products found!");
                         valid = true;
                         }
                     else{
-                    _cw.WriteColor("\n================[All Products]=================", ConsoleColor.DarkCyan);
+                    ColorWrite.wc("\n================[All Products]=================", ConsoleColor.DarkCyan);
                     int i = 0;
                     //Iterate over each product
                     foreach(Product prod in allProducts){
@@ -27,8 +25,8 @@ public class ProductMenu {
                         i++;
                     }
                     Console.WriteLine("\n   Select the product's index to edit it.");
-                    _cw.WriteColor("Enter the [d] key to [Delete] an item by its index.", ConsoleColor.DarkRed);
-                    _cw.WriteColor("   Or enter [r] to [Return] to the Store Menu.", ConsoleColor.DarkYellow);
+                    ColorWrite.wc("Enter the [d] key to [Delete] an item by its index.", ConsoleColor.DarkRed);
+                    ColorWrite.wc("   Or enter [r] to [Return] to the Store Menu.", ConsoleColor.DarkYellow);
                     Console.WriteLine("=============================================");
                     string? select = Console.ReadLine();
                     int prodIndex;
@@ -50,7 +48,6 @@ public class ProductMenu {
                         //Valid index found to delete the product
                         else {
                             if (prodIndex >= 0 && prodIndex < allProducts.Count){
-                                valid = true;
                                 //Calls the business logic of deleting a product by both indices
                                 _bl.DeleteProduct(index, prodIndex);
                             }
@@ -67,7 +64,6 @@ public class ProductMenu {
                         else{
                             //Check if index is in range
                             if (prodIndex >= 0 && prodIndex < allProducts.Count){
-                                valid = true;
                                 //Get our current product selected
                                 Product currProduct = allProducts[prodIndex];
                                 Console.WriteLine($"\n{currProduct.Name}\n\nEdit Description: ");
@@ -87,7 +83,8 @@ public class ProductMenu {
                                 //Calls the Business Logic of editing the product
                                 //Checks if newprice and newquantity are respectively floats and ints
                                 try {
-                                _bl.EditProduct(index, prodIndex, newDescription, newPrice, newQuantity);
+                                    _bl.EditProduct(index, prodIndex, newDescription, newPrice, newQuantity);
+                                    Console.WriteLine("\nYour product has been edited successfully!");
                                 }
                                 catch(InputInvalidException ex){
                                     Console.WriteLine(ex.Message);

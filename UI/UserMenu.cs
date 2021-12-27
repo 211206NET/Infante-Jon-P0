@@ -2,20 +2,18 @@ namespace UI;
 
 public class UserMenu {
     private StoreBL _bl;
-    private ColorWrite _cw;
 
     public UserMenu(){
         _bl = new StoreBL();
-        _cw = new ColorWrite();
     }
     public void Start(string userName){
         bool exit = false;
         while(!exit){
-            _cw.WriteColor("\n==================[User Menu]==================", ConsoleColor.DarkCyan);
+            ColorWrite.wc("\n==================[User Menu]==================", ConsoleColor.DarkCyan);
             Console.WriteLine($"What would you like to do {userName}?\n");
             Console.WriteLine("[1] Browse Stores");
             Console.WriteLine("[2] View Profile");
-            _cw.WriteColor("\n     Enter [r] to [Return] to the Login Menu", ConsoleColor.DarkYellow);
+            ColorWrite.wc("\n     Enter [r] to [Return] to the Login Menu", ConsoleColor.DarkYellow);
             Console.WriteLine("=============================================");
 
             string? input = Console.ReadLine();
