@@ -9,7 +9,7 @@ public class UserRepo : IURepo {
     private string? filePath = "../DL/Users.json";
 
     /// <summary>
-    /// Gets all users from a file
+    /// Gets all users from the file
     /// </summary>
     /// <returns>List of all users</returns>
     public List<User> GetAllUsers(){
@@ -59,6 +59,7 @@ public class UserRepo : IURepo {
             i++;
         }
         return 0;
+
     }
     /// <summary>
     /// Adds a product to the shopping cart

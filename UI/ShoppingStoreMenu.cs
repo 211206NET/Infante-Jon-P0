@@ -17,6 +17,7 @@ public class ShoppingStoreMenu {
             Store currStore = _bl.GetStoreByID(storeID);
             List<Product> allProducts = currStore.Products!;
             User currUser = _iubl.GetCurrentUserByID(userID);
+
             //If the products list hasn't been initialzied or is empty
             if(allProducts == null || allProducts.Count == 0){
                 Console.WriteLine("\nNo products found!");
@@ -26,6 +27,7 @@ public class ShoppingStoreMenu {
             int i = 0;
             ColorWrite.wc("\n================[All Products]=================", ConsoleColor.DarkCyan);
             Console.WriteLine($"{currStore.Name}\n");
+
             //Iterate over each product
             foreach(Product prod in allProducts){
                 Console.WriteLine($"[{i}]  {prod.Name} | ${prod.Price} || Quantity: {prod.Quantity}\n     {prod.Description}");
@@ -42,6 +44,7 @@ public class ShoppingStoreMenu {
                 }
             else {
                 if(!int.TryParse(inputSelect, out prodIndex)){
+
                     Console.WriteLine("\nPlease select a valid input!");
                 }
                 //Valid index found to edit a product
@@ -51,6 +54,7 @@ public class ShoppingStoreMenu {
                         int prodIDSelected = (int)allProducts[prodIndex!].ID!;
                         //Get product to make a purchase
                         Product selectedProduct = _bl.GetProductByID(storeID, prodIDSelected);
+
                         Console.WriteLine($"How many {selectedProduct.Name}s would you like to order?");
                         enterAmount:
                         string? userInput = Console.ReadLine();

@@ -10,6 +10,7 @@ public class ProductMenu {
         while (!valid){
             //Find our current products list
             Store currStore = _bl.GetStoreByID(storeID);
+
             List<Product> allProducts = currStore.Products!;
             if(allProducts == null || allProducts.Count == 0){
                 Console.WriteLine("\nNo products found!");
@@ -33,6 +34,7 @@ public class ProductMenu {
             List<Store> allStores = _bl.GetAllStores();
             int currStoreIndex = _bl.GetStoreIndexByID(storeID);
             //Nesting to get current product id by prod index
+
             //Return to the Product Menu
             if (select == "r"){
                 valid = true;
@@ -55,6 +57,7 @@ public class ProductMenu {
                         int prodID = (int)allStores[currStoreIndex].Products![prodIndex].ID!;
                         //Calls the business logic of deleting a product by both indices
                         _bl.DeleteProduct(storeID, prodID);
+
                     }
                     else{
                         Console.WriteLine("\nPlease select an index within range!");
@@ -114,6 +117,7 @@ public class ProductMenu {
         }
     }
     }
+
         /// <summary>
         /// Takes in a string of text and determinies if it is empty or not. If it is empty, replace the
         /// text with the current Products text for that paramater of the product
@@ -142,5 +146,5 @@ public class ProductMenu {
                     return "";
                 }
             }       
-    }
+            }       
 }
