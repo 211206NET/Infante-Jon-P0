@@ -19,13 +19,21 @@ public class ShoppingCart {
                 }
             List<ProductOrder> allProductOrders = currUser.ShoppingCart!;
             int i = 0;
+            decimal shopTotalPrice = 0;
             ColorWrite.wc("\n================[Shopping Cart]================", ConsoleColor.DarkCyan);
                 foreach(ProductOrder pOrder in allProductOrders!){
                     Console.WriteLine($"[{i}]  {pOrder.ItemName} | Quantity: {pOrder.Quantity}\n     Total Price: ${pOrder.TotalPrice} ");
+                    shopTotalPrice += Decimal.Parse(pOrder.TotalPrice!);
                     i++;
                 }
                     if (i == 0){
                         Console.WriteLine("\t     Shopping Cart Empty!");
+                    }
+                    else{
+                        Console.WriteLine("|--------------------------------------------|");
+                        Console.WriteLine($"| Total Amount: ${shopTotalPrice}");
+                        Console.WriteLine("|--------------------------------------------|");
+
                     }
             Console.WriteLine("\nSelect a product's index to edit it's amount");
             ColorWrite.wc("Enter the [c] key to [Checkout] and place your order", ConsoleColor.DarkGreen);
@@ -104,72 +112,75 @@ public class ShoppingCart {
                 }
                 //Orders found to place
                 else{
-                    int id = 0;
-                    foreach(StoreOrder sOrder in currUser.FinishedOrders!){
-                        id++;
-                    }
-                    //Make new list of product orders to add to the store order and calculate total
-                    decimal userpOrdersTotal = 0;
-                    //Get all the current products to add to the store order
-                    foreach(ProductOrder checkoutProduct in allProductOrders){
-                        userpOrdersTotal += decimal.Parse(checkoutProduct.TotalPrice!);
-                    } 
-                    string currTime = DateTime.Now.ToString();
-                    StoreOrder userStoreOrder = new StoreOrder{
-                        ID = id!,
-                        userID = currUser.ID,
-                        TotalAmount = userpOrdersTotal!,
-                        Date = currTime!,
-                        Orders = allProductOrders!
-                        };
-                    //Adds to current user's store order list
-                    _iubl.AddUserStoreOrder(currUser, userStoreOrder);
-                    //Emptys current user's shopping cart
-                    _iubl.ClearShoppingCart(currUser);
-                    //Get each corresponding store from each product's ID and add to a dictionary
-                    Dictionary<int, List<ProductOrder>> storeOrdersToPlace = new Dictionary<int,List<ProductOrder>>();
-                    foreach(ProductOrder pOrder in allProductOrders){
-                        //Getting the ID of the current store from the product id's string id code
-                        string[] getID = pOrder.ID!.Split('#');
-                        int currStoreID = int.Parse(getID[0]);
-                        if (storeOrdersToPlace.ContainsKey(currStoreID)){
-                            storeOrdersToPlace[currStoreID].Add(pOrder);
-                            }
-                        //If there is no key found
-                        else{
-                            List<ProductOrder> listP = new List<ProductOrder>();
-                            listP.Add(pOrder);
-                            //Assigns the initial first item to a new dictionary key (by store index, list of product orders)
-                            storeOrdersToPlace.Add(currStoreID, listP);
-                        }
-                    }
-                    //Iterate over dictionary with store indexes and corresponding product
-                    List<Store> allStores = _bl.GetAllStores();
-                    foreach(KeyValuePair<int, List<ProductOrder>> kv in storeOrdersToPlace){
-                        //kv.Keyv will be the store index found in the dictionary, initialize the List if it has not been assigned (if null)
-                        if(allStores[kv.Key].AllOrders == null) {
-                            allStores[kv.Key].AllOrders = new List<StoreOrder>();
-                            }   
-                        int sid = 0;
-                        //Get amount of orders in the current store and get new id to apply
-                        foreach(StoreOrder currSOrder in allStores[kv.Key].AllOrders!){
-                            sid++;
-                        }
-                        //calcuate total order value for list of product orders
-                        decimal StoreOrderTotalValue = 0;
-                        foreach(ProductOrder pOrd in kv.Value){
-                            StoreOrderTotalValue += decimal.Parse(pOrd.TotalPrice!);
-                        }
-                        StoreOrder storeOrderToAdd = new StoreOrder{
-                            ID = sid!,
-                            userID = currUser.ID!,
-                            TotalAmount = StoreOrderTotalValue!,
+                    Console.WriteLine("\nReady to place your order? [y/n]");
+                    string? inputYesorNo = Console.ReadLine();
+                    if (inputYesorNo == "y"){
+
+                        //get new store Order id between 1 and 100,000
+                        Random rnd = new Random();
+                        int id = rnd.Next(100000);
+                        //Make new list of product orders to add to the user store order and calculate total
+                        decimal userpOrdersTotal = 0;
+                        List<ProductOrder> userProductOrders = new List<ProductOrder>();
+                        foreach(ProductOrder checkoutProduct in allProductOrders){
+                            userpOrdersTotal += decimal.Parse(checkoutProduct.TotalPrice!);
+                            userProductOrders.Add(checkoutProduct);
+                        } 
+                        string currTime = DateTime.Now.ToString();
+                        StoreOrder userStoreOrder = new StoreOrder{
+                            ID = id!,
+                            userID = currUser.ID,
+                            TotalAmount = userpOrdersTotal!,
                             Date = currTime!,
-                            Orders = kv.Value!
-                        };
-                        //Adds store order to current selected store
-                        //kv.key is the store's ID
-                        _bl.AddStoreOrder(kv.Key, storeOrderToAdd);
+                            Orders = userProductOrders,
+                            };
+                        //Adds to current user's store order list
+                        _iubl.AddUserStoreOrder(currUser, userStoreOrder);
+                        //Get each corresponding store from each product's ID and add to a dictionary
+                        Dictionary<int, List<ProductOrder>> storeOrdersToPlace = new Dictionary<int,List<ProductOrder>>();
+                        foreach(ProductOrder pOrder in allProductOrders){
+                            //Getting the ID of the current store from the product id's string id code
+                            string[] getID = pOrder.ID!.Split('#');
+                            int currStoreID = int.Parse(getID[0]);
+                            if (storeOrdersToPlace.ContainsKey(currStoreID)){
+                                storeOrdersToPlace[currStoreID].Add(pOrder);
+                                }
+                            //If there is no key found
+                            else{
+                                List<ProductOrder> listP = new List<ProductOrder>();
+                                listP.Add(pOrder);
+                                //Assigns the initial first item to a new dictionary key (by store index, list of product orders)
+                                storeOrdersToPlace.Add(currStoreID, listP);
+                            }
+                        }
+                        //Iterate over dictionary with store indexes and corresponding product
+                        List<Store> allStores = _bl.GetAllStores();
+                        foreach(KeyValuePair<int, List<ProductOrder>> kv in storeOrdersToPlace){
+                            int storeIndex =  _bl.GetStoreIndexByID(kv.Key);
+                            //kv.Keyv will be the store index found in the dictionary, initialize the List if it has not been assigned (if null)
+                            if(allStores[storeIndex].AllOrders == null) {
+                                allStores[storeIndex].AllOrders = new List<StoreOrder>();
+                                }   
+                            //get new store Order id between 1 and 100,000
+                            int sid = rnd.Next(100000);
+                            //calcuate total order value for list of product orders
+                            decimal StoreOrderTotalValue = 0;
+                            foreach(ProductOrder pOrd in kv.Value){
+                                StoreOrderTotalValue += decimal.Parse(pOrd.TotalPrice!);
+                            }
+                            StoreOrder storeOrderToAdd = new StoreOrder{
+                                ID = sid!,
+                                userID = currUser.ID!,
+                                TotalAmount = StoreOrderTotalValue!,
+                                Date = currTime!,
+                                Orders = kv.Value
+                            };
+                            //Adds store order to current selected store
+                            //kv.key is the store's ID
+                            _bl.AddStoreOrder(kv.Key, storeOrderToAdd);
+                        }
+                        //Emptys current user's shopping cart
+                        _iubl.ClearShoppingCart(currUser);
                     }
                 }
             }

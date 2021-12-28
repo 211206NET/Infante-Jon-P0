@@ -59,7 +59,6 @@ public class UserRepo : IURepo {
             i++;
         }
         return 0;
-
     }
     /// <summary>
     /// Adds a product to the shopping cart
@@ -77,7 +76,6 @@ public class UserRepo : IURepo {
         allUsers[GetCurrentUserIndexByID((int)currUser.ID!)] = currUser;
         string jsonString = JsonSerializer.Serialize(allUsers)!;
         File.WriteAllText(filePath!, jsonString!);
-    
     }
     /// <summary>
     /// Edits an existing product order in the shopping cart
@@ -134,8 +132,10 @@ public class UserRepo : IURepo {
             currUser.FinishedOrders = new List<StoreOrder>();
         }
         currUser.FinishedOrders.Add(currStoreOrder);
+
         //Remapping the current user to update the list of users
         allUsers[GetCurrentUserIndexByID((int)currUser.ID!)] = currUser;
+
         string jsonString = JsonSerializer.Serialize(allUsers);
         File.WriteAllText(filePath!, jsonString!);
     }
