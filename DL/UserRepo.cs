@@ -36,17 +36,17 @@ public class UserRepo : IURepo{
     /// <param name="userName">The user logged in currently</param>
     public int GetCurrentUser(string userName){
         List<User> allUsers = GetAllUsers();
-        int currIndex = 0;
         int i = 0;
-        foreach (User user in allUsers){
+        foreach(User user in allUsers){
             if (user.Username == userName){
-                currIndex = i;
+                return i;
             }
             else{
-                return 0;
-            }
+                i++;
+            }     
         }
-        return currIndex;
+        return i;
+
     }
     
     /// <summary>
