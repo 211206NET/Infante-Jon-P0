@@ -156,8 +156,8 @@ public class ShoppingCart {
                         //Iterate over dictionary with store indexes and corresponding product
                         List<Store> allStores = _bl.GetAllStores();
                         foreach(KeyValuePair<int, List<ProductOrder>> kv in storeOrdersToPlace){
+                            //Get the store index from the current store ID [kv.Key]
                             int storeIndex =  _bl.GetStoreIndexByID(kv.Key);
-                            //kv.Keyv will be the store index found in the dictionary, initialize the List if it has not been assigned (if null)
                             if(allStores[storeIndex].AllOrders == null) {
                                 allStores[storeIndex].AllOrders = new List<StoreOrder>();
                                 }   
@@ -203,10 +203,10 @@ public class ShoppingCart {
                         //Gets the current product by product order index
                         ArrayList prod2Array = GetProduct(prodOrderIndex);
                         Product productSelected = (Product)prod2Array[0]!;
-                        //storeIndex and the store's product index is found from the prodect order's 
+                        //store ID and the store's productID is found from the prodect order's 
                         //string ID
-                        int storeIndex = (int)prod2Array[1]!;
-                        int storeProdIndex = (int)prod2Array[2]!;
+                        int storeID= (int)prod2Array[1]!;
+                        int storeProdID = (int)prod2Array[2]!;
                         //Parsing to calculate new total quantity
                         int newQ;
                         int.TryParse(newQuantity!, out newQ);
@@ -228,7 +228,7 @@ public class ShoppingCart {
                             else{
                                 Console.WriteLine("\nYour shopping cart item has been updated!");
                                 //Update store product with new quantity.
-                                _bl.EditProduct(storeIndex, storeProdIndex, productSelected.Description!, productSelected.Price!, ((oldQ + currentPOrderQuantity) - newQ).ToString());
+                                _bl.EditProduct(storeID, storeProdID, productSelected.Description!, productSelected.Price!, ((oldQ + currentPOrderQuantity) - newQ).ToString());
                             }
                         }
                         //Input is not a valid integer
