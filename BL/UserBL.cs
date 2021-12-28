@@ -16,6 +16,22 @@ public class UserBL : IUBL
 
     }
     /// <summary>
+    /// Returns a user by their id
+    /// </summary>
+    /// <param name="userID">User ID</param>
+    /// <returns>User object</returns>
+    public User GetCurrentUserByID(int userID){
+        return _dl.GetCurrentUserByID(userID);
+    }
+    /// <summary>
+    /// Returns a user's index by their ID
+    /// </summary>
+    /// <param name="userID">User ID</param>
+    /// <returns>index of current user</returns>
+    public int GetCurrentUserIndexByID(int userID){
+        return _dl.GetCurrentUserIndexByID(userID);
+    }
+    /// <summary>
     /// Adds a new user to the list
     /// </summary>
     /// <param name="userToAdd">user object to add</param>
@@ -23,50 +39,43 @@ public class UserBL : IUBL
         _dl.AddUser(userToAdd);
     }
     /// <summary>
-    /// Returns the index of the current user
-    /// </summary>
-    /// <param name="userName">current user logged in</param>
-    public int GetCurrentUser(string userName){
-        return _dl.GetCurrentUser(userName);
-    }
-    /// <summary>
     /// Adds a product order to the user's shopping list
     /// </summary>
-    /// <param name="currUserIndex">User's index in the user list</param>
+    /// <param name="currUser">Current user [object]</param>
     /// <param name="currProdOrder">New product order to be added to the user's shopping cart</param>
-    public void AddProductOrder(int currUserIndex, ProductOrder currProdOrder){
-        _dl.AddProductOrder(currUserIndex, currProdOrder);
+    public void AddProductOrder(User currUser, ProductOrder currProdOrder){
+        _dl.AddProductOrder(currUser, currProdOrder);
     }
     /// <summary>
     /// Edits an existing product's order by quantity
     /// </summary>
-    /// <param name="currUserIndex">Current user's index</param>
+    /// <param name="currUser">Current user [object]</param>
     /// <param name="prodOrderIndex">Product order's index in the shopping cart</param>
     /// <param name="quantity">New quantity to be update to</param>
-    public void EditProductOrder(int currUserIndex, int prodOrderIndex, string quantity){
-        _dl.EditProductOrder(currUserIndex, prodOrderIndex, quantity);
+    public void EditProductOrder(User currUser, int prodOrderIndex, string quantity){
+        _dl.EditProductOrder(currUser, prodOrderIndex, quantity);
     }
     /// <summary>
     /// Deletes a product from your shopping list
     /// </summary>
-    /// <param name="currUserIndex">current index of the user</param>
+    /// <param name="currUserIndex">Current user [object]</param>
     /// <param name="prodIndex">Product to delete at index</param>
-    public void DeleteProductOrder(int currUserIndex, int prodIndex){
-        _dl.DeleteProductOrder(currUserIndex, prodIndex);
+    public void DeleteProductOrder(User currUser , int prodIndex){
+        _dl.DeleteProductOrder(currUser, prodIndex);
     }
     /// <summary>
     /// Adds a store order to the user's order list
     /// </summary>
-    /// <param name="currUserIndex">Current user's index to parse</param>
+    /// <param name="currUserIndex">Current user [object]</param>
     /// <param name="currStoreOrder">Store order to add</param>
-    public void AddUserStoreOrder(int currUserIndex, StoreOrder currStoreOrder){
-        _dl.AddUserStoreOrder(currUserIndex, currStoreOrder);
+    public void AddUserStoreOrder(User currUser, StoreOrder currStoreOrder){
+        _dl.AddUserStoreOrder(currUser, currStoreOrder);
     }
     /// <summary>
     /// Clears the user's shopping cart
     /// </summary>
-    /// <param name="currUserIndex">Current user's index to parse</param>
-    public void ClearShoppingCart(int currUserIndex){
-        _dl.ClearShoppingCart(currUserIndex);
+    /// <param name="currUser">Current user [object]</param>
+    public void ClearShoppingCart(User currUser){
+        _dl.ClearShoppingCart(currUser);
     }
 }

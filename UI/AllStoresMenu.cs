@@ -13,36 +13,37 @@ public class AllStoresMenu {
         bool valid = false;
         while (!valid){
             if(allStores.Count == 0){
-                Console.WriteLine("No stores found!");
+                Console.WriteLine("\nNo stores found!");
                 valid = true;
                 }
             //Found stores
-            else{   
-            ColorWrite.wc("\n=================[All Stores]=================", ConsoleColor.DarkCyan);
+            else{
             int i = 0;
+            ColorWrite.wc("\n=================[All Stores]=================", ConsoleColor.DarkCyan);
             foreach(Store store in allStores){
                 Console.WriteLine($"[{i}] {store.ToString()}");
                 i++;
             }
-            ColorWrite.wc("\nSelect the store's index to view its details.\n   Or enter [r] to [Return] to the Admin Menu.", ConsoleColor.DarkYellow);
+            ColorWrite.wc("\nSelect the store's ID to view its details.\n   Or enter [r] to [Return] to the Admin Menu.", ConsoleColor.DarkYellow);
             Console.WriteLine("=============================================");
             string? select = Console.ReadLine();
-            int index;
+            int storeID;
             //Returns to menu
             if (select == "r"){
                 valid = true;
                 }
             else {
                 //Checks for valid integer
-                if(!int.TryParse(select, out index)){
+                if(!int.TryParse(select, out storeID)){
                     Console.WriteLine("\nPlease select a valid input!");
                 }
                 else{
-                    if (index >= 0 && index < allStores.Count){
+                    if (storeID >= 0 && storeID < allStores.Count){
+                        storeID = (int)allStores[storeID].ID!;
                         valid = true;
                         //Opens up product menu                            
                         StoreMenu currStore = new StoreMenu(_bl);
-                        currStore.Start(index);
+                        currStore.Start(storeID);
                     }  
                     //Index out of range
                     else{

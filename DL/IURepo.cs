@@ -8,16 +8,17 @@ public interface IURepo {
 
     void AddUser(User userToAdd);
 
-    int GetCurrentUser(string userName);
+    User GetCurrentUserByID(int userID);
+    int GetCurrentUserIndexByID(int userID);
+
+    void AddProductOrder(User currUser, ProductOrder currProdOrder);
+
+    void EditProductOrder(User currUser, int prodOrderIndex, string quantity);
+
+    void DeleteProductOrder(User currUser, int prodOrderIndex);
     
-    void AddProductOrder(int currUserIndex, ProductOrder currProdOrder);
+    void AddUserStoreOrder(User currUser, StoreOrder currStoreOrder);
 
-    void EditProductOrder(int currUserIndex, int prodOrderIndex, string quantity);
-
-    void DeleteProductOrder(int currUserIndex, int prodIndex);
-    
-    void AddUserStoreOrder(int currUserIndex, StoreOrder currStoreOrder);
-
-    void ClearShoppingCart(int currUserIndex);
+    void ClearShoppingCart(User currUser);
 
 }

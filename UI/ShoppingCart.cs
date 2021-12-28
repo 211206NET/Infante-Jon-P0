@@ -10,16 +10,14 @@ public class ShoppingCart {
         IURepo repo = new UserRepo();
         _iubl = new UserBL(repo);
     }
-    public void Start(string userName){
+    public void Start(int userID){
         bool exit = false;
         while(!exit){
-            List<User> users = _iubl.GetAllUsers();
-            int currUserIndex = _iubl.GetCurrentUser(userName);
-            User currUser = users[currUserIndex!];
+            User currUser = _iubl.GetCurrentUserByID(userID);
             if(currUser.ShoppingCart == null){
                 currUser.ShoppingCart = new List<ProductOrder>();
                 }
-            List<ProductOrder> allProductOrders = users[currUserIndex].ShoppingCart!;
+            List<ProductOrder> allProductOrders = currUser.ShoppingCart!;
             int i = 0;
             ColorWrite.wc("\n================[Shopping Cart]================", ConsoleColor.DarkCyan);
                 foreach(ProductOrder pOrder in allProductOrders!){
@@ -43,13 +41,15 @@ public class ShoppingCart {
                 List<Store> allStores = _bl.GetAllStores();
                 //Splits the current product order's id to get the store id and product id
                 string[] splitString = allProductOrders[prodOrderIndex]!.ID!.Split('#');
-                int storeIndex = int.Parse(splitString[0]);
-                int storeProdIndex = int.Parse(splitString[1]);
-                Product productSelected = allStores[storeIndex].Products![storeProdIndex];
+                int storeID = int.Parse(splitString[0]);
+                int storeProdID = int.Parse(splitString[1]);
+                Store currStore =  _bl.GetStoreByID(storeID);
+                List<Product> currStoreProducts = currStore.Products!;
+                Product productSelected = _bl.GetProductByID(storeID, storeProdID);
                 //Adding objects to non-generic list
                 tempArray.Add(productSelected);
-                tempArray.Add(storeIndex);
-                tempArray.Add(storeProdIndex);
+                tempArray.Add(storeID);
+                tempArray.Add(storeProdID);
                 //Returns arraylist
                 return tempArray;
                 }
@@ -73,20 +73,20 @@ public class ShoppingCart {
                     //Valid index found to delete the product
                     else {
                         if (prodOrderIndex >= 0 && prodOrderIndex < allProductOrders.Count){
-                            //Calls the business logic of deleting a product order from the shopping cart by both indices
-                            _iubl.DeleteProductOrder(currUserIndex, prodOrderIndex);
+
                             //Gets the current product by product order index
                             ArrayList prodArray = GetProduct(prodOrderIndex);
                             Product productSelected = (Product)prodArray[0]!;
-                            int sIndex = (int)prodArray[1]!;
-                            int sProdIndex = (int)prodArray[2]!;
+                            int storeID = (int)prodArray[1]!;
+                            int sProdID = (int)prodArray[2]!;
                             //Calculating the new quantity
                             int prodOrderQuantity = int.Parse(allProductOrders[prodOrderIndex].Quantity!);
                             int prodQuantity = int.Parse(productSelected.Quantity!);
                             string newProdQuantity = (prodQuantity! + prodOrderQuantity!).ToString();
                             //Puts the correct amount of stock back in the store
-                            _bl.EditProduct(sIndex, sProdIndex, productSelected.Description!, productSelected.Price!, newProdQuantity);
-
+                            _bl.EditProduct(storeID, sProdID, productSelected.Description!, productSelected.Price!, newProdQuantity);
+                            //Calls the business logic of deleting a product order from the shopping cart by both indices
+                            _iubl.DeleteProductOrder(currUser, prodOrderIndex);
                         }
                         else{
                             Console.WriteLine("\nPlease select an index within range!");
@@ -117,30 +117,30 @@ public class ShoppingCart {
                     string currTime = DateTime.Now.ToString();
                     StoreOrder userStoreOrder = new StoreOrder{
                         ID = id!,
-                        userID = currUserIndex!,
+                        userID = currUser.ID,
                         TotalAmount = userpOrdersTotal!,
                         Date = currTime!,
                         Orders = allProductOrders!
                         };
                     //Adds to current user's store order list
-                    _iubl.AddUserStoreOrder(currUserIndex, userStoreOrder);
+                    _iubl.AddUserStoreOrder(currUser, userStoreOrder);
                     //Emptys current user's shopping cart
-                    _iubl.ClearShoppingCart(currUserIndex);
+                    _iubl.ClearShoppingCart(currUser);
                     //Get each corresponding store from each product's ID and add to a dictionary
                     Dictionary<int, List<ProductOrder>> storeOrdersToPlace = new Dictionary<int,List<ProductOrder>>();
                     foreach(ProductOrder pOrder in allProductOrders){
-                        //Getting the index of the current store from the product id's string id code
+                        //Getting the ID of the current store from the product id's string id code
                         string[] getID = pOrder.ID!.Split('#');
-                        int currStoreIndex = int.Parse(getID[0]);
-                        if (storeOrdersToPlace.ContainsKey(currStoreIndex)){
-                            storeOrdersToPlace[currStoreIndex].Add(pOrder);
+                        int currStoreID = int.Parse(getID[0]);
+                        if (storeOrdersToPlace.ContainsKey(currStoreID)){
+                            storeOrdersToPlace[currStoreID].Add(pOrder);
                             }
                         //If there is no key found
                         else{
                             List<ProductOrder> listP = new List<ProductOrder>();
                             listP.Add(pOrder);
                             //Assigns the initial first item to a new dictionary key (by store index, list of product orders)
-                            storeOrdersToPlace.Add(currStoreIndex, listP);
+                            storeOrdersToPlace.Add(currStoreID, listP);
                         }
                     }
                     //Iterate over dictionary with store indexes and corresponding product
@@ -162,12 +162,13 @@ public class ShoppingCart {
                         }
                         StoreOrder storeOrderToAdd = new StoreOrder{
                             ID = sid!,
-                            userID = currUserIndex!,
+                            userID = currUser.ID!,
                             TotalAmount = StoreOrderTotalValue!,
                             Date = currTime!,
                             Orders = kv.Value!
                         };
                         //Adds store order to current selected store
+                        //kv.key is the store's ID
                         _bl.AddStoreOrder(kv.Key, storeOrderToAdd);
                     }
                 }
@@ -203,14 +204,14 @@ public class ShoppingCart {
                         int currentPOrderQuantity = int.Parse(allProductOrders[prodOrderIndex].Quantity!);
                         try {
                             //Tries for invalid quantity type
-                            _iubl.EditProductOrder(currUserIndex, prodOrderIndex, newQuantity!);
+                            _iubl.EditProductOrder(currUser, prodOrderIndex, newQuantity!);
                             //If the quantity is over the product's stock limit
                             if (newQ > (oldQ + currentPOrderQuantity)){
                                 //Gets total amount of products from the current amount in the product order and the current amount in stock
                                 Console.WriteLine(@$"\nThe amount you selected is too high!" + 
                                 $"\nThe maximum amount you can order of this product is {(currentPOrderQuantity + oldQ)}");
                                 //reset the product order to its original value
-                                _iubl.EditProductOrder(currUserIndex, prodOrderIndex, currentPOrderQuantity.ToString()!);
+                                _iubl.EditProductOrder(currUser, prodOrderIndex, currentPOrderQuantity.ToString()!);
                                 goto reEnter;
                             }
                             else{

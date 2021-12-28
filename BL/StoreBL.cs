@@ -12,37 +12,56 @@ public class StoreBL {
     /// <returns>list of all stores</returns>
     public List<Store> GetAllStores(){
         return _dl.GetAllStores();
-
     }
+    /// <summary>
+    /// Get current store by the store's ID
+    /// </summary>
+    /// <param name="storeID">storeID to look up</param>
+    /// <returns>Store object</returns>
+    public Store GetStoreByID(int storeID){
+        return _dl.GetStoreByID(storeID);
+        }
+    /// <summary>
+    /// Get current store's index by storeID
+    /// </summary>
+    /// <param name="storeID">storeID to look up</param>
+    /// <returns>store index</returns>
+    public int GetStoreIndexByID(int storeID){
+        return _dl.GetStoreIndexByID(storeID);
+        }
     /// <summary>
     /// Adds a new store to the list
     /// </summary>
     /// <param name="storeToAdd">store object to add</param>
+    
+    public Product GetProductByID(int storeID, int prodID){
+        return _dl.GetProductByID(storeID, prodID);
+    }
     public void AddStore(Store storeToAdd){
         _dl.AddStore(storeToAdd);
     }
     /// <summary>
     /// Adds a product to the current selected store
     /// </summary>
-    /// <param name="index">index of the store in the store list</param>
+    /// <param name="storeID">ID of the current store</param>
     /// <param name="productToAdd">product we are adding to the store</param>
-    public void AddProduct(int index, Product productToAdd){
-        _dl.AddProduct(index, productToAdd);
+    public void AddProduct(int storeID, Product productToAdd){
+        _dl.AddProduct(storeID, productToAdd);
     }
     /// <summary>
     /// Deletes a product from the current selected store and product index
     /// </summary>
-    /// <param name="storeIndex">Store's current index</param>
+    /// <param name="storeID">ID of the current store</param>
     /// <param name="prodIndex">Product's current index</param>
-    public void DeleteProduct(int storeIndex, int prodIndex){
-        _dl.DeleteProduct(storeIndex, prodIndex);
+    public void DeleteProduct(int storeID, int prodIndex){
+        _dl.DeleteProduct(storeID, prodIndex);
 
     }
     /// <summary>
     /// Edits and updates the product selected in the current store
     /// </summary>
-    /// <param name="storeIndex">Current store index</param>
-    /// <param name="prodIndex">Index of the product to edit</param>
+    /// <param name="storeID">ID of the current store</param>
+    /// <param name="prodID">ID of the current product</param>
     /// <param name="description">Product's new description</param>
     /// <param name="price">Product's new price</param>
     /// <param name="quantity">Product's new quantity</param>
@@ -52,10 +71,10 @@ public class StoreBL {
     /// <summary>
     /// Takes the current lists of product orders, packages them in a store order and adds to list
     /// </summary>
-    /// <param name="storeIndex">Index of current store selected</param>
+    /// <param name="storeID">ID of the current store</param>
     /// <param name="storeOrderToAdd">Store order packaged and ready to add</param>
-    public void AddStoreOrder(int storeIndex, StoreOrder storeOrderToAdd){
-        _dl.AddStoreOrder(storeIndex, storeOrderToAdd);
+    public void AddStoreOrder(int storeID, StoreOrder storeOrderToAdd){
+        _dl.AddStoreOrder(storeID, storeOrderToAdd);
     }
 
 }

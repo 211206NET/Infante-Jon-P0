@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 
 namespace DL;
-public class UserRepo : IURepo{
+public class UserRepo : IURepo {
 
     public UserRepo(){
     }
@@ -28,40 +28,52 @@ public class UserRepo : IURepo{
         allUsers.Add(userToAdd);
         string jsonString = JsonSerializer.Serialize(allUsers)!;
         File.WriteAllText(filePath!, jsonString!);
-
     }
     /// <summary>
-    /// Returns index number of the current user accessing the store
+    /// Gets the current user by their ID
     /// </summary>
-    /// <param name="userName">The user logged in currently</param>
-    public int GetCurrentUser(string userName){
+    /// <param name="ID">integer of the user's ID</param>
+    /// <returns>User object</returns>
+    public User GetCurrentUserByID(int ID){
         List<User> allUsers = GetAllUsers();
-        int currIndex = 0;
-        int i = 0;
-        foreach (User user in allUsers){
-            if (user.Username == userName){
-                currIndex = i;
-            }
-            else{
-                return 0;
+        User currUser = new User();
+        foreach(User user in allUsers){
+            if (user.ID == ID){
+                currUser = user;
             }
         }
-        return currIndex;
+        return currUser;
     }
-    
+    /// <summary>
+    /// Gets the current user's index by their ID
+    /// </summary>
+    /// <param name="ID">integer of the user's ID</param>
+    /// <returns>User's index in list of users'</returns>
+    public int GetCurrentUserIndexByID(int userID){
+        List<User> allUsers = GetAllUsers();
+        int i = 0;
+        foreach(User user in allUsers){
+            if (user.ID == userID){
+                return i;
+            }
+            i++;
+        }
+        return 0;
+    }
     /// <summary>
     /// Adds a product to the shopping cart
     /// </summary>
-    /// <param name="currUserIndex">Current user index in the user list</param>
+    /// <param name="currUser">Current user [object]</param>
     /// <param name="currProdOrder">The current product object</param>
-    public void AddProductOrder(int currUserIndex, ProductOrder currProdOrder){
+    public void AddProductOrder(User currUser, ProductOrder currProdOrder){
         List<User> allUsers = GetAllUsers();
-        User currUser = allUsers[currUserIndex!];
         if(currUser.ShoppingCart == null)
             {
                 currUser.ShoppingCart = new List<ProductOrder>();
             }
         currUser.ShoppingCart!.Add(currProdOrder!);
+        //Remapping the current user to update the list of users
+        allUsers[GetCurrentUserIndexByID((int)currUser.ID!)] = currUser;
         string jsonString = JsonSerializer.Serialize(allUsers)!;
         File.WriteAllText(filePath!, jsonString!);
     
@@ -69,13 +81,13 @@ public class UserRepo : IURepo{
     /// <summary>
     /// Edits an existing product order in the shopping cart
     /// </summary>
-    /// <param name="currUserIndex">Current user's index</param>
-    /// <param name="prodOrderIndex">Index of the product in the shopping cart</param>
+    /// <param name="currUser">Current user object</param>
+    /// <param name="prodOrderIndex">Index of the product order in the shopping cart</param>
     /// <param name="quantity">New Updates quantity</param>
-    public void EditProductOrder(int currUserIndex, int prodOrderIndex, string quantity){
-        //Selected the currrent product based off the users index and the product order's index in the shopping cart
+    public void EditProductOrder(User currUser, int prodOrderIndex, string quantity){
         List<User> allUsers = GetAllUsers();
-        List<ProductOrder> allProdOrders = allUsers[currUserIndex].ShoppingCart!;
+        //Selected the currrent product based off the users index and the product order's index in the shopping cart
+        List<ProductOrder> allProdOrders = currUser.ShoppingCart!;
         ProductOrder currProduct = allProdOrders[prodOrderIndex]!;
         string oldQuantity = currProduct.Quantity!;
         //First check to throw exception if quantity is not an integer
@@ -91,44 +103,50 @@ public class UserRepo : IURepo{
         //Declaring new quantity, total
         currProduct.TotalPrice = newTotal;
         currProduct.Quantity = quantity;
+        //Remapping the current user to update the list of users
+        allUsers[GetCurrentUserIndexByID((int)currUser.ID!)] = currUser;
         string jsonString = JsonSerializer.Serialize(allUsers);
         File.WriteAllText(filePath!, jsonString!);
     }
     /// <summary>
     /// Delete's a product order from the user's shopping cart
     /// </summary>
-    /// <param name="currUserIndex">Current user's index to parse user list</param>
+    /// <param name="currUser">Current user [object]</param>
     /// <param name="prodIndex">Current product orders' index</param>
-    public void DeleteProductOrder(int currUserIndex, int prodIndex){
+    public void DeleteProductOrder(User currUser, int prodIndex){
         List<User> allUsers = GetAllUsers();
-        List<ProductOrder> allProdOrders = allUsers[currUserIndex].ShoppingCart!;
+        List<ProductOrder> allProdOrders = currUser.ShoppingCart!;
         allProdOrders!.RemoveAt(prodIndex);
+        //Remapping the current user to update the list of users
+        allUsers[GetCurrentUserIndexByID((int)currUser.ID!)] = currUser;
         string jsonString = JsonSerializer.Serialize(allUsers);
         File.WriteAllText(filePath!, jsonString!);
     }
     /// <summary>
     /// Adds a store order to the user's store order list
     /// </summary>
-    /// <param name="currUserIndex">Current user's index to parse user list</param>
+    /// <param name="currUser">Current user [object]</param>
     /// <param name="currStoreOrder">Store order to add</param>
-    public void AddUserStoreOrder(int currUserIndex, StoreOrder currStoreOrder){
+    public void AddUserStoreOrder(User currUser, StoreOrder currStoreOrder){
         List<User> allUsers = GetAllUsers();
-        User currUser = allUsers[currUserIndex];
         if(currUser.FinishedOrders == null) {
             currUser.FinishedOrders = new List<StoreOrder>();
         }
         currUser.FinishedOrders.Add(currStoreOrder);
+        //Remapping the current user to update the list of users
+        allUsers[GetCurrentUserIndexByID((int)currUser.ID!)] = currUser;
         string jsonString = JsonSerializer.Serialize(allUsers);
         File.WriteAllText(filePath!, jsonString!);
     }
     /// <summary>
     /// Clears a user's shopping cart
     /// </summary>
-    /// <param name="currUserIndex">Current user's index to parse list</param>
-    public void ClearShoppingCart(int currUserIndex){
+    /// <param name="currUser">Current user [object]</param>
+    public void ClearShoppingCart(User currUser){
         List<User> allUsers = GetAllUsers();
-        User currUser = allUsers[currUserIndex];
         currUser.ShoppingCart!.Clear();
+        //Remapping the current user to update the list of users
+        allUsers[GetCurrentUserIndexByID((int)currUser.ID!)] = currUser;
         string jsonString = JsonSerializer.Serialize(allUsers);
         File.WriteAllText(filePath!, jsonString!);
     }

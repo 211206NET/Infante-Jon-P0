@@ -6,7 +6,7 @@ public class UserProfileMenu {
     public UserProfileMenu(){
         _bl = new StoreBL();
     }
-    public void Start(string userName){
+    public void Start(int userID){
         bool exit = false;
         while(!exit){
             ColorWrite.wc("\n=================[Profile Menu]=================", ConsoleColor.DarkCyan);
@@ -21,7 +21,7 @@ public class UserProfileMenu {
             switch (input){
                 case "1":
                     ShoppingCart sCart = new ShoppingCart();
-                    sCart.Start(userName!);  
+                    sCart.Start(userID);  
                     break;
                 case "2":
                     break;

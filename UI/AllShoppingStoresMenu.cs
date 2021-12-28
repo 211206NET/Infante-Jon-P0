@@ -6,7 +6,7 @@ public class AllShoppingStoresMenu {
     public AllShoppingStoresMenu(StoreBL bl){
         _bl = bl;
     }  
-    public void Start(string userName){  
+    public void Start(int userID){  
         
         List<Store> allStores = _bl.GetAllStores();
             bool exit = false;
@@ -16,30 +16,31 @@ public class AllShoppingStoresMenu {
                     exit = true;
                 }
                 else{
-                ColorWrite.wc("\n==================[All Stores]=================", ConsoleColor.DarkCyan);
                 int i = 0;
+                ColorWrite.wc("\n==================[All Stores]=================", ConsoleColor.DarkCyan);
                 foreach(Store store in allStores){
                     Console.WriteLine($"[{i}] {store.ToString()}");
                     i++;
                 }
-                ColorWrite.wc("\n     Select the store's index to browse.\n   Or enter [r] to [Return] to the User Menu.", ConsoleColor.DarkYellow);
+                ColorWrite.wc("\n     Select the store's ID to browse.\n   Or enter [r] to [Return] to the User Menu.", ConsoleColor.DarkYellow);
                 Console.WriteLine("=============================================");
                 string? select = Console.ReadLine();
-                int index;
+                int storeIndex;
                 //Returns to menu
                 if (select == "r"){
                     exit = true;
                     }
                 else {
                     //Checks for valid integer
-                    if(!int.TryParse(select, out index)){
+                    if(!int.TryParse(select, out storeIndex)){
                         Console.WriteLine("\nPlease select a valid input!");
                     }
                     else{
-                        if (index >= 0 && index < allStores.Count){
+                        if (storeIndex >= 0 && storeIndex < allStores.Count){
+                            int storeID = (int)allStores[storeIndex].ID!;
                             //Opens up store product menu
                             ShoppingStoreMenu ssMenu = new ShoppingStoreMenu();
-                            ssMenu.Start(index, userName);
+                            ssMenu.Start(storeID, userID);
                         }  
                         //Index out of range
                         else{

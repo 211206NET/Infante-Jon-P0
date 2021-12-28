@@ -6,10 +6,9 @@ public class StoreMenu {
     public StoreMenu(StoreBL bl){
         _bl = bl;
     }
-    public void Start(int index){
+    public void Start(int storeID){
         bool exit = false;
-        List<Store> allStores = _bl.GetAllStores();
-        Store currStore = allStores[index];
+        Store currStore = _bl.GetStoreByID(storeID);
         while(!exit){
             ColorWrite.wc("\n==================[Store Menu]=================", ConsoleColor.DarkCyan);
             Console.WriteLine($"Store: {currStore.Name}\n");
@@ -26,14 +25,10 @@ public class StoreMenu {
                     if (currStore.Products == null){
                         currStore.Products = new List<Product>();
                      }
-                    List<Product> products = currStore.Products!; 
-                    int id = 0;
-                    //get new product id
-                    if (products.Count > 0){
-                        foreach (Product product in products){
-                            id++;
-                        }
-                    }
+                    
+                    //get new product id between 1 and 100,000
+                    Random rnd = new Random();
+                    int id = rnd.Next(100000);
                     Console.WriteLine("Name: ");
                     string? name = Console.ReadLine();
                     Console.WriteLine("Description: ");
@@ -45,14 +40,14 @@ public class StoreMenu {
                     Console.WriteLine("Quantity: ");
                     string? quantity = Console.ReadLine();
                     try{
-                    Product newProduct= new Product{
-                        ID = id!,
-                        Name = name!,
-                        Description = description!,
-                        Price = price!,
-                        Quantity = quantity!
-                    };
-                    _bl.AddProduct(index, newProduct);
+                        Product newProduct = new Product{
+                            ID = id!,
+                            Name = name!,
+                            Description = description!,
+                            Price = price!,
+                            Quantity = quantity!
+                        };
+                        _bl.AddProduct(storeID, newProduct);
                     }
                     catch(InputInvalidException ex){
                         Console.WriteLine(ex.Message);
@@ -69,7 +64,7 @@ public class StoreMenu {
                     break;
                 case "2":
                     ProductMenu prodMenu = new ProductMenu(_bl);
-                    prodMenu.Start(index);
+                    prodMenu.Start(storeID);
                     break;
                 //Return to the Admin Menu
                 case "r":

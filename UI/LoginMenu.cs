@@ -27,15 +27,19 @@ public class LoginMenu {
                     string? username = Console.ReadLine();
                     List<User> users = _bl.GetAllUsers();
                     bool userFound = false;
-                    int id = 0;
                     foreach(User user in users){
-                        id++;
                         if (user.Username == username){
                             Console.WriteLine("\nUser already registered!");
                             userFound = true;
                             break;
                         }
                     }
+                    //get new id for the user
+                    bool isEmpty = !users.Any();
+                    //get new user id between 1 and 100,000
+                    Random rnd = new Random();
+                    int id = rnd.Next(100000);
+                    ///If the user isn't found, instantiate a new user
                     if (!userFound){
                         Console.WriteLine("Password: ");
                         string? password = Console.ReadLine();
@@ -46,9 +50,10 @@ public class LoginMenu {
                             Password = password!,
                             };
 
-                            _bl.AddUser(newUser);
+                        _bl.AddUser(newUser);
                         UserMenu newuMenu = new UserMenu();
-                        newuMenu.Start(username!);   
+                        //id is the user's ID
+                        newuMenu.Start(id);   
                     }
 
                     break;
@@ -57,11 +62,11 @@ public class LoginMenu {
                     string? getUsername = Console.ReadLine();
                     List<User> currUsers = _bl.GetAllUsers();
                     bool found = false;
-                    string userPassword = "";
-                    foreach(User currUser in currUsers){
-                        if (currUser.Username == getUsername){
+                    User currUser = new User();
+                    foreach(User user in currUsers){
+                        if (user.Username == getUsername){
                             found = true;
-                            userPassword = currUser.Password!;
+                            currUser = user;
                             }
                         }
                     //If the current username is not found in the database
@@ -72,11 +77,11 @@ public class LoginMenu {
                         Console.WriteLine("Password");
                         string? getPassword = Console.ReadLine();
                         //Validates for the correct password
-                        if (getPassword == userPassword){
+                        if (getPassword == currUser.Password){
                             Console.WriteLine("\nLogin successful!");
                             //User Menu initialization
                             UserMenu uMenu = new UserMenu();
-                            uMenu.Start(getUsername!);        
+                            uMenu.Start((int)currUser.ID!);        
                         }
                         else{
                             Console.WriteLine("\nIncorrect password.");
@@ -93,7 +98,7 @@ public class LoginMenu {
                         admin.Start();
                     }
                     else{
-                        Console.WriteLine("\nIncorrect key!\n");
+                        Console.WriteLine("\nIncorrect key!");
                     }
                     break;
                 case "x":

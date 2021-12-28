@@ -5,15 +5,17 @@ public interface IUBL
 
     void AddUser(User userToAdd);
 
-    int GetCurrentUser(string userName);
+    User GetCurrentUserByID(int userID);
 
-    void AddProductOrder(int currUserIndex, ProductOrder currProdOrder);
+    int GetCurrentUserIndexByID(int userID);
+
+    void AddProductOrder(User currUser, ProductOrder currProdOrder);
             
-    void EditProductOrder(int currUserIndex, int prodOrderIndex, string quantity);
+    void EditProductOrder(User currUser, int prodOrderIndex, string quantity);
 
-    void DeleteProductOrder(int currUserIndex, int prodIndex);
+    void DeleteProductOrder(User currUser, int prodIndex);
     
-    void AddUserStoreOrder(int currUserIndex, StoreOrder currStoreOrder);
-    void ClearShoppingCart(int currUserIndex);
+    void AddUserStoreOrder(User currUser, StoreOrder currStoreOrder);
+    void ClearShoppingCart(User currUser);
 
 }

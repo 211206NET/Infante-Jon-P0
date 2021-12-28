@@ -29,11 +29,9 @@ public class AdminMenu {
                     Console.WriteLine("Address: ");
                     string? address = Console.ReadLine();
 
-                    int id = 0;
-                    List<Store> allStores = _bl.GetAllStores();
-                    foreach(Store store in allStores){
-                        id++;
-                    }
+                    //get new product id between 1 and 100,000
+                    Random rnd = new Random();
+                    int id = rnd.Next(100000);
 
                     Store newStore= new Store{
                         ID = id!,
