@@ -8,7 +8,7 @@ public class LoginMenu {
         _bl = bl;
     }
     public void Start(){
-        Console.WriteLine("\nWelcome to Jon's Used Hardware Franchise!");
+        Console.WriteLine("\nWelcome to Jon's Conglomerate of used hardware stores.");
         bool exit = false;
         while(!exit){
             ColorWrite.wc("\n==================[Login Menu]=================", ConsoleColor.DarkCyan);
@@ -36,9 +36,9 @@ public class LoginMenu {
                     }
                     //get new id for the user
                     bool isEmpty = !users.Any();
-                    //get new user id between 1 and 100,000
+                    //get new user id between 1 and 1,000,000
                     Random rnd = new Random();
-                    int id = rnd.Next(100000);
+                    int id = rnd.Next(1000000);
                     ///If the user isn't found, instantiate a new user
                     if (!userFound){
                         Console.WriteLine("Password: ");

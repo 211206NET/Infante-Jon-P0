@@ -43,7 +43,7 @@ public class ShoppingCart {
             //Get user input selection
             string? input = Console.ReadLine();
             int prodOrderIndex;
-            //Method for getting the matching product from the current product order index
+            //Method for getting the matching product from the current product order index in the current user's shopping cart
             ArrayList GetProduct(int prodOrderIndex){
                 ArrayList tempArray = new ArrayList();
                 List<Store> allStores = _bl.GetAllStores();
@@ -116,9 +116,9 @@ public class ShoppingCart {
                     string? inputYesorNo = Console.ReadLine();
                     if (inputYesorNo == "y"){
 
-                        //get new store Order id between 1 and 100,000
+                        //get new store Order id between 1 and 1,000,000
                         Random rnd = new Random();
-                        int id = rnd.Next(100000);
+                        int id = rnd.Next(1000000);
                         //Make new list of product orders to add to the user store order and calculate total
                         decimal userpOrdersTotal = 0;
                         List<ProductOrder> userProductOrders = new List<ProductOrder>();
@@ -161,8 +161,8 @@ public class ShoppingCart {
                             if(allStores[storeIndex].AllOrders == null) {
                                 allStores[storeIndex].AllOrders = new List<StoreOrder>();
                                 }   
-                            //get new store Order id between 1 and 100,000
-                            int sid = rnd.Next(100000);
+                            //get new store Order id between 1 and 1,000,000
+                            int sid = rnd.Next(1000000);
                             //calcuate total order value for list of product orders
                             decimal StoreOrderTotalValue = 0;
                             foreach(ProductOrder pOrd in kv.Value){

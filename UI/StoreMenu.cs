@@ -42,6 +42,7 @@ public class StoreMenu {
                     try{
                         Product newProduct = new Product{
                             ID = id!,
+                            storeID = storeID,
                             Name = name!,
                             Description = description!,
                             Price = price!,
