@@ -18,11 +18,11 @@ public class StoreOrderMenu {
             foreach(StoreOrder storeorder in allOrders){
                 User userWhoOrdered = _iubl.GetCurrentUserByID((int)storeorder.userID!);
                 Console.WriteLine($"\nPlaced on {storeorder.Date} by {userWhoOrdered.Username}");
-                Console.WriteLine("|------------------------------------------|");
+                Console.WriteLine("|-------------------------------------------|");
                 foreach(ProductOrder pOrder in storeorder.Orders!){
                     Console.WriteLine($"| {pOrder.ItemName} | Qty: {pOrder.Quantity} || ${pOrder.TotalPrice}");
                 }
-                Console.WriteLine("|------------------------------------------|");
+                Console.WriteLine("|-------------------------------------------|");
                 Console.WriteLine($"| Total Price: ${storeorder.TotalAmount}");
             }
             ColorWrite.wc("\n    Enter [r] to [Return] to the Store Menu", ConsoleColor.DarkYellow);
