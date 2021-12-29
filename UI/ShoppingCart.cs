@@ -43,24 +43,24 @@ public class ShoppingCart {
             //Get user input selection
             string? input = Console.ReadLine();
             int prodOrderIndex;
-            //Method for getting the matching product from the current product order index in the current user's shopping cart
-            ArrayList GetProduct(int prodOrderIndex){
-                ArrayList tempArray = new ArrayList();
-                List<Store> allStores = _bl.GetAllStores();
-                //Splits the current product order's id to get the store id and product id
-                string[] splitString = allProductOrders[prodOrderIndex]!.ID!.Split('#');
-                int storeID = int.Parse(splitString[0]);
-                int storeProdID = int.Parse(splitString[1]);
-                Store currStore =  _bl.GetStoreByID(storeID);
-                List<Product> currStoreProducts = currStore.Products!;
-                Product productSelected = _bl.GetProductByID(storeID, storeProdID);
-                //Adding objects to non-generic list
-                tempArray.Add(productSelected);
-                tempArray.Add(storeID);
-                tempArray.Add(storeProdID);
-                //Returns arraylist
-                return tempArray;
-                }
+            // //Method for getting the matching product from the current product order index in the current user's shopping cart
+            // ArrayList GetProduct(int prodOrderIndex){
+            //     ArrayList tempArray = new ArrayList();
+            //     List<Store> allStores = _bl.GetAllStores();
+            //     //Splits the current product order's id to get the store id and product id
+            //     string[] splitString = allProductOrders[prodOrderIndex]!.ID!.Split('#');
+            //     int storeID = int.Parse(splitString[0]);
+            //     int storeProdID = int.Parse(splitString[1]);
+            //     Store currStore =  _bl.GetStoreByID(storeID);
+            //     List<Product> currStoreProducts = currStore.Products!;
+            //     Product productSelected = _bl.GetProductByID(storeID, storeProdID);
+            //     //Adding objects to non-generic list
+            //     tempArray.Add(productSelected);
+            //     tempArray.Add(storeID);
+            //     tempArray.Add(storeProdID);
+            //     //Returns arraylist
+            //     return tempArray;
+            //     }
             //Delete branch
             if (input == "d"){  
                 int j = 0;
@@ -82,11 +82,11 @@ public class ShoppingCart {
                     else {
                         if (prodOrderIndex >= 0 && prodOrderIndex < allProductOrders.Count){
 
-                            //Gets the current product by product order index
-                            ArrayList prodArray = GetProduct(prodOrderIndex);
-                            Product productSelected = (Product)prodArray[0]!;
-                            int storeID = (int)prodArray[1]!;
-                            int sProdID = (int)prodArray[2]!;
+                            //Gets the current product order, storeID, productID, and product by product order index
+                            ProductOrder pOrder = allProductOrders[prodOrderIndex];
+                            int storeID = (int)pOrder.storeID!;
+                            int sProdID = (int)pOrder.productID!;
+                            Product productSelected = _bl.GetProductByID(storeID, sProdID);
                             //Calculating the new quantity
                             int prodOrderQuantity = int.Parse(allProductOrders[prodOrderIndex].Quantity!);
                             int prodQuantity = int.Parse(productSelected.Quantity!);
@@ -140,8 +140,7 @@ public class ShoppingCart {
                         Dictionary<int, List<ProductOrder>> storeOrdersToPlace = new Dictionary<int,List<ProductOrder>>();
                         foreach(ProductOrder pOrder in allProductOrders){
                             //Getting the ID of the current store from the product id's string id code
-                            string[] getID = pOrder.ID!.Split('#');
-                            int currStoreID = int.Parse(getID[0]);
+                            int currStoreID = (int)pOrder.storeID!;
                             if (storeOrdersToPlace.ContainsKey(currStoreID)){
                                 storeOrdersToPlace[currStoreID].Add(pOrder);
                                 }
@@ -200,13 +199,11 @@ public class ShoppingCart {
                         Console.WriteLine("New Quantity: ");
                         reEnter:
                         string? newQuantity = Console.ReadLine();
-                        //Gets the current product by product order index
-                        ArrayList prod2Array = GetProduct(prodOrderIndex);
-                        Product productSelected = (Product)prod2Array[0]!;
                         //store ID and the store's productID is found from the prodect order's 
-                        //string ID
-                        int storeID= (int)prod2Array[1]!;
-                        int storeProdID = (int)prod2Array[2]!;
+                        ProductOrder pOrder = allProductOrders[prodOrderIndex];
+                        int storeID = (int)pOrder.storeID!;
+                        int storeProdID = (int)pOrder.productID!;
+                        Product productSelected = _bl.GetProductByID(storeID, storeProdID);
                         //Parsing to calculate new total quantity
                         int newQ;
                         int.TryParse(newQuantity!, out newQ);

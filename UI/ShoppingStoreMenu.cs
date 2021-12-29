@@ -78,17 +78,19 @@ public class ShoppingStoreMenu {
                                 string newQuantity = (prodQuantity - userInt).ToString();
                                 //Updates quantity remaining of the product
                                 _bl.EditProduct(storeID, prodIDSelected, selectedProduct.Description!, selectedProduct.Price!, newQuantity);
-                                //Add product order to user's shopping cart
-                                //get new productorder id
-                                string prodID = selectedProduct.ID.ToString()!;
-                                //Product Order's ID includes the current store's id and the current product's id. 
-                                string id = $"{currStore.ID.ToString()}#{prodID.ToString()!}"; 
+                                //get new product id between 1 and 1,000,000
+                                Random rnd = new Random();
+                                int id = rnd.Next(1000000);
                                 ProductOrder currOrder = new ProductOrder{
                                         ID = id!,
+                                        userID = userID,
+                                        storeID = storeID,
+                                        productID = selectedProduct.ID,
                                         ItemName = selectedProduct.Name!,
                                         TotalPrice = (userInt * prodPrice).ToString(),
                                         Quantity = (userInt!).ToString(),
                                     };
+                                //Add product order to user's shopping cart
                                 _iubl.AddProductOrder(currUser, currOrder);
                             }
                         }

@@ -26,9 +26,9 @@ public class StoreMenu {
                         currStore.Products = new List<Product>();
                      }
                     
-                    //get new product id between 1 and 100,000
+                    //get new product id between 1 and 1,000,000
                     Random rnd = new Random();
-                    int id = rnd.Next(100000);
+                    int id = rnd.Next(1000000);
                     Console.WriteLine("Name: ");
                     string? name = Console.ReadLine();
                     Console.WriteLine("Description: ");
