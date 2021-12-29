@@ -43,25 +43,7 @@ public class ShoppingCart {
             //Get user input selection
             string? input = Console.ReadLine();
             int prodOrderIndex;
-            // //Method for getting the matching product from the current product order index in the current user's shopping cart
-            // ArrayList GetProduct(int prodOrderIndex){
-            //     ArrayList tempArray = new ArrayList();
-            //     List<Store> allStores = _bl.GetAllStores();
-            //     //Splits the current product order's id to get the store id and product id
-            //     string[] splitString = allProductOrders[prodOrderIndex]!.ID!.Split('#');
-            //     int storeID = int.Parse(splitString[0]);
-            //     int storeProdID = int.Parse(splitString[1]);
-            //     Store currStore =  _bl.GetStoreByID(storeID);
-            //     List<Product> currStoreProducts = currStore.Products!;
-            //     Product productSelected = _bl.GetProductByID(storeID, storeProdID);
-            //     //Adding objects to non-generic list
-            //     tempArray.Add(productSelected);
-            //     tempArray.Add(storeID);
-            //     tempArray.Add(storeProdID);
-            //     //Returns arraylist
-            //     return tempArray;
-            //     }
-            //Delete branch
+            //Delete a product order
             if (input == "d"){  
                 int j = 0;
                 //Checks if shopping cart is empty

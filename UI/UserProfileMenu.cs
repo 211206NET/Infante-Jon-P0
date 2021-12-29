@@ -9,7 +9,7 @@ public class UserProfileMenu {
     public void Start(int userID){
         bool exit = false;
         while(!exit){
-            ColorWrite.wc("\n=================[Profile Menu]=================", ConsoleColor.DarkCyan);
+            ColorWrite.wc("\n================[Profile Menu]=================", ConsoleColor.DarkCyan);
             Console.WriteLine("What would you like to do?\n");
             Console.WriteLine("[1] Shopping Cart");
             Console.WriteLine("[2] Previous Orders");
@@ -24,6 +24,8 @@ public class UserProfileMenu {
                     sCart.Start(userID);  
                     break;
                 case "2":
+                    UserOrderMenu uOrderMenu = new UserOrderMenu();
+                    uOrderMenu.Start(userID);  
                     break;
                 case "r":
                     exit = true;

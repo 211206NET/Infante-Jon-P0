@@ -14,7 +14,8 @@ public class StoreMenu {
             Console.WriteLine($"Store: {currStore.Name}\n");
             Console.WriteLine("[1] Add a product");
             Console.WriteLine("[2] List all products");
-            ColorWrite.wc("\n      Enter [r] to [Return] to the Admin Menu", ConsoleColor.DarkYellow);
+            Console.WriteLine("[3] View order history");
+            ColorWrite.wc("\n     Enter [r] to [Return] to the Admin Menu", ConsoleColor.DarkYellow);
             Console.WriteLine("=============================================");
             string? input = Console.ReadLine();
 
@@ -66,6 +67,11 @@ public class StoreMenu {
                 case "2":
                     ProductMenu prodMenu = new ProductMenu(_bl);
                     prodMenu.Start(storeID);
+                    break;
+                //Return to the Admin Menu
+                case "3":
+                    StoreOrderMenu sOrderMenu = new StoreOrderMenu(_bl);
+                    sOrderMenu.Start(storeID);
                     break;
                 //Return to the Admin Menu
                 case "r":

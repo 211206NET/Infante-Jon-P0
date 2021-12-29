@@ -19,12 +19,12 @@ public class AllStoresMenu {
             //Found stores
             else{
             int i = 0;
-            ColorWrite.wc("\n=================[All Stores]=================", ConsoleColor.DarkCyan);
+            ColorWrite.wc("\n=================[All Stores]==================", ConsoleColor.DarkCyan);
             foreach(Store store in allStores){
                 Console.WriteLine($"[{i}] {store.ToString()}");
                 i++;
             }
-            ColorWrite.wc("\nSelect the store's ID to view its details.\n   Or enter [r] to [Return] to the Admin Menu.", ConsoleColor.DarkYellow);
+            ColorWrite.wc("\n Select the store's ID to view its details.\n   Or enter [r] to [Return] to the Admin Menu.", ConsoleColor.DarkYellow);
             Console.WriteLine("=============================================");
             string? select = Console.ReadLine();
             int storeID;

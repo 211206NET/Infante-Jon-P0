@@ -9,12 +9,12 @@ public class AdminMenu {
     public void Start(){
         bool exit = false;
         while(!exit){
-            ColorWrite.wc("\n=================[Admin Menu]=================", ConsoleColor.DarkCyan);
+            ColorWrite.wc("\n=================[Admin Menu]==================", ConsoleColor.DarkCyan);
             Console.WriteLine("What would you like to do?\n");
             Console.WriteLine("[1] Add a new Store");
             Console.WriteLine("[2] View all Stores");            
-            ColorWrite.wc("\n  Enter [r] to [Return] to the Login Menu", ConsoleColor.DarkYellow);
-            Console.WriteLine("============================================");
+            ColorWrite.wc("\n     Enter [r] to [Return] to the Login Menu", ConsoleColor.DarkYellow);
+            Console.WriteLine("=============================================");
             
             string? input = Console.ReadLine();
 
