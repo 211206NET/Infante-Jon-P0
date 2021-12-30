@@ -32,10 +32,10 @@ public class StoreOrderMenu {
                 Console.WriteLine($"| Total Price: ${storeorder.TotalAmount}");
             }
             if(!reversed){
-                ColorWrite.wc("\nEnter [s] to to [Sort] your orders by most recent", ConsoleColor.Cyan);
+                ColorWrite.wc("\nEnter [s] to to [Sort] your orders by most recent", ConsoleColor.Magenta);
             }
             else{
-                ColorWrite.wc("\nEnter [s] to to [Sort] your orders by last ordered", ConsoleColor.Cyan);
+                ColorWrite.wc("\nEnter [s] to to [Sort] your orders by last ordered", ConsoleColor.Magenta);
             }
             ColorWrite.wc("    Enter [r] to [Return] to the Store Menu", ConsoleColor.DarkYellow);
             Console.WriteLine("============================================");
