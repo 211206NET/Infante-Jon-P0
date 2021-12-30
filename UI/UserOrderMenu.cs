@@ -13,7 +13,8 @@ public class UserOrderMenu {
         bool exit = false;
         User currUser = _iubl.GetCurrentUserByID(userID);
         List<StoreOrder> finishedOrders = currUser.FinishedOrders!;
-        bool reversed = false;
+        bool timeSort = false;
+        bool costSort = false;
         while(!exit){
             if(finishedOrders == null || finishedOrders.Count == 0){
                 Console.WriteLine("\nNo Orders found!");
@@ -30,11 +31,17 @@ public class UserOrderMenu {
                 Console.WriteLine("|-------------------------------------------|");
                 Console.WriteLine($"| Total Price: ${storeorder.TotalAmount}");
             }
-            if(!reversed){
+            if(!timeSort){
                 ColorWrite.wc("\nEnter [s] to to [Sort] your orders by most recent", ConsoleColor.Magenta);
             }
             else{
-                ColorWrite.wc("\nEnter [s] to to [Sort] your orders by last ordered", ConsoleColor.Magenta);
+                ColorWrite.wc("\nEnter [s] to to [Sort] your orders by first ordered", ConsoleColor.Magenta);
+            }
+            if(costSort){
+                ColorWrite.wc(" Enter [c] to [Sort] orders by most expensive", ConsoleColor.Green);
+            }
+            else{
+                ColorWrite.wc(" Enter [c] to [Sort] orders by least expensive", ConsoleColor.Green);
             }
             ColorWrite.wc("    Enter [r] to [Return] to the Profile Menu", ConsoleColor.DarkYellow);
             Console.WriteLine("=============================================");
@@ -45,16 +52,28 @@ public class UserOrderMenu {
                 case "r":
                     exit = true;
                     break;
-                case "s":                    
+                case "s":
                     //Sorts the orders in most recent first
-                    if (!reversed){
-                        reversed = true;
-                        finishedOrders.Reverse();
+                    if (!timeSort){
+                        timeSort = true;
+                        finishedOrders.Sort((x, y) => y.DateSeconds.CompareTo(x.DateSeconds));
                     }
                     //Sorts the orders by last ordered first
                     else{
-                        reversed = false;
-                        finishedOrders.Reverse();
+                        timeSort = false;
+                        finishedOrders.Sort((x, y) => x.DateSeconds.CompareTo(y.DateSeconds));
+                    }
+                    break;
+                case "c":
+                    //Sorts the orders in most expensive first
+                    if (!costSort){
+                        costSort = true;
+                        finishedOrders.Sort((x, y) => x.TotalAmount.CompareTo(y.TotalAmount));
+                    }
+                    //Sorts the orders by least expensive first
+                    else{
+                        costSort = false;
+                        finishedOrders.Sort((x, y) => y.TotalAmount.CompareTo(x.TotalAmount));
                     }
                     break;
                 default:

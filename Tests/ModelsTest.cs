@@ -80,7 +80,7 @@ public class ModelsTest{
     [InlineData("you", "5.3")]
     [InlineData("undefined", "4.1")]
     [InlineData("t", "66.66")]
-    public void ProductShouldNotCreateInvalidQuantityorPrice(string price, string quantity){
+    public void ProductShouldNotHaveInvalidQuantityorPrice(string price, string quantity){
         //Arrange: Testing if the product will have an invalid price or quantity. 
         //Price should be a decimal
         //Quantity should be an integer
@@ -92,4 +92,48 @@ public class ModelsTest{
         Assert.Throws<InputInvalidException>(() => testProduct.Price = price);
         Assert.Throws<InputInvalidException>(() => testProduct.Quantity = quantity);
     }
+
+    [Fact]
+    public void StoreShouldCreate(){
+        //Arrange
+        //To test this case I make sure im using the models namespace
+        
+        //Act: Create store object
+        Store testStore = new Store();
+
+        //Assert: Assert that the store was created
+        Assert.NotNull(testStore);
+    }
+
+    [Fact]
+    public void StoreShouldSetValue(){
+        //Arrange
+        Store testStore = new Store();
+        int ID = 5605045;
+        string name = "Atlantic Branch";
+        string address = "500 Seven Farms Dr";
+        string city = "Charleston";
+        string state = "SC";
+        List<Product> products = new List<Product>();
+        List<StoreOrder> allOrders = new List<StoreOrder>();
+
+        //Act
+        testStore.ID = ID;
+        testStore.Name = name;
+        testStore.Address = address;
+        testStore.City = city;
+        testStore.State = state;
+        testStore.Products = products;
+        testStore.AllOrders = allOrders;
+
+        //Assert
+        Assert.Equal(ID, testStore.ID);
+        Assert.Equal(name, testStore.Name);
+        Assert.Equal(address, testStore.Address);
+        Assert.Equal(city, testStore.City);
+        Assert.Equal(state, testStore.State);
+        Assert.Equal(products, testStore.Products);
+        Assert.Equal(allOrders, testStore.AllOrders);
+    }
+        
 }
