@@ -30,6 +30,17 @@ public class StoreRepo{
         File.WriteAllText(filePath, jsonString);
     }
     /// <summary>
+    /// Deletes the current selected store
+    /// </summary>
+    /// <param name="storeID">Current Store ID</param>
+    public void DeleteStore(int storeID){
+        List<Store> allStores = GetAllStores();
+        int storeIndex = GetStoreIndexByID(storeID);
+        allStores.RemoveAt(storeIndex);
+        string jsonString = JsonSerializer.Serialize(allStores);
+        File.WriteAllText(filePath, jsonString);    
+    }
+    /// <summary>
     /// Get the current store by store id
     /// </summary>
     /// <param name="storeID">Store's ID</param>

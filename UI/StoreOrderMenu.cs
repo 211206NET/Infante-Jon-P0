@@ -13,9 +13,15 @@ public class StoreOrderMenu {
         bool exit = false;
         Store currStore = _bl.GetStoreByID(storeID!);
         List<StoreOrder> allOrders = currStore.AllOrders!;
+        bool reversed = false;
         while(!exit){
+            if(allOrders == null || allOrders.Count == 0){
+                Console.WriteLine("\nNo Orders found!");
+                exit = true;
+                }
+            else{
             ColorWrite.wc("\n====================[Orders]===================", ConsoleColor.DarkCyan);
-            foreach(StoreOrder storeorder in allOrders){
+            foreach(StoreOrder storeorder in allOrders!){
                 User userWhoOrdered = _iubl.GetCurrentUserByID((int)storeorder.userID!);
                 Console.WriteLine($"\nPlaced on {storeorder.Date} by {userWhoOrdered.Username}");
                 Console.WriteLine("|-------------------------------------------|");
@@ -25,7 +31,13 @@ public class StoreOrderMenu {
                 Console.WriteLine("|-------------------------------------------|");
                 Console.WriteLine($"| Total Price: ${storeorder.TotalAmount}");
             }
-            ColorWrite.wc("\n    Enter [r] to [Return] to the Store Menu", ConsoleColor.DarkYellow);
+            if(!reversed){
+                ColorWrite.wc("\nEnter [s] to to [Sort] your orders by most recent", ConsoleColor.Cyan);
+            }
+            else{
+                ColorWrite.wc("\nEnter [s] to to [Sort] your orders by last ordered", ConsoleColor.Cyan);
+            }
+            ColorWrite.wc("    Enter [r] to [Return] to the Store Menu", ConsoleColor.DarkYellow);
             Console.WriteLine("============================================");
 
             string? input = Console.ReadLine();
@@ -34,11 +46,23 @@ public class StoreOrderMenu {
                 case "r":
                     exit = true;
                     break;
+                case "s":
+                    //Sorts the orders in most recent first
+                    if (!reversed){
+                        reversed = true;
+                        allOrders.Reverse();
+                    }
+                    //Sorts the orders by last ordered first
+                    else{
+                        reversed = false;
+                        allOrders.Reverse();
+                    }
+                    break;
                 default:
                     Console.WriteLine("\nI did not expect that command! Please try again with a valid input.");
                     break;       
             }
         }
-
+        }
     }
  }

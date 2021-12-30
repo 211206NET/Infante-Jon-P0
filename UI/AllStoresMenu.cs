@@ -7,11 +7,10 @@ public class AllStoresMenu {
         _bl = bl;
     }  
     public void Start(){
-        List<Store> allStores = _bl.GetAllStores();
-        //No stores exist
-
         bool valid = false;
         while (!valid){
+            List<Store> allStores = _bl.GetAllStores();
+            //No stores exist
             if(allStores.Count == 0){
                 Console.WriteLine("\nNo stores found!");
                 valid = true;

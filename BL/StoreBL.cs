@@ -37,6 +37,17 @@ public class StoreBL {
     public Product GetProductByID(int storeID, int prodID){
         return _dl.GetProductByID(storeID, prodID);
     }
+    /// <summary>
+    /// Deletes the current selected store
+    /// </summary>
+    /// <param name="storeID">Current store ID</param>
+    public void DeleteStore(int storeID){
+        _dl.DeleteStore(storeID);
+    }
+    /// <summary>
+    /// Adds a current store to the list of stores
+    /// </summary>
+    /// <param name="storeToAdd">Store object to add to the list</param>
     public void AddStore(Store storeToAdd){
         _dl.AddStore(storeToAdd);
     }

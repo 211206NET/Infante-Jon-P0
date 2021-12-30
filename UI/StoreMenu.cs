@@ -15,7 +15,8 @@ public class StoreMenu {
             Console.WriteLine("[1] Add a product");
             Console.WriteLine("[2] List all products");
             Console.WriteLine("[3] View order history");
-            ColorWrite.wc("\n     Enter [r] to [Return] to the Admin Menu", ConsoleColor.DarkYellow);
+            ColorWrite.wc("\n Enter the [d] key to [Delete] the current store", ConsoleColor.DarkRed);
+            ColorWrite.wc("     Enter [r] to [Return] to the Admin Menu", ConsoleColor.DarkYellow);
             Console.WriteLine("=============================================");
             string? input = Console.ReadLine();
 
@@ -74,6 +75,15 @@ public class StoreMenu {
                     sOrderMenu.Start(storeID);
                     break;
                 //Return to the Admin Menu
+                case "d":
+                    Console.WriteLine("Are you sure you want to delete this store? [y/n]");
+                    string? selection = Console.ReadLine();
+                    if (selection == "y"){
+                        _bl.DeleteStore(storeID);
+                        Console.WriteLine("\nYour store was deleted!");
+                        exit = true;
+                    }
+                    break;
                 case "r":
                     exit = true;
                     break;

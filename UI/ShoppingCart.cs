@@ -48,7 +48,7 @@ public class ShoppingCart {
                 int j = 0;
                 //Checks if shopping cart is empty
                 if (i == 0){
-                    Console.WriteLine("\nThere are no orders to delete!");
+                    Console.WriteLine("\nThere are no items to delete!");
                 }
                 //Print list of products to delete from
                 else{
@@ -109,11 +109,13 @@ public class ShoppingCart {
                             userProductOrders.Add(checkoutProduct);
                         } 
                         string currTime = DateTime.Now.ToString();
+                        double currTimeSeconds = DateTime.Now.Subtract(DateTime.MinValue).TotalSeconds;
                         StoreOrder userStoreOrder = new StoreOrder{
                             ID = id!,
                             userID = currUser.ID,
                             TotalAmount = userpOrdersTotal!,
                             Date = currTime!,
+                            DateSeconds = currTimeSeconds!,
                             Orders = userProductOrders,
                             };
                         //Adds to current user's store order list
@@ -154,6 +156,7 @@ public class ShoppingCart {
                                 userID = currUser.ID!,
                                 TotalAmount = StoreOrderTotalValue!,
                                 Date = currTime!,
+                                DateSeconds = currTimeSeconds!,
                                 Orders = kv.Value
                             };
                             //Adds store order to current selected store
