@@ -213,4 +213,56 @@ public class ModelsTest{
         Assert.Equal(TotalAmount, testStoreOrder.TotalAmount);
         Assert.Equal(Orders, testStoreOrder.Orders);
     }
+    [Fact]
+    public void UserShouldSetShoppingCart(){
+        //Arrange
+        User testUser = new User();
+        List<ProductOrder> shoppingCart = new List<ProductOrder>();
+        ProductOrder testPOrder1 = new ProductOrder();
+        ProductOrder testPOrder2 = new ProductOrder();
+        List<ProductOrder> testCart = new List<ProductOrder>();
+
+        //Act
+        int PID1 = 12121;
+        int PID2 = 895673;
+
+        int userID = 9933;
+        int storeID = 322;
+        int productID1 = 563223523;
+        int productID2 = 9324243;
+        string PName1 = "Galaxy S10";
+        string PName2 = "IPhone 12 Pro";
+        string PTotalPrice1 = "1998";
+        string PTotalPrice2 = "992";
+        string PQuantity1 = "2";
+        string PQuantity2 = "1";
+        //Product Order 1
+        testPOrder1.ID = PID1;
+        testPOrder1.userID = userID;
+        testPOrder1.storeID = storeID;
+        testPOrder1.productID = productID1;
+        testPOrder1.ItemName = PName1;
+        testPOrder1.TotalPrice = PTotalPrice1;
+        testPOrder1.Quantity = PQuantity1;
+        //Product Order 2
+        testPOrder2.ID = PID2;
+        testPOrder2.userID = userID;
+        testPOrder2.storeID = storeID;
+        testPOrder2.productID = productID2;
+        testPOrder2.ItemName = PName2;
+        testPOrder2.TotalPrice = PTotalPrice2;
+        testPOrder2.Quantity = PQuantity2;
+        //Sets empty shopping cart
+        testUser.ShoppingCart = shoppingCart;
+        //Adding items to cart
+        testUser.ShoppingCart.Add(testPOrder1);
+        testUser.ShoppingCart.Add(testPOrder2);
+        testCart.Add(testPOrder1);
+        testCart.Add(testPOrder2);
+
+        //Assert the two list of product orders equals each other
+        Assert.Equal(testCart, testUser.ShoppingCart);
+   
+
+    }
 }
