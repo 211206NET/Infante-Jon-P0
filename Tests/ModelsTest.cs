@@ -135,5 +135,82 @@ public class ModelsTest{
         Assert.Equal(products, testStore.Products);
         Assert.Equal(allOrders, testStore.AllOrders);
     }
+
+    [Fact]
+    public void ProductOrderShouldSetValue(){
+        //Arrange
+        ProductOrder testPOrder = new ProductOrder();
+        int ID = 4242;
+        int userID = 99333;
+        int storeID = 9994;
+        int productID = 32332423;
+        string itemName = "Pixel 4";
+        //Strings are used for price and quantity due to previous implementation of a method comparing if 
+        //the value of the property was an empty string when entered by the user.
+        string TotalPrice = "999.99";
+        string Quantity = "8";
+
+        //Act
+        testPOrder.ID = ID;
+        testPOrder.userID = userID;
+        testPOrder.storeID = storeID;
+        testPOrder.productID = productID;
+        testPOrder.ItemName = itemName;
+        testPOrder.TotalPrice = TotalPrice;
+        testPOrder.Quantity = Quantity;
+
+        //Assert
+        Assert.Equal(ID, testPOrder.ID);
+        Assert.Equal(userID, testPOrder.userID);
+        Assert.Equal(storeID, testPOrder.storeID);
+        Assert.Equal(productID, testPOrder.productID);
+        Assert.Equal(itemName, testPOrder.ItemName);
+        Assert.Equal(TotalPrice, testPOrder.TotalPrice);
+        Assert.Equal(Quantity, testPOrder.Quantity);   
+    }
+
+    [Theory]
+    [InlineData("6.3")]
+    [InlineData("pe")]
+    [InlineData("99.2")]
+    [InlineData("boxer")]
+    [InlineData("5.2")]
+    public void ProductOrderShouldNotHaveInvalidQuantity(string quantity){
+        //Arrange: Testing if the product will have an invalid quantity. 
+        //Quantity should be an integer
+        ProductOrder testPOrder = new ProductOrder();
+
+        //Act: Using inline data as paramaters
+
+        //Assert
+        Assert.Throws<InputInvalidException>(() => testPOrder.Quantity = quantity);
+    }
+
+    [Fact]
+    public void StoreOrderShouldSetValue(){
+        //Arrange
+        StoreOrder testStoreOrder = new StoreOrder();
+        int ID = 9032;
+        int userID = 222935;
+        string Date = "12/30/21 5:43PM";
+        double DateSeconds = 999432.3377;
+        decimal TotalAmount = 3829.98M;
+        List<ProductOrder> Orders = new List<ProductOrder>();
         
+        //Act
+        testStoreOrder.ID = ID;
+        testStoreOrder.userID = userID;
+        testStoreOrder.Date = Date;
+        testStoreOrder.DateSeconds = DateSeconds;
+        testStoreOrder.TotalAmount = TotalAmount;
+        testStoreOrder.Orders = Orders;
+
+        //Assert
+        Assert.Equal(ID, testStoreOrder.ID);
+        Assert.Equal(userID, testStoreOrder.userID);
+        Assert.Equal(Date, testStoreOrder.Date);
+        Assert.Equal(DateSeconds, testStoreOrder.DateSeconds);
+        Assert.Equal(TotalAmount, testStoreOrder.TotalAmount);
+        Assert.Equal(Orders, testStoreOrder.Orders);
+    }
 }
