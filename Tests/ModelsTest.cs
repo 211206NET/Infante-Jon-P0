@@ -225,7 +225,6 @@ public class ModelsTest{
         //Act
         int PID1 = 12121;
         int PID2 = 895673;
-
         int userID = 9933;
         int storeID = 322;
         int productID1 = 563223523;
@@ -262,7 +261,5 @@ public class ModelsTest{
 
         //Assert the two list of product orders equals each other
         Assert.Equal(testCart, testUser.ShoppingCart);
-   
-
     }
 }
