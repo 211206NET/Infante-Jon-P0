@@ -22,7 +22,7 @@ public class AllShoppingStoresMenu {
                     Console.WriteLine($"[{i}] {store.ToString()}");
                     i++;
                 }
-                ColorWrite.wc("\n     Select the store's ID to browse.\n   Or enter [r] to [Return] to the User Menu.", ConsoleColor.DarkYellow);
+                ColorWrite.wc("\n      Select the store's ID to browse.\n   Or enter [r] to [Return] to the User Menu.", ConsoleColor.DarkYellow);
                 Console.WriteLine("=============================================");
                 string? select = Console.ReadLine();
                 int storeIndex;

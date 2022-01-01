@@ -45,7 +45,7 @@ public class StoreOrderMenu {
                 ColorWrite.wc(" Enter [c] to [Sort] orders by least expensive", ConsoleColor.Green);
             }
             ColorWrite.wc("    Enter [r] to [Return] to the Store Menu", ConsoleColor.DarkYellow);
-            Console.WriteLine("============================================");
+            Console.WriteLine("=============================================");
 
             string? input = Console.ReadLine();
 
