@@ -76,9 +76,9 @@ public class ModelsTest{
 
     [Theory]
     [InlineData("v", "6.4")]
-    [InlineData("banana", "ty")]
+    [InlineData("0", "ty")]
     [InlineData("you", "5.3")]
-    [InlineData("undefined", "4.1")]
+    [InlineData("-50", "-1")]
     [InlineData("t", "66.66")]
     public void ProductShouldNotHaveInvalidQuantityorPrice(string price, string quantity){
         //Arrange: Testing if the product will have an invalid price or quantity. 
@@ -171,7 +171,7 @@ public class ModelsTest{
 
     [Theory]
     [InlineData("6.3")]
-    [InlineData("pe")]
+    [InlineData("-1")]
     [InlineData("99.2")]
     [InlineData("boxer")]
     [InlineData("5.2")]

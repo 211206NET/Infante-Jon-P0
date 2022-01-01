@@ -24,7 +24,7 @@ public class Product {
                 throw new InputInvalidException("Price must be a Decimal value.");
             }
             else{
-                if (newP < 0){
+                if (newP <= 0){
                     throw new InputInvalidException("Price must be greater than 0. Please enter a valid amount:");
                     }
                 }   
