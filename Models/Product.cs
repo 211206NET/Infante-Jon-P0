@@ -23,6 +23,11 @@ public class Product {
             if (!(decimal.TryParse(value, out newP))){
                 throw new InputInvalidException("Price must be a Decimal value.");
             }
+            else{
+                if (newP < 0){
+                    throw new InputInvalidException("Price must be greater than 0. Please enter a valid amount:");
+                    }
+                }   
             this._price = value;
             }
         }
@@ -40,7 +45,7 @@ public class Product {
             }
             else{
                 if (newQ < 0){
-                    throw new InputInvalidException("\nQuantity must be 0 or higher. Please enter a valid amount:");
+                    throw new InputInvalidException("Quantity must be 0 or higher. Please enter a valid amount:");
                     }
                 }   
             this._quantity = value;
