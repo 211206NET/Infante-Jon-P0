@@ -38,6 +38,11 @@ public class Product {
             if (!(int.TryParse(value, out newQ))){
                 throw new InputInvalidException("Quantity must be an integer.");
             }
+            else{
+                if (newQ < 0){
+                    throw new InputInvalidException("\nQuantity must be 0 or higher. Please enter a valid amount:");
+                    }
+                }   
             this._quantity = value;
         }
     }

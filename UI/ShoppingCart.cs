@@ -201,8 +201,8 @@ public class ShoppingCart {
                             //If the quantity is over the product's stock limit
                             if (newQ > (oldQ + currentPOrderQuantity)){
                                 //Gets total amount of products from the current amount in the product order and the current amount in stock
-                                Console.WriteLine(@$"\nThe amount you selected is too high!" + 
-                                $"\nThe maximum amount you can order of this product is {(currentPOrderQuantity + oldQ)}");
+                                Console.WriteLine(@$"The amount you selected is too high!" + 
+                                $"\nThe maximum amount of this product you can order is {(currentPOrderQuantity + oldQ)}.");
                                 //reset the product order to its original value
                                 _iubl.EditProductOrder(currUser, prodOrderIndex, currentPOrderQuantity.ToString()!);
                                 goto reEnter;
