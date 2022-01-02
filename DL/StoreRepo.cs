@@ -142,7 +142,7 @@ public class StoreRepo{
     /// <param name="description">New description</param>
     /// <param name="price">New price</param>
     /// <param name="quantity">New quantity</param>
-    public void EditProduct(int storeID, int prodID, string description, string price, string quantity){
+    public void EditProduct(int storeID, int prodID, string description, decimal price, int quantity){
         List<Store> allStores = GetAllStores();
         Store currStore = GetStoreByID(storeID);
         int productIndex = GetProductIndexByID(storeID, prodID);

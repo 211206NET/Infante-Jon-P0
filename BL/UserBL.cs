@@ -52,7 +52,7 @@ public class UserBL : IUBL
     /// <param name="currUser">Current user [object]</param>
     /// <param name="prodOrderIndex">Product order's index in the shopping cart</param>
     /// <param name="quantity">New quantity to be update to</param>
-    public void EditProductOrder(User currUser, int prodOrderIndex, string quantity){
+    public void EditProductOrder(User currUser, int prodOrderIndex, int quantity){
         _dl.EditProductOrder(currUser, prodOrderIndex, quantity);
     }
     /// <summary>

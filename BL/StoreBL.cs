@@ -76,7 +76,7 @@ public class StoreBL {
     /// <param name="description">Product's new description</param>
     /// <param name="price">Product's new price</param>
     /// <param name="quantity">Product's new quantity</param>
-    public void EditProduct(int storeIndex, int prodIndex, string description, string price, string quantity){
+    public void EditProduct(int storeIndex, int prodIndex, string description, decimal price, int quantity){
         _dl.EditProduct(storeIndex, prodIndex, description, price, quantity);
     }
     /// <summary>

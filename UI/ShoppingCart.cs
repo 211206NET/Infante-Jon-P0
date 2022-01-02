@@ -23,7 +23,7 @@ public class ShoppingCart {
             ColorWrite.wc("\n================[Shopping Cart]================", ConsoleColor.DarkCyan);
                 foreach(ProductOrder pOrder in allProductOrders!){
                     Console.WriteLine($"[{i}]  {pOrder.ItemName} | Quantity: {pOrder.Quantity}\n     Total Price: ${pOrder.TotalPrice} ");
-                    shopTotalPrice += Decimal.Parse(pOrder.TotalPrice!);
+                    shopTotalPrice += pOrder.TotalPrice!;
                     i++;
                 }
                     if (i == 0){
@@ -70,9 +70,9 @@ public class ShoppingCart {
                             int sProdID = (int)pOrder.productID!;
                             Product productSelected = _bl.GetProductByID(storeID, sProdID);
                             //Calculating the new quantity
-                            int prodOrderQuantity = int.Parse(allProductOrders[prodOrderIndex].Quantity!);
-                            int prodQuantity = int.Parse(productSelected.Quantity!);
-                            string newProdQuantity = (prodQuantity! + prodOrderQuantity!).ToString();
+                            int prodOrderQuantity = (int)allProductOrders[prodOrderIndex].Quantity!;
+                            int prodQuantity = (int)productSelected.Quantity!;
+                            int newProdQuantity = (prodQuantity! + prodOrderQuantity!);
                             //Puts the correct amount of stock back in the store
                             _bl.EditProduct(storeID, sProdID, productSelected.Description!, productSelected.Price!, newProdQuantity);
                             //Calls the business logic of deleting a product order from the shopping cart by both indices
@@ -105,7 +105,7 @@ public class ShoppingCart {
                         decimal userpOrdersTotal = 0;
                         List<ProductOrder> userProductOrders = new List<ProductOrder>();
                         foreach(ProductOrder checkoutProduct in allProductOrders){
-                            userpOrdersTotal += decimal.Parse(checkoutProduct.TotalPrice!);
+                            userpOrdersTotal += checkoutProduct.TotalPrice!;
                             userProductOrders.Add(checkoutProduct);
                         } 
                         string currTime = DateTime.Now.ToString();
@@ -113,6 +113,7 @@ public class ShoppingCart {
                         StoreOrder userStoreOrder = new StoreOrder{
                             ID = id!,
                             userID = currUser.ID,
+                            referenceID = currUser.ID,
                             TotalAmount = userpOrdersTotal!,
                             Date = currTime!,
                             DateSeconds = currTimeSeconds!,
@@ -149,11 +150,12 @@ public class ShoppingCart {
                             //calcuate total order value for list of product orders
                             decimal StoreOrderTotalValue = 0;
                             foreach(ProductOrder pOrd in kv.Value){
-                                StoreOrderTotalValue += decimal.Parse(pOrd.TotalPrice!);
+                                StoreOrderTotalValue += pOrd.TotalPrice!;
                             }
                             StoreOrder storeOrderToAdd = new StoreOrder{
                                 ID = sid!,
                                 userID = currUser.ID!,
+                                referenceID = kv.Key,
                                 TotalAmount = StoreOrderTotalValue!,
                                 Date = currTime!,
                                 DateSeconds = currTimeSeconds!,
@@ -181,8 +183,8 @@ public class ShoppingCart {
                 else{
                     //Check if index is in range
                     if (prodOrderIndex >= 0 && prodOrderIndex < allProductOrders.Count){
-                        Console.WriteLine("New Quantity: ");
                         reEnter:
+                        Console.WriteLine("New Quantity: ");
                         string? newQuantity = Console.ReadLine();
                         //store ID and the store's productID is found from the prodect order's 
                         ProductOrder pOrder = allProductOrders[prodOrderIndex];
@@ -191,26 +193,29 @@ public class ShoppingCart {
                         Product productSelected = _bl.GetProductByID(storeID, storeProdID);
                         //Parsing to calculate new total quantity
                         int newQ;
-                        int.TryParse(newQuantity!, out newQ);
-                        int oldQ = int.Parse(productSelected!.Quantity!);
+                        if (!int.TryParse(newQuantity!, out newQ)){
+                            Console.WriteLine("New Quantity must be an integer.");
+                            goto reEnter;
+                        }
+                        int oldQ = (int)productSelected!.Quantity!;
                         //Current quantity of the amount of products in the shopping cart
-                        int currentPOrderQuantity = int.Parse(allProductOrders[prodOrderIndex].Quantity!);
+                        int currentPOrderQuantity = (int)allProductOrders[prodOrderIndex].Quantity!;
                         try {
                             //Tries for invalid quantity type
-                            _iubl.EditProductOrder(currUser, prodOrderIndex, newQuantity!);
+                            _iubl.EditProductOrder(currUser, prodOrderIndex, newQ!);
                             //If the quantity is over the product's stock limit
                             if (newQ > (oldQ + currentPOrderQuantity)){
                                 //Gets total amount of products from the current amount in the product order and the current amount in stock
                                 Console.WriteLine(@$"The amount you selected is too high!" + 
                                 $"\nThe maximum amount of this product you can order is {(currentPOrderQuantity + oldQ)}.");
                                 //reset the product order to its original value
-                                _iubl.EditProductOrder(currUser, prodOrderIndex, currentPOrderQuantity.ToString()!);
+                                _iubl.EditProductOrder(currUser, prodOrderIndex, currentPOrderQuantity!);
                                 goto reEnter;
                             }
                             else{
                                 Console.WriteLine("\nYour shopping cart item has been updated!");
                                 //Update store product with new quantity.
-                                _bl.EditProduct(storeID, storeProdID, productSelected.Description!, productSelected.Price!, ((oldQ + currentPOrderQuantity) - newQ).ToString());
+                                _bl.EditProduct(storeID, storeProdID, productSelected.Description!, productSelected.Price!, ((oldQ + currentPOrderQuantity) - newQ));
                             }
                         }
                         //Input is not a valid integer

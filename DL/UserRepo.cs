@@ -83,22 +83,22 @@ public class UserRepo : IURepo {
     /// <param name="currUser">Current user object</param>
     /// <param name="prodOrderIndex">Index of the product order in the shopping cart</param>
     /// <param name="quantity">New Updates quantity</param>
-    public void EditProductOrder(User currUser, int prodOrderIndex, string quantity){
+    public void EditProductOrder(User currUser, int prodOrderIndex, int quantity){
         List<User> allUsers = GetAllUsers();
         //Selected the currrent product based off the users index and the product order's index in the shopping cart
         List<ProductOrder> allProdOrders = currUser.ShoppingCart!;
         ProductOrder currProduct = allProdOrders[prodOrderIndex]!;
-        string oldQuantity = currProduct.Quantity!;
+        int oldQuantity = (int)currProduct.Quantity!;
         //First check to throw exception if quantity is not an integer
         currProduct.Quantity = quantity;
         //Replacing the old quantity back in for calculations
         currProduct.Quantity = oldQuantity;
         //Calculating the new total amount
-        int intQuantity = int.Parse(quantity);
-        decimal currentTotal = decimal.Parse(currProduct.TotalPrice!);
-        int currentQuantity = int.Parse(currProduct.Quantity!);
+        int intQuantity = quantity;
+        decimal currentTotal = currProduct.TotalPrice!;
+        int currentQuantity = (int)currProduct.Quantity!;
         decimal itemPrice = (currentTotal / currentQuantity);
-        string newTotal = (itemPrice * intQuantity).ToString();
+        decimal newTotal = (itemPrice * intQuantity);
         //Declaring new quantity, total
         currProduct.TotalPrice = newTotal;
         currProduct.Quantity = quantity;

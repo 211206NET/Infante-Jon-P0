@@ -38,20 +38,31 @@ public class StoreMenu {
                     reEnterP:
                     Console.WriteLine("Price: ");
                     string? price = Console.ReadLine();
+                    decimal newP;
+                    if (!(decimal.TryParse(price, out newP))){
+                            Console.WriteLine("Price must be a Decimal value.");
+                            goto reEnterP;
+                        }
                     reEnterQ:
                     Console.WriteLine("Quantity: ");
                     string? quantity = Console.ReadLine();
+                    int newQ;
+                    if (!(int.TryParse(quantity, out newQ))){
+                            Console.WriteLine("Quantity must be an integer.");
+                            goto reEnterQ;
+                        }
                     try{
                         Product newProduct = new Product{
                             ID = id!,
                             storeID = storeID,
                             Name = name!,
                             Description = description!,
-                            Price = price!,
-                            Quantity = quantity!
+                            Price = newP!,
+                            Quantity = newQ!
                         };
                         _bl.AddProduct(storeID, newProduct);
                     }
+                    //Checks for valid quantity and price above 0
                     catch(InputInvalidException ex){
                         Console.WriteLine(ex.Message);
                         if (ex.Message.Substring(0, 1) == "P"){
@@ -61,8 +72,7 @@ public class StoreMenu {
                             goto reEnterQ;
                         }
                     }
-                    //Add a product to the store
-                    
+                    //Added a product to the store 
                     Console.WriteLine($"\n{name} has been added to the current store!");
                     break;
                 case "2":

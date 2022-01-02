@@ -44,7 +44,6 @@ public class ShoppingStoreMenu {
                 }
             else {
                 if(!int.TryParse(inputSelect, out prodIndex)){
-
                     Console.WriteLine("\nPlease select a valid input!");
                 }
                 //Valid index found to edit a product
@@ -60,22 +59,26 @@ public class ShoppingStoreMenu {
                         string? userInput = Console.ReadLine();
                         int userInt;
                         if(!int.TryParse(userInput, out userInt!)){
-                            Console.WriteLine("\nPlease select a valid input!");
+                            Console.WriteLine("Please enter a valid input:");
+                            goto enterAmount;
                         }
                         else{
-                            int prodQuantity = int.Parse(selectedProduct.Quantity!);
+                            int prodQuantity = (int)selectedProduct.Quantity!;
                             if(prodQuantity == 0){
                                 Console.WriteLine("\nSorry, we are out of stock of this item!");
                             }
-                            else if(userInt < 0 || userInt > prodQuantity){
-                                Console.WriteLine($"You may only purchase up to {prodQuantity} {selectedProduct.Name}s\nPlease enter a valid amount.");
+                            else if(userInt > prodQuantity){
+                                Console.WriteLine($"You may only purchase up to {prodQuantity} {selectedProduct.Name}s\nPlease enter a valid amount:");
+                                goto enterAmount;
+                            }
+                            else if (userInt <= 0){
+                                Console.WriteLine("Please enter an amount greater than 0:");
                                 goto enterAmount;
                             }
                             else{
-                                
                                 //Get total quantity and price of current product
-                                decimal prodPrice = decimal.Parse(selectedProduct.Price!);
-                                string newQuantity = (prodQuantity - userInt).ToString();
+                                decimal prodPrice = (decimal)selectedProduct.Price!;
+                                int newQuantity = prodQuantity - userInt;
                                 //Updates quantity remaining of the product
                                 _bl.EditProduct(storeID, prodIDSelected, selectedProduct.Description!, selectedProduct.Price!, newQuantity);
                                 //get new product id between 1 and 1,000,000
@@ -87,8 +90,8 @@ public class ShoppingStoreMenu {
                                         storeID = storeID,
                                         productID = selectedProduct.ID,
                                         ItemName = selectedProduct.Name!,
-                                        TotalPrice = (userInt * prodPrice).ToString(),
-                                        Quantity = (userInt!).ToString(),
+                                        TotalPrice = (userInt * prodPrice),
+                                        Quantity = userInt!,
                                     };
                                 //Add product order to user's shopping cart
                                 _iubl.AddProductOrder(currUser, currOrder);

@@ -81,21 +81,37 @@ public class ProductMenu {
                         //Loops back up if input validation fails
                         reEnterP:
                         Console.WriteLine("Price: ");
-                        string? newPrice = Console.ReadLine();
+                        string? price = Console.ReadLine();
+                        decimal newPrice;
+                        if (!(decimal.TryParse(price, out newPrice))){
+                            //If we get a blank string, we will be using the previous quantity in the isEmpty function
+                            if(price != ""){
+                            Console.WriteLine("Price must be a Decimal value.");
+                            goto reEnterP;
+                            }
+                        }
                         reEnterQ:
                         Console.WriteLine("Quantity: ");
-                        string? newQuantity = Console.ReadLine();
-
+                        string? quantity = Console.ReadLine();
+                        int newQuantity;
+                        if (!(int.TryParse(quantity, out newQuantity))){
+                            //If we get a blank string, we will be using the previous quantity in the isEmpty function
+                            if(quantity != ""){
+                            Console.WriteLine("Quantity must be an integer.");
+                            goto reEnterQ;
+                            }
+                        }
                         //If the input from the user is blank, keep the current product's information
                         newDescription = isEmpty(currProduct, "d", newDescription!);
-                        newPrice = isEmpty(currProduct, "p", newPrice!);
-                        newQuantity = isEmpty(currProduct, "q", newQuantity!);
+                        newPrice = decimal.Parse(isEmpty(currProduct, "p", price!));
+                        newQuantity = int.Parse(isEmpty(currProduct, "q", quantity!));
                         //Calls the Business Logic of editing the product
                         //Checks if newprice and newquantity are respectively floats and ints
                         try {
                             _bl.EditProduct(storeID, prodID, newDescription, newPrice, newQuantity);
                             Console.WriteLine("\nYour product has been edited successfully!");
                         }
+                        //Checks for if quantity and price are above 0
                         catch(InputInvalidException ex){
                             Console.WriteLine(ex.Message);
                             //If the Price is incorrect
@@ -137,10 +153,10 @@ public class ProductMenu {
                     return cProduct.Description!;
                 }
                 else if (descriptor == "p"){
-                    return cProduct.Price!;
+                    return cProduct.Price!.ToString()!;
                 }
                 else if (descriptor == "q"){
-                    return cProduct.Quantity!;
+                    return cProduct.Quantity!.ToString()!;
                 }
                 else {
                     return "";
