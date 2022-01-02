@@ -18,12 +18,7 @@ public class Product {
         get => _price;
         
         set {
-            // decimal newP;
-            // //Checks if the string is a valid float number
-            // if (!(decimal.TryParse(value, out newP))){
-            //     throw new InputInvalidException("Price must be a Decimal value.");
-            // }
-            // else{
+            //checks if value is less than or equal to 0
             if (value <= 0){
                 throw new InputInvalidException("Price must be greater than 0. Please enter a valid amount:");
             }   
@@ -37,12 +32,7 @@ public class Product {
         get => _quantity;
         
         set {
-            // int newQ;
-            // //checks if the string is a valid integer
-            // if (!(int.TryParse(value, out newQ))){
-            //     throw new InputInvalidException("Quantity must be an integer.");
-            // }
-            // else{
+            //checks if value is less than 0
             if (value < 0){
                 throw new InputInvalidException("Quantity must be 0 or higher. Please enter a valid amount:");
                 }       

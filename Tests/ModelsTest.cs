@@ -52,10 +52,8 @@ public class ModelsTest{
         int storeID = 9994;
         string name = "Iphone 12";
         string description = "Brand new";
-        //Strings are used for price and quantity due to previous implementation of a method comparing if 
-        //the value of the property was an empty string when entered by the user.
-        string price = "99";
-        string quantity = "4";
+        decimal price = 99;
+        int quantity = 4;
 
         //Act
         testProduct.ID = ID;
@@ -75,12 +73,10 @@ public class ModelsTest{
     }
 
     [Theory]
-    [InlineData("v", "6.4")]
-    [InlineData("0", "ty")]
-    [InlineData("you", "5.3")]
-    [InlineData("-50", "-1")]
-    [InlineData("t", "66.66")]
-    public void ProductShouldNotHaveInvalidQuantityorPrice(string price, string quantity){
+    [InlineData(-50.9, -4)]
+    [InlineData(-30, -1)]
+    [InlineData(0, -6)]
+    public void ProductShouldNotHaveInvalidQuantityorPrice(decimal price, int quantity){
         //Arrange: Testing if the product will have an invalid price or quantity. 
         //Price should be a decimal
         //Quantity should be an integer
@@ -147,8 +143,8 @@ public class ModelsTest{
         string itemName = "Pixel 4";
         //Strings are used for price and quantity due to previous implementation of a method comparing if 
         //the value of the property was an empty string when entered by the user.
-        string TotalPrice = "999.99";
-        string Quantity = "8";
+        decimal TotalPrice = 999.99M;
+        int Quantity = 87;
 
         //Act
         testPOrder.ID = ID;
@@ -170,14 +166,12 @@ public class ModelsTest{
     }
 
     [Theory]
-    [InlineData("6.3")]
-    [InlineData("-1")]
-    [InlineData("99.2")]
-    [InlineData("boxer")]
-    [InlineData("5.2")]
-    public void ProductOrderShouldNotHaveInvalidQuantity(string quantity){
+    [InlineData(0)]
+    [InlineData(-1)]
+    [InlineData(-15)]
+    public void ProductOrderShouldNotHaveInvalidQuantity(int quantity){
         //Arrange: Testing if the product will have an invalid quantity. 
-        //Quantity should be an integer
+        //Quantity should greater than 0
         ProductOrder testPOrder = new ProductOrder();
 
         //Act: Using inline data as paramaters
@@ -192,6 +186,7 @@ public class ModelsTest{
         StoreOrder testStoreOrder = new StoreOrder();
         int ID = 9032;
         int userID = 222935;
+        int referenceID = 222935;
         string Date = "12/30/21 5:43PM";
         double DateSeconds = 999432.3377;
         decimal TotalAmount = 3829.98M;
@@ -200,6 +195,7 @@ public class ModelsTest{
         //Act
         testStoreOrder.ID = ID;
         testStoreOrder.userID = userID;
+        testStoreOrder.referenceID = referenceID;
         testStoreOrder.Date = Date;
         testStoreOrder.DateSeconds = DateSeconds;
         testStoreOrder.TotalAmount = TotalAmount;
@@ -231,10 +227,10 @@ public class ModelsTest{
         int productID2 = 9324243;
         string PName1 = "Galaxy S10";
         string PName2 = "IPhone 12 Pro";
-        string PTotalPrice1 = "1998";
-        string PTotalPrice2 = "992";
-        string PQuantity1 = "2";
-        string PQuantity2 = "1";
+        decimal PTotalPrice1 = 1998.99M;
+        decimal PTotalPrice2 = 992.25M;
+        int PQuantity1 = 2;
+        int PQuantity2 = 3;
         //Product Order 1
         testPOrder1.ID = PID1;
         testPOrder1.userID = userID;
