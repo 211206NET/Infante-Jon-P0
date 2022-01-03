@@ -1,10 +1,10 @@
 namespace BL;
 
-public class StoreBL {
-    private StoreRepo _dl;
+public class StoreBL : ISBL {
+    private ISRepo _dl;
 
-    public StoreBL() {
-        _dl = new StoreRepo();
+    public StoreBL(ISRepo repo) {
+        _dl = repo;
     }
     /// <summary>
     /// Gets all stores
@@ -30,12 +30,22 @@ public class StoreBL {
         return _dl.GetStoreIndexByID(storeID);
         }
     /// <summary>
-    /// Adds a new store to the list
+    /// Gets the current product by the product ID
     /// </summary>
-    /// <param name="storeToAdd">store object to add</param>
-    
+    /// <param name="storeID">Current storeID</param>
+    /// <param name="prodID">current Product ID</param>
+    /// <returns>Selected Product Object</returns>
     public Product GetProductByID(int storeID, int prodID){
         return _dl.GetProductByID(storeID, prodID);
+    }
+    /// <summary>
+    /// Gets the current product index by product ID
+    /// </summary>
+    /// <param name="storeID">Current Store ID</param>
+    /// <param name="prodID">The selected Product's ID</param>
+    /// <returns>The index of the product in the product list</returns>
+    public int GetProductIndexByID(int storeID, int prodID){
+        return _dl.GetProductIndexByID(storeID, prodID);
     }
     /// <summary>
     /// Deletes the current selected store

@@ -1,7 +1,7 @@
 using System.Text.Json;
 
 namespace DL;
-public class StoreRepo{
+public class StoreRepo : ISRepo{
 
     public StoreRepo(){
     }

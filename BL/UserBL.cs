@@ -1,7 +1,6 @@
 
 namespace BL;
-public class UserBL : IUBL
-{
+public class UserBL : IUBL {
     private IURepo _dl;
 
     public UserBL(IURepo repo) {

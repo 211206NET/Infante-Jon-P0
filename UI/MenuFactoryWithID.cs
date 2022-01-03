@@ -3,9 +3,10 @@ namespace UI;
 //Design pattern useful for making a similarly shaped object
 public static class MenuFactoryWithID{
     public static IMenuWithID GetMenu(string menuString){
-        StoreBL sbl = new StoreBL();
-        IURepo repo = new UserRepo();
-        UserBL iubl = new UserBL(repo);
+        ISRepo sRepo = new StoreRepo();
+        StoreBL sbl = new StoreBL(sRepo);
+        IURepo uRepo = new UserRepo();
+        UserBL iubl = new UserBL(uRepo);
 
         switch(menuString){
             //under login
