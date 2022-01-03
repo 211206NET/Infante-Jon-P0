@@ -1,10 +1,8 @@
 namespace UI;
 
-public class UserProfileMenu {
-    private StoreBL _bl;
+public class UserProfileMenu : IMenuWithID {
 
     public UserProfileMenu(){
-        _bl = new StoreBL();
     }
     public void Start(int userID){
         bool exit = false;
@@ -20,13 +18,14 @@ public class UserProfileMenu {
 
             switch (input){
                 case "1":
-                    ShoppingCart sCart = new ShoppingCart();
-                    sCart.Start(userID);  
+                    //Initializes the current user's shopping cart menu
+                    MenuFactoryWithID.GetMenu("shoppingCart").Start(userID);  
                     break;
                 case "2":
-                    UserOrderMenu uOrderMenu = new UserOrderMenu();
-                    uOrderMenu.Start(userID);  
+                    //Initialize the current user's previous order menu
+                    MenuFactoryWithID.GetMenu("userOrder").Start(userID);
                     break;
+                //Return to user menu
                 case "r":
                     exit = true;
                     break;

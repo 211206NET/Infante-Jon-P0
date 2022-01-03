@@ -1,17 +1,16 @@
 namespace UI;
 
-public class StoreOrderMenu {
-    private StoreBL _bl;
+public class StoreOrderMenu : IMenuWithID {
     private UserBL _iubl;
+    private StoreBL _sbl;
 
-    public StoreOrderMenu(StoreBL bl){
-        _bl = bl;
-        IURepo repo = new UserRepo();
-        _iubl = new UserBL(repo);
+    public StoreOrderMenu(UserBL iubl, StoreBL sbl){
+        _iubl = iubl;
+        _sbl = sbl;
     }
     public void Start(int storeID){
         bool exit = false;
-        Store currStore = _bl.GetStoreByID(storeID!);
+        Store currStore = _sbl.GetStoreByID(storeID!);
         List<StoreOrder> allOrders = currStore.AllOrders!;
         bool timeSort = false;
         bool costSort = false;

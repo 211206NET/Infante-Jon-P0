@@ -2,19 +2,18 @@ using System.Globalization;
 
 namespace UI;
 public class ShoppingStoreMenu {
-    private StoreBL _bl;
+    private StoreBL _sbl;
     private  UserBL _iubl;
 
-    public ShoppingStoreMenu(){
-        _bl = new StoreBL();
-        IURepo repo = new UserRepo();
-        _iubl = new UserBL(repo);
+    public ShoppingStoreMenu(UserBL iubl, StoreBL sbl){
+        _sbl = sbl;
+        _iubl = iubl;
     }
     public void Start(int storeID, int userID){
         bool valid = false;
         while (!valid){
             //Find our current products list
-            Store currStore = _bl.GetStoreByID(storeID);
+            Store currStore = _sbl.GetStoreByID(storeID);
             List<Product> allProducts = currStore.Products!;
             User currUser = _iubl.GetCurrentUserByID(userID);
 
@@ -52,7 +51,7 @@ public class ShoppingStoreMenu {
                     if (prodIndex >= 0 && prodIndex < allProducts.Count){
                         int prodIDSelected = (int)allProducts[prodIndex!].ID!;
                         //Get product to make a purchase
-                        Product selectedProduct = _bl.GetProductByID(storeID, prodIDSelected);
+                        Product selectedProduct = _sbl.GetProductByID(storeID, prodIDSelected);
 
                         Console.WriteLine($"How many {selectedProduct.Name}s would you like to order?");
                         enterAmount:
@@ -80,7 +79,7 @@ public class ShoppingStoreMenu {
                                 decimal prodPrice = (decimal)selectedProduct.Price!;
                                 int newQuantity = prodQuantity - userInt;
                                 //Updates quantity remaining of the product
-                                _bl.EditProduct(storeID, prodIDSelected, selectedProduct.Description!, selectedProduct.Price!, newQuantity);
+                                _sbl.EditProduct(storeID, prodIDSelected, selectedProduct.Description!, selectedProduct.Price!, newQuantity);
                                 //get new product id between 1 and 1,000,000
                                 Random rnd = new Random();
                                 int id = rnd.Next(1000000);

@@ -1,11 +1,10 @@
 namespace UI;
-public class AdminMenu {
-    private StoreBL _bl;
+public class AdminMenu : IMenu {
+    private StoreBL _sbl;
 
-    public AdminMenu(){
-        _bl = new StoreBL();
+    public AdminMenu(StoreBL sbl){
+        _sbl = sbl;
     }
-
     public void Start(){
         bool exit = false;
         while(!exit){
@@ -41,13 +40,12 @@ public class AdminMenu {
                         Address = address!
                     };
                     //Adds a store to the list of stores
-                    _bl.AddStore(newStore);
+                    _sbl.AddStore(newStore);
                 
                     break;
                 case "2":
-                    //Navigates to list of all stores
-                    AllStoresMenu storesMenu = new AllStoresMenu(_bl);
-                    storesMenu.Start();          
+                    //Initializes all stores menu
+                    MenuFactory.GetMenu("allStores").Start();          
                     break;
                 case "r":
                     exit = true;

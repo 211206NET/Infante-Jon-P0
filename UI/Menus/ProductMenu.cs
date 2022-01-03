@@ -1,15 +1,15 @@
 namespace UI;
-public class ProductMenu {
-    private StoreBL _bl;
+public class ProductMenu : IMenuWithID {
+    private StoreBL _sbl;
 
-    public ProductMenu(StoreBL bl){
-        _bl = bl;
+    public ProductMenu(StoreBL sbl){
+        _sbl = sbl;
     }
     public void Start(int storeID){
         bool valid = false;
         while (!valid){
             //Find our current products list
-            Store currStore = _bl.GetStoreByID(storeID);
+            Store currStore = _sbl.GetStoreByID(storeID);
 
             List<Product> allProducts = currStore.Products!;
             if(allProducts == null || allProducts.Count == 0){
@@ -31,8 +31,8 @@ public class ProductMenu {
             string? select = Console.ReadLine();
             int prodIndex;
             //Get the current product id by prodID
-            List<Store> allStores = _bl.GetAllStores();
-            int currStoreIndex = _bl.GetStoreIndexByID(storeID);
+            List<Store> allStores = _sbl.GetAllStores();
+            int currStoreIndex = _sbl.GetStoreIndexByID(storeID);
             //Nesting to get current product id by prod index
 
             //Return to the Product Menu
@@ -56,7 +56,7 @@ public class ProductMenu {
                         //get current product id
                         int prodID = (int)allStores[currStoreIndex].Products![prodIndex].ID!;
                         //Calls the business logic of deleting a product by both indices
-                        _bl.DeleteProduct(storeID, prodID);
+                        _sbl.DeleteProduct(storeID, prodID);
 
                     }
                     else{
@@ -75,7 +75,7 @@ public class ProductMenu {
                         //get current product ID
                         int prodID = (int)allStores[currStoreIndex].Products![prodIndex].ID!;
                         //Get our current product selected
-                        Product currProduct = _bl.GetProductByID(storeID, prodID);
+                        Product currProduct = _sbl.GetProductByID(storeID, prodID);
                         Console.WriteLine($"\n{currProduct.Name}\nEdit Description: ");
                         string? newDescription = Console.ReadLine();
                         //Loops back up if input validation fails
@@ -108,7 +108,7 @@ public class ProductMenu {
                         //Calls the Business Logic of editing the product
                         //Checks if newprice and newquantity are respectively floats and ints
                         try {
-                            _bl.EditProduct(storeID, prodID, newDescription, newPrice, newQuantity);
+                            _sbl.EditProduct(storeID, prodID, newDescription, newPrice, newQuantity);
                             Console.WriteLine("\nYour product has been edited successfully!");
                         }
                         //Checks for if quantity and price are above 0

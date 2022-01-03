@@ -1,14 +1,14 @@
 namespace UI;
 
-public class StoreMenu {
-    private StoreBL _bl;
+public class StoreMenu : IMenuWithID {
+    private StoreBL _sbl;
 
-    public StoreMenu(StoreBL bl){
-        _bl = bl;
+    public StoreMenu(StoreBL sbl){
+        _sbl = sbl;
     }
     public void Start(int storeID){
         bool exit = false;
-        Store currStore = _bl.GetStoreByID(storeID);
+        Store currStore = _sbl.GetStoreByID(storeID);
         while(!exit){
             ColorWrite.wc("\n==================[Store Menu]=================", ConsoleColor.DarkCyan);
             Console.WriteLine($"Store: {currStore.Name}\n");
@@ -60,7 +60,7 @@ public class StoreMenu {
                             Price = newP!,
                             Quantity = newQ!
                         };
-                        _bl.AddProduct(storeID, newProduct);
+                        _sbl.AddProduct(storeID, newProduct);
                     }
                     //Checks for valid quantity and price above 0
                     catch(InputInvalidException ex){
@@ -76,20 +76,19 @@ public class StoreMenu {
                     Console.WriteLine($"\n{name} has been added to the current store!");
                     break;
                 case "2":
-                    ProductMenu prodMenu = new ProductMenu(_bl);
-                    prodMenu.Start(storeID);
+                    //Initializes the store's product menu
+                    MenuFactoryWithID.GetMenu("product").Start(storeID);
                     break;
-                //Return to the Admin Menu
                 case "3":
-                    StoreOrderMenu sOrderMenu = new StoreOrderMenu(_bl);
-                    sOrderMenu.Start(storeID);
+                    //Initialize the store's list of orders menu
+                    MenuFactoryWithID.GetMenu("storeOrder").Start(storeID);
                     break;
                 //Return to the Admin Menu
                 case "d":
                     Console.WriteLine("Are you sure you want to delete this store? [y/n]");
                     string? selection = Console.ReadLine();
                     if (selection == "y"){
-                        _bl.DeleteStore(storeID);
+                        _sbl.DeleteStore(storeID);
                         Console.WriteLine("\nYour store was deleted!");
                         exit = true;
                     }

@@ -1,11 +1,10 @@
 namespace UI;
 
-public class LoginMenu {
-    private IUBL _bl;
-    
+public class LoginMenu : IMenu {
+    private IUBL _iubl;
 
-    public LoginMenu(IUBL bl){
-        _bl = bl;
+    public LoginMenu(IUBL iubl){
+        _iubl = iubl;
     }
     public void Start(){
         Console.WriteLine("\nWelcome to Jon's Conglomerate of used hardware stores.");
@@ -25,7 +24,7 @@ public class LoginMenu {
                 case "1":
                     Console.WriteLine("Username: ");
                     string? username = Console.ReadLine();
-                    List<User> users = _bl.GetAllUsers();
+                    List<User> users = _iubl.GetAllUsers();
                     bool userFound = false;
                     foreach(User user in users){
                         if (user.Username == username){
@@ -50,17 +49,16 @@ public class LoginMenu {
                             Password = password!,
                             };
 
-                        _bl.AddUser(newUser);
-                        UserMenu newuMenu = new UserMenu();
-                        //id is the user's ID
-                        newuMenu.Start(id);   
+                        _iubl.AddUser(newUser);
+                        //User Menu initialization | id is the user's ID
+                        MenuFactoryWithID.GetMenu("user").Start(id);
                     }
 
                     break;
                 case "2":
                     Console.WriteLine("\nWhat is your username?");
                     string? getUsername = Console.ReadLine();
-                    List<User> currUsers = _bl.GetAllUsers();
+                    List<User> currUsers = _iubl.GetAllUsers();
                     bool found = false;
                     User currUser = new User();
                     foreach(User user in currUsers){
@@ -80,8 +78,7 @@ public class LoginMenu {
                         if (getPassword == currUser.Password){
                             Console.WriteLine("\nLogin successful!");
                             //User Menu initialization
-                            UserMenu uMenu = new UserMenu();
-                            uMenu.Start((int)currUser.ID!);        
+                            MenuFactoryWithID.GetMenu("user").Start((int)currUser.ID!);     
                         }
                         else{
                             Console.WriteLine("\nIncorrect password.");
@@ -93,9 +90,8 @@ public class LoginMenu {
                     string? inp = Console.ReadLine();
                     if (inp == "emily"){
                         Console.WriteLine("\nLogged in to admin account.");
-                        //Opens up admin menu
-                        AdminMenu admin = new AdminMenu();
-                        admin.Start();
+                        //Initialize Admin Menu
+                        MenuFactory.GetMenu("admin").Start();     
                     }
                     else{
                         Console.WriteLine("\nIncorrect key!");

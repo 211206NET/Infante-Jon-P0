@@ -41,7 +41,6 @@ public class ModelsTest{
         Assert.Equal(password, testUser.Password);
         Assert.Equal(shoppingCart, testUser.ShoppingCart);
         Assert.Equal(finishedOrders, testUser.FinishedOrders);
-
     }
 
     [Fact]
@@ -78,8 +77,8 @@ public class ModelsTest{
     [InlineData(0, -6)]
     public void ProductShouldNotHaveInvalidQuantityorPrice(decimal price, int quantity){
         //Arrange: Testing if the product will have an invalid price or quantity. 
-        //Price should be a decimal
-        //Quantity should be an integer
+        //Price should be a decimal greater than 0
+        //Quantity should be an integer greater than or equal to 0
         Product testProduct = new Product();
 
         //Act: Using inline data as paramaters
@@ -141,8 +140,6 @@ public class ModelsTest{
         int storeID = 9994;
         int productID = 32332423;
         string itemName = "Pixel 4";
-        //Strings are used for price and quantity due to previous implementation of a method comparing if 
-        //the value of the property was an empty string when entered by the user.
         decimal TotalPrice = 999.99M;
         int Quantity = 87;
 

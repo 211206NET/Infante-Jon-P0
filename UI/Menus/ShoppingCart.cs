@@ -2,13 +2,12 @@ using System.Collections;
 
 namespace UI;
 
-public class ShoppingCart {
-    private StoreBL _bl;
+public class ShoppingCart : IMenuWithID {
     private UserBL _iubl;
-    public ShoppingCart(){
-        _bl = new StoreBL();
-        IURepo repo = new UserRepo();
-        _iubl = new UserBL(repo);
+    private StoreBL _sbl;
+    public ShoppingCart(UserBL iubl, StoreBL sbl){
+        _iubl = iubl;
+        _sbl = sbl;
     }
     public void Start(int userID){
         bool exit = false;
@@ -68,13 +67,13 @@ public class ShoppingCart {
                             ProductOrder pOrder = allProductOrders[prodOrderIndex];
                             int storeID = (int)pOrder.storeID!;
                             int sProdID = (int)pOrder.productID!;
-                            Product productSelected = _bl.GetProductByID(storeID, sProdID);
+                            Product productSelected = _sbl.GetProductByID(storeID, sProdID);
                             //Calculating the new quantity
                             int prodOrderQuantity = (int)allProductOrders[prodOrderIndex].Quantity!;
                             int prodQuantity = (int)productSelected.Quantity!;
                             int newProdQuantity = (prodQuantity! + prodOrderQuantity!);
                             //Puts the correct amount of stock back in the store
-                            _bl.EditProduct(storeID, sProdID, productSelected.Description!, productSelected.Price!, newProdQuantity);
+                            _sbl.EditProduct(storeID, sProdID, productSelected.Description!, productSelected.Price!, newProdQuantity);
                             //Calls the business logic of deleting a product order from the shopping cart by both indices
                             _iubl.DeleteProductOrder(currUser, prodOrderIndex);
                         }
@@ -138,10 +137,10 @@ public class ShoppingCart {
                             }
                         }
                         //Iterate over dictionary with store indexes and corresponding product
-                        List<Store> allStores = _bl.GetAllStores();
+                        List<Store> allStores = _sbl.GetAllStores();
                         foreach(KeyValuePair<int, List<ProductOrder>> kv in storeOrdersToPlace){
                             //Get the store index from the current store ID [kv.Key]
-                            int storeIndex =  _bl.GetStoreIndexByID(kv.Key);
+                            int storeIndex =  _sbl.GetStoreIndexByID(kv.Key);
                             if(allStores[storeIndex].AllOrders == null) {
                                 allStores[storeIndex].AllOrders = new List<StoreOrder>();
                                 }   
@@ -163,7 +162,7 @@ public class ShoppingCart {
                             };
                             //Adds store order to current selected store
                             //kv.key is the store's ID
-                            _bl.AddStoreOrder(kv.Key, storeOrderToAdd);
+                            _sbl.AddStoreOrder(kv.Key, storeOrderToAdd);
                         }
                         //Emptys current user's shopping cart
                         _iubl.ClearShoppingCart(currUser);
@@ -190,7 +189,7 @@ public class ShoppingCart {
                         ProductOrder pOrder = allProductOrders[prodOrderIndex];
                         int storeID = (int)pOrder.storeID!;
                         int storeProdID = (int)pOrder.productID!;
-                        Product productSelected = _bl.GetProductByID(storeID, storeProdID);
+                        Product productSelected = _sbl.GetProductByID(storeID, storeProdID);
                         //Parsing to calculate new total quantity
                         int newQ;
                         if (!int.TryParse(newQuantity!, out newQ)){
@@ -215,7 +214,7 @@ public class ShoppingCart {
                             else{
                                 Console.WriteLine("\nYour shopping cart item has been updated!");
                                 //Update store product with new quantity.
-                                _bl.EditProduct(storeID, storeProdID, productSelected.Description!, productSelected.Price!, ((oldQ + currentPOrderQuantity) - newQ));
+                                _sbl.EditProduct(storeID, storeProdID, productSelected.Description!, productSelected.Price!, ((oldQ + currentPOrderQuantity) - newQ));
                             }
                         }
                         //Input is not a valid integer

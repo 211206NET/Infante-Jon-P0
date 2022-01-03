@@ -1,13 +1,12 @@
 namespace UI;
 
-public class UserMenu {
-    private StoreBL _bl;
+public class UserMenu : IMenuWithID {
     private UserBL _iubl;
+    private StoreBL _sbl;
 
-    public UserMenu(){
-        _bl = new StoreBL();
-        IURepo repo = new UserRepo();
-        _iubl = new UserBL(repo);
+    public UserMenu(UserBL iubl, StoreBL sbl){
+        _iubl = iubl;
+        _sbl = sbl;
     }
     public void Start(int userID){
         bool exit = false;
@@ -24,12 +23,12 @@ public class UserMenu {
 
             switch (inputSelection){
                 case "1":
-                    AllShoppingStoresMenu allSSMenu= new AllShoppingStoresMenu(_bl);
-                    allSSMenu.Start(userID);
+                    //Initialize all shopping stores menu
+                    MenuFactoryWithID.GetMenu("allShoppingStores").Start(userID);
                     break;
                 case "2":
-                    UserProfileMenu upMenu = new UserProfileMenu();
-                    upMenu.Start(userID);  
+                    //Initialize user profile menu
+                    MenuFactoryWithID.GetMenu("userProfile").Start(userID);  
                     break;
                 case "r":
                     exit = true;

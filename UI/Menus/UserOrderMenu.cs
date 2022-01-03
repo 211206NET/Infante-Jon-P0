@@ -1,13 +1,10 @@
 namespace UI;
 
-public class UserOrderMenu {
-    private StoreBL _bl;
+public class UserOrderMenu : IMenuWithID {
     private UserBL _iubl;
 
-    public UserOrderMenu(){
-        _bl = new StoreBL();
-        IURepo repo = new UserRepo();
-        _iubl = new UserBL(repo);
+    public UserOrderMenu(UserBL iubl){
+        _iubl = iubl;
     }
     public void Start(int userID){
         bool exit = false;

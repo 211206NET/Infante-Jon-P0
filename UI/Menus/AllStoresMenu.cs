@@ -1,15 +1,15 @@
 namespace UI;
 
-public class AllStoresMenu {
-    private StoreBL _bl;
+public class AllStoresMenu : IMenu {
+    private StoreBL _sbl;
 
-    public AllStoresMenu(StoreBL bl){
-        _bl = bl;
+    public AllStoresMenu(StoreBL sbl){
+        _sbl = sbl;
     }  
     public void Start(){
         bool valid = false;
         while (!valid){
-            List<Store> allStores = _bl.GetAllStores();
+            List<Store> allStores = _sbl.GetAllStores();
             //No stores exist
             if(allStores.Count == 0){
                 Console.WriteLine("\nNo stores found!");
@@ -40,9 +40,8 @@ public class AllStoresMenu {
                     if (storeID >= 0 && storeID < allStores.Count){
                         storeID = (int)allStores[storeID].ID!;
                         valid = true;
-                        //Opens up product menu                            
-                        StoreMenu currStore = new StoreMenu(_bl);
-                        currStore.Start(storeID);
+                        //Initializes store menu                        
+                        MenuFactoryWithID.GetMenu("store").Start(storeID);
                     }  
                     //Index out of range
                     else{

@@ -1,14 +1,17 @@
 namespace UI;
 
-public class AllShoppingStoresMenu {
-    private StoreBL _bl;
+public class AllShoppingStoresMenu : IMenuWithID {
 
-    public AllShoppingStoresMenu(StoreBL bl){
-        _bl = bl;
+    private UserBL _iubl;
+    private StoreBL _sbl;
+
+    public AllShoppingStoresMenu(UserBL iubl, StoreBL sbl){
+        _iubl = iubl;
+        _sbl = sbl;
     }  
     public void Start(int userID){  
         
-        List<Store> allStores = _bl.GetAllStores();
+        List<Store> allStores = _sbl.GetAllStores();
             bool exit = false;
             while (!exit){
                 if(allStores.Count == 0){
@@ -38,8 +41,8 @@ public class AllShoppingStoresMenu {
                     else{
                         if (storeIndex >= 0 && storeIndex < allStores.Count){
                             int storeID = (int)allStores[storeIndex].ID!;
-                            //Opens up store product menu
-                            ShoppingStoreMenu ssMenu = new ShoppingStoreMenu();
+                            //Initialize shopping store's product menu (no menu factory)
+                            ShoppingStoreMenu ssMenu = new ShoppingStoreMenu(_iubl, _sbl);
                             ssMenu.Start(storeID, userID);
                         }  
                         //Index out of range
