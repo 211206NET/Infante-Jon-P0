@@ -81,13 +81,22 @@ public class UserRepo : IURepo {
     /// Edits an existing product order in the shopping cart
     /// </summary>
     /// <param name="currUser">Current user object</param>
-    /// <param name="prodOrderIndex">Index of the product order in the shopping cart</param>
+    /// <param name="prodOrderID">ID of the product order in the shopping cart</param>
     /// <param name="quantity">New Updates quantity</param>
-    public void EditProductOrder(User currUser, int prodOrderIndex, int quantity){
+    public void EditProductOrder(User currUser, int prodOrderID, int quantity){
         List<User> allUsers = GetAllUsers();
-        //Selected the currrent product based off the users index and the product order's index in the shopping cart
+        //Selected the currrent product based off the current user and the product order's iD in the shopping cart
         List<ProductOrder> allProdOrders = currUser.ShoppingCart!;
-        ProductOrder currProduct = allProdOrders[prodOrderIndex]!;
+        int i = 0;
+        foreach(ProductOrder prodOrder in allProdOrders){
+            if (prodOrderID == prodOrder.ID){
+                break;
+            }
+            else{
+                i++;
+            }
+        }
+        ProductOrder currProduct = allProdOrders[i]!;
         int oldQuantity = (int)currProduct.Quantity!;
         //First check to throw exception if quantity is not an integer
         currProduct.Quantity = quantity;
@@ -111,11 +120,20 @@ public class UserRepo : IURepo {
     /// Delete's a product order from the user's shopping cart
     /// </summary>
     /// <param name="currUser">Current user [object]</param>
-    /// <param name="prodIndex">Current product orders' index</param>
-    public void DeleteProductOrder(User currUser, int prodIndex){
+    /// <param name="prodOrderID">Current product orders ID</param>
+    public void DeleteProductOrder(User currUser, int prodOrderID){
         List<User> allUsers = GetAllUsers();
         List<ProductOrder> allProdOrders = currUser.ShoppingCart!;
-        allProdOrders!.RemoveAt(prodIndex);
+        int i = 0;
+        foreach(ProductOrder prodOrder in allProdOrders){
+            if (prodOrderID == prodOrder.ID){
+                break;
+            }
+            else{
+                i++;
+            }
+        }
+        allProdOrders!.RemoveAt(i);
         //Remapping the current user to update the list of users
         allUsers[GetCurrentUserIndexByID((int)currUser.ID!)] = currUser;
         string jsonString = JsonSerializer.Serialize(allUsers);

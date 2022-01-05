@@ -64,9 +64,10 @@ public class ShoppingCart : IMenuWithID {
                         if (prodOrderIndex >= 0 && prodOrderIndex < allProductOrders.Count){
 
                             //Gets the current product order, storeID, productID, and product by product order index
-                            ProductOrder pOrder = allProductOrders[prodOrderIndex];
-                            int storeID = (int)pOrder.storeID!;
-                            int sProdID = (int)pOrder.productID!;
+                            ProductOrder prodOrder = allProductOrders[prodOrderIndex];
+                            int prodOrderID = (int)prodOrder.ID!;
+                            int storeID = (int)prodOrder.storeID!;
+                            int sProdID = (int)prodOrder.productID!;
                             Product productSelected = _sbl.GetProductByID(storeID, sProdID);
                             //Calculating the new quantity
                             int prodOrderQuantity = (int)allProductOrders[prodOrderIndex].Quantity!;
@@ -75,7 +76,7 @@ public class ShoppingCart : IMenuWithID {
                             //Puts the correct amount of stock back in the store
                             _sbl.EditProduct(storeID, sProdID, productSelected.Description!, productSelected.Price!, newProdQuantity);
                             //Calls the business logic of deleting a product order from the shopping cart by both indices
-                            _iubl.DeleteProductOrder(currUser, prodOrderIndex);
+                            _iubl.DeleteProductOrder(currUser, prodOrderID);
                         }
                         else{
                             Console.WriteLine("\nPlease select an index within range!");
@@ -204,14 +205,14 @@ public class ShoppingCart : IMenuWithID {
                         int currentPOrderQuantity = (int)allProductOrders[prodOrderIndex].Quantity!;
                         try {
                             //Tries for invalid quantity type
-                            _iubl.EditProductOrder(currUser, prodOrderIndex, newQ!);
+                            _iubl.EditProductOrder(currUser, (int)pOrder.ID!, newQ!);
                             //If the quantity is over the product's stock limit
                             if (newQ > (oldQ + currentPOrderQuantity)){
                                 //Gets total amount of products from the current amount in the product order and the current amount in stock
                                 Console.WriteLine(@$"The amount you selected is too high!" + 
                                 $"\nThe maximum amount of this product you can order is {(currentPOrderQuantity + oldQ)}.");
                                 //reset the product order to its original value
-                                _iubl.EditProductOrder(currUser, prodOrderIndex, currentPOrderQuantity!);
+                                _iubl.EditProductOrder(currUser, (int)pOrder.ID, currentPOrderQuantity!);
                                 goto reEnter;
                             }
                             else{

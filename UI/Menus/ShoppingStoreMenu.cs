@@ -80,9 +80,8 @@ public class ShoppingStoreMenu {
                                 int newQuantity = prodQuantity - selectedQuantity;
                                 //Updates quantity remaining of the product
                                 _sbl.EditProduct(storeID, prodIDSelected, selectedProduct.Description!, selectedProduct.Price!, newQuantity);
-                                //get new product id between 1 and 1,000,000
-                                Random rnd = new Random();
-                                int id = rnd.Next(1000000);
+                                //get new product order id from datetime for incremental product order IDs mod 1 bil to get under int limity
+                                int id = (int)((DateTime.Now.Subtract(DateTime.MinValue).TotalSeconds)%1000000000);
                                 ProductOrder currOrder = new ProductOrder{
                                         ID = id!,
                                         userID = userID,

@@ -35,9 +35,8 @@ public class LoginMenu : IMenu {
                     }
                     //get new id for the user
                     bool isEmpty = !users.Any();
-                    //get new user id between 1 and 1,000,000
-                    Random rnd = new Random();
-                    int id = rnd.Next(1000000);
+                    //get new user id from datetime for incremental user IDS mod 1 bil to get under int limit
+                    int id = (int)((DateTime.Now.Subtract(DateTime.MinValue).TotalSeconds)%1000000000);
                     ///If the user isn't found, instantiate a new user
                     if (!userFound){
                         Console.WriteLine("Password: ");

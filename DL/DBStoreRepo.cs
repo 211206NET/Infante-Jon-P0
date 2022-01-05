@@ -78,7 +78,7 @@ public class DBStoreRepo : ISRepo {
         storeAdapter.Fill(StSet, "Store");
         productAdapter.Fill(StSet, "Product");
         storeOrderAdapter.Fill(StSet, "StoreOrder");
-        productAdapter.Fill(StSet, "ProductOrder");
+        productOrderAdapter.Fill(StSet, "ProductOrder");
 
         //Declaring each data table from the dataset
         DataTable? storeTable = StSet.Tables["Store"];
@@ -121,16 +121,18 @@ public class DBStoreRepo : ISRepo {
                 }
                 //Adds each product order to each store order in the list of stores
                 if(productTable != null){
-                    foreach(StoreOrder storOrder in store.AllOrders){
-                        storeOrder.Orders = productOrderTable.AsEnumerable().Where(r => (int) r["storeOrderID"] == storeOrder.ID).Select(
+                    foreach(StoreOrder storeOrder in store.AllOrders!){
+                        storeOrder.Orders = productOrderTable!.AsEnumerable().Where(r => (int) r["storeOrderID"] == storeOrder.ID).Select(
                             r =>
                                 new ProductOrder {
                                     ID = (int) r["ID"],
                                     userID = (int) r["userID"],
-                                    referenceID = (int) r["referenceID"],
                                     storeID = (int) r["storeID"],
-                                    Date = r["Date"].ToString() ?? "",
-                                    DateSeconds = (double)r["DateSeconds"]
+                                    storeOrderID = (int) r["storeOrderID"],
+                                    productID = (int)r["productID"],
+                                    ItemName = r["ItemName"].ToString() ?? "",
+                                    TotalPrice = (decimal)r["TotalPrice"],
+                                    Quantity = (int) r["Quantity"]
                                 }
                         ).ToList();
                         }

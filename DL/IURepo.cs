@@ -13,9 +13,9 @@ public interface IURepo {
 
     void AddProductOrder(User currUser, ProductOrder currProdOrder);
 
-    void EditProductOrder(User currUser, int prodOrderIndex, int quantity);
+    void EditProductOrder(User currUser, int prodOrderID, int quantity);
 
-    void DeleteProductOrder(User currUser, int prodOrderIndex);
+    void DeleteProductOrder(User currUser, int prodOrderID);
 
     void AddUserStoreOrder(User currUser, StoreOrder currStoreOrder);
     

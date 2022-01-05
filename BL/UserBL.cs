@@ -49,18 +49,18 @@ public class UserBL : IUBL {
     /// Edits an existing product's order by quantity
     /// </summary>
     /// <param name="currUser">Current user [object]</param>
-    /// <param name="prodOrderIndex">Product order's index in the shopping cart</param>
+    /// <param name="prodOrderID">Product order's ID in the shopping cart</param>
     /// <param name="quantity">New quantity to be update to</param>
-    public void EditProductOrder(User currUser, int prodOrderIndex, int quantity){
-        _dl.EditProductOrder(currUser, prodOrderIndex, quantity);
+    public void EditProductOrder(User currUser, int prodOrderID, int quantity){
+        _dl.EditProductOrder(currUser, prodOrderID, quantity);
     }
     /// <summary>
     /// Deletes a product from your shopping list
     /// </summary>
     /// <param name="currUserIndex">Current user [object]</param>
-    /// <param name="prodIndex">Product to delete at index</param>
-    public void DeleteProductOrder(User currUser , int prodIndex){
-        _dl.DeleteProductOrder(currUser, prodIndex);
+    /// <param name="prodOrderID">Product order to delete by ID</param>
+    public void DeleteProductOrder(User currUser , int prodOrderID){
+        _dl.DeleteProductOrder(currUser, prodOrderID);
     }
     /// <summary>
     /// Adds a store order to the user's order list
