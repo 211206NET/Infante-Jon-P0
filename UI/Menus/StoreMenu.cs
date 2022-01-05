@@ -28,9 +28,8 @@ public class StoreMenu : IMenuWithID {
                         currStore.Products = new List<Product>();
                      }
                     
-                    //get new product id between 1 and 1,000,000
-                    Random rnd = new Random();
-                    int id = rnd.Next(1000000);
+                    //get new product id from datetime
+                    int id = (int)((DateTime.Now.Subtract(DateTime.MinValue).TotalSeconds)%1000000000);
                     Console.WriteLine("Name: ");
                     string? name = Console.ReadLine();
                     Console.WriteLine("Description: ");

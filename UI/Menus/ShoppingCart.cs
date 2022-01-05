@@ -96,8 +96,7 @@ public class ShoppingCart : IMenuWithID {
                     Console.WriteLine("\nReady to place your order? [y/n]");
                     string? inputYesorNo = Console.ReadLine();
                     if (inputYesorNo == "y"){
-
-                        //get new store Order id between 1 and 1,000,000
+                        //get new store Order ID
                         Random rnd = new Random();
                         int id = rnd.Next(1000000);
                         //Make new list of product orders to add to the user store order and calculate total
@@ -105,6 +104,8 @@ public class ShoppingCart : IMenuWithID {
                         List<ProductOrder> userProductOrders = new List<ProductOrder>();
                         foreach(ProductOrder checkoutProduct in allProductOrders){
                             userpOrdersTotal += checkoutProduct.TotalPrice!;
+                            //Declare a store order id for the checked out product to be accessed later by database
+                            checkoutProduct.storeOrderID = id;
                             userProductOrders.Add(checkoutProduct);
                         } 
                         string currTime = DateTime.Now.ToString();
@@ -123,7 +124,7 @@ public class ShoppingCart : IMenuWithID {
                         _iubl.AddUserStoreOrder(currUser, userStoreOrder);
                         //Get each corresponding store from each product's ID and add to a dictionary
                         Dictionary<int, List<ProductOrder>> storeOrdersToPlace = new Dictionary<int,List<ProductOrder>>();
-                        foreach(ProductOrder pOrder in allProductOrders){
+                        foreach(ProductOrder pOrder in userProductOrders){
                             //Getting the ID of the current store from the product id's string id code
                             int currStoreID = (int)pOrder.storeID!;
                             if (storeOrdersToPlace.ContainsKey(currStoreID)){

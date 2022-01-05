@@ -28,9 +28,8 @@ public class AdminMenu : IMenu {
                     Console.WriteLine("Address: ");
                     string? address = Console.ReadLine();
 
-                    //get new product id between 1 and 1,000,000
-                    Random rnd = new Random();
-                    int id = rnd.Next(1000000);
+                    //get new store id from datetime for incremental store IDs mod 1 bil to get under int limity
+                    int id = (int)((DateTime.Now.Subtract(DateTime.MinValue).TotalSeconds)%1000000000);
 
                     Store newStore= new Store{
                         ID = id!,
@@ -41,6 +40,8 @@ public class AdminMenu : IMenu {
                     };
                     //Adds a store to the list of stores
                     _sbl.AddStore(newStore);
+
+                    Console.WriteLine("\nYour store had been added!");
                 
                     break;
                 case "2":

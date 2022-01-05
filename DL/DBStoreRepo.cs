@@ -57,7 +57,90 @@ public class DBStoreRepo : ISRepo {
 
     }
     public List<Store> GetAllStores(){
-        return new List<Store>();
+        List<Store> allStores = new List<Store>();
+
+        using SqlConnection connection = new SqlConnection(_connectionString);
+        string storeSelect = "Select * From Store";
+        string productSelect = "Select * From Product";
+        string storeOrderSelect = "Select * From StoreOrder";
+        string productOrderSelect = "Select * From ProductOrder";
+        
+        //A single dataSet to hold all our data
+        DataSet StSet = new DataSet();
+
+        //Three different adapters for different tables
+        using SqlDataAdapter storeAdapter = new SqlDataAdapter(storeSelect, connection);
+        using SqlDataAdapter productAdapter = new SqlDataAdapter(productSelect, connection);
+        using SqlDataAdapter storeOrderAdapter = new SqlDataAdapter(storeOrderSelect, connection);
+        using SqlDataAdapter productOrderAdapter = new SqlDataAdapter(productOrderSelect, connection);
+
+        //Filling the Dataset with each table
+        storeAdapter.Fill(StSet, "Store");
+        productAdapter.Fill(StSet, "Product");
+        storeOrderAdapter.Fill(StSet, "StoreOrder");
+        productAdapter.Fill(StSet, "ProductOrder");
+
+        //Declaring each data table from the dataset
+        DataTable? storeTable = StSet.Tables["Store"];
+        DataTable? productTable = StSet.Tables["Product"];
+        DataTable? storeOrderTable = StSet.Tables["StoreOrder"];
+        DataTable? productOrderTable = StSet.Tables["ProductOrder"];
+
+        if(storeTable != null){   
+            foreach(DataRow row in storeTable.Rows){
+                //Use store constructor with DataRow object to quickly create store with parameters
+                Store store = new Store(row);
+
+                //Assigns each product corresponding to the current store
+                if (productTable != null){
+                    store.Products = productTable.AsEnumerable().Where(r => (int) r["storeID"] == store.ID).Select(
+                        r =>
+                            new Product {
+                                ID = (int) r["ID"],
+                                storeID = (int) r["storeID"],
+                                Name = r["Name"].ToString() ?? "",
+                                Description = r["Description"].ToString() ?? "",
+                                Price = (decimal) r["Price"],
+                                Quantity = (int) r["Quantity"]
+                            }
+                    ).ToList();
+                }
+                //Assigns each store order corresponding to the current store
+                if (storeOrderTable != null){
+                    store.AllOrders = storeOrderTable.AsEnumerable().Where(r => (int) r["storeID"] == store.ID).Select(
+                        r =>
+                            new StoreOrder {
+                                ID = (int) r["ID"],
+                                userID = (int) r["userID"],
+                                referenceID = (int) r["referenceID"],
+                                storeID = (int) r["storeID"],
+                                Date = r["Date"].ToString() ?? "",
+                                DateSeconds = (double)r["DateSeconds"]
+                            }
+                    ).ToList();
+                }
+                //Adds each product order to each store order in the list of stores
+                if(productTable != null){
+                    foreach(StoreOrder storOrder in store.AllOrders){
+                        storeOrder.Orders = productOrderTable.AsEnumerable().Where(r => (int) r["storeOrderID"] == storeOrder.ID).Select(
+                            r =>
+                                new ProductOrder {
+                                    ID = (int) r["ID"],
+                                    userID = (int) r["userID"],
+                                    referenceID = (int) r["referenceID"],
+                                    storeID = (int) r["storeID"],
+                                    Date = r["Date"].ToString() ?? "",
+                                    DateSeconds = (double)r["DateSeconds"]
+                                }
+                        ).ToList();
+                        }
+                    }
+                
+                //Add each store to the list of stores
+                allStores.Add(store);
+            }
+        }
+        return allStores;
     }
 
     public void DeleteStore(int storeID){}

@@ -3,6 +3,14 @@ namespace Models;
 public class Store {
     
     public Store(){}
+    public Store(DataRow row)
+    {
+        this.ID = (int) row["ID"];
+        this.Name = row["Name"].ToString() ?? "";
+        this.Name = row["Address"].ToString() ?? "";
+        this.City = row["City"].ToString() ?? "";
+        this.State = row["State"].ToString() ?? "";
+    }
 
     public int? ID { get; set; }
 

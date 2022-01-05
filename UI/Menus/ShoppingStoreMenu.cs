@@ -87,6 +87,7 @@ public class ShoppingStoreMenu {
                                         ID = id!,
                                         userID = userID,
                                         storeID = storeID,
+                                        storeOrderID = null,
                                         productID = selectedProduct.ID,
                                         ItemName = selectedProduct.Name!,
                                         TotalPrice = (selectedQuantity * prodPrice),
