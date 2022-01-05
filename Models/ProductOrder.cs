@@ -7,8 +7,11 @@ public class ProductOrder {
     public ProductOrder(){}
 
     public int? ID { get; set; }
+
     public int? userID { get; set; }
+
     public int? storeID { get; set; }
+    
     public int? productID { get; set; }
 
     public string? ItemName { get; set; }

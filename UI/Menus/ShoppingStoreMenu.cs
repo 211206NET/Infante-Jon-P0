@@ -56,8 +56,8 @@ public class ShoppingStoreMenu {
                         Console.WriteLine($"How many {selectedProduct.Name}s would you like to order?");
                         enterAmount:
                         string? userInput = Console.ReadLine();
-                        int userInt;
-                        if(!int.TryParse(userInput, out userInt!)){
+                        int selectedQuantity;
+                        if(!int.TryParse(userInput, out selectedQuantity!)){
                             Console.WriteLine("Please enter a valid input:");
                             goto enterAmount;
                         }
@@ -66,18 +66,18 @@ public class ShoppingStoreMenu {
                             if(prodQuantity == 0){
                                 Console.WriteLine("\nSorry, we are out of stock of this item!");
                             }
-                            else if(userInt > prodQuantity){
+                            else if(selectedQuantity > prodQuantity){
                                 Console.WriteLine($"You may only purchase up to {prodQuantity} {selectedProduct.Name}s\nPlease enter a valid amount:");
                                 goto enterAmount;
                             }
-                            else if (userInt <= 0){
+                            else if (selectedQuantity <= 0){
                                 Console.WriteLine("Please enter an amount greater than 0:");
                                 goto enterAmount;
                             }
                             else{
                                 //Get total quantity and price of current product
                                 decimal prodPrice = (decimal)selectedProduct.Price!;
-                                int newQuantity = prodQuantity - userInt;
+                                int newQuantity = prodQuantity - selectedQuantity;
                                 //Updates quantity remaining of the product
                                 _sbl.EditProduct(storeID, prodIDSelected, selectedProduct.Description!, selectedProduct.Price!, newQuantity);
                                 //get new product id between 1 and 1,000,000
@@ -89,8 +89,8 @@ public class ShoppingStoreMenu {
                                         storeID = storeID,
                                         productID = selectedProduct.ID,
                                         ItemName = selectedProduct.Name!,
-                                        TotalPrice = (userInt * prodPrice),
-                                        Quantity = userInt!,
+                                        TotalPrice = (selectedQuantity * prodPrice),
+                                        Quantity = selectedQuantity!,
                                     };
                                 //Add product order to user's shopping cart
                                 _iubl.AddProductOrder(currUser, currOrder);
