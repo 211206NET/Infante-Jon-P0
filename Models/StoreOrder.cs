@@ -9,7 +9,7 @@ public class StoreOrder{
         userID = (int) r["userID"];
         referenceID = (int) r["referenceID"];
         storeID = (int) r["storeID"];
-        Date = r["Date"].ToString() ?? "";
+        currDate = r["currDate"].ToString() ?? "";
         DateSeconds = (double)r["DateSeconds"];
     }
 
@@ -21,7 +21,7 @@ public class StoreOrder{
 
     public int? storeID {get; set; }
 
-    public string? Date { get; set; }
+    public string? currDate { get; set; }
 
     public double DateSeconds { get; set; }
 

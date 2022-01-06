@@ -10,7 +10,7 @@ public interface IUBL{
     
     void AddProductOrder(User currUser, ProductOrder currProdOrder);       
     
-    void EditProductOrder(User currUser, int prodOrderID, int quantity);
+    void EditProductOrder(User currUser, int prodOrderID, int quantity, decimal TotalPrice, int storeOrderID);
     
     void DeleteProductOrder(User currUser, int prodOrderID);
     

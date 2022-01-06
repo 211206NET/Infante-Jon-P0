@@ -51,8 +51,10 @@ public class UserBL : IUBL {
     /// <param name="currUser">Current user [object]</param>
     /// <param name="prodOrderID">Product order's ID in the shopping cart</param>
     /// <param name="quantity">New quantity to be update to</param>
-    public void EditProductOrder(User currUser, int prodOrderID, int quantity){
-        _dl.EditProductOrder(currUser, prodOrderID, quantity);
+    /// <param name="TotalPrice">New total price to be update to</param>
+    /// <param name="storeOrderID">Update the store order id when we check out cart</param>
+    public void EditProductOrder(User currUser, int prodOrderID, int quantity, decimal TotalPrice, int storeOrderID){
+        _dl.EditProductOrder(currUser, prodOrderID, quantity, TotalPrice, storeOrderID);
     }
     /// <summary>
     /// Deletes a product from your shopping list

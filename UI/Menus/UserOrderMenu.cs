@@ -20,7 +20,7 @@ public class UserOrderMenu : IMenuWithID {
             else{
             ColorWrite.wc("\n====================[Orders]===================", ConsoleColor.DarkCyan);
             foreach(StoreOrder storeorder in finishedOrders){
-                Console.WriteLine($"\n{storeorder.Date}");
+                Console.WriteLine($"\n{storeorder.currDate}");
                 Console.WriteLine("|-------------------------------------------|");
                 foreach(ProductOrder pOrder in storeorder.Orders!){
                     Console.WriteLine($"| {pOrder.ItemName} | Qty: {pOrder.Quantity} || ${pOrder.TotalPrice}");

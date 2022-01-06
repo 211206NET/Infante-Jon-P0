@@ -106,7 +106,8 @@ public class ShoppingCart : IMenuWithID {
                         foreach(ProductOrder checkoutProduct in allProductOrders){
                             userpOrdersTotal += checkoutProduct.TotalPrice!;
                             //Declare a store order id for the checked out product to be accessed later by database
-                            checkoutProduct.storeOrderID = id;
+                            //edit product order store order id
+                             _iubl.EditProductOrder(currUser, (int)checkoutProduct.ID!, (int)checkoutProduct.Quantity!, checkoutProduct.TotalPrice, id);
                             userProductOrders.Add(checkoutProduct);
                         } 
                         string currTime = DateTime.Now.ToString();
@@ -115,11 +116,11 @@ public class ShoppingCart : IMenuWithID {
                             ID = id!,
                             userID = currUser.ID,
                             referenceID = currUser.ID,
-                            storeID = null,
+                            storeID = 0,
                             TotalAmount = userpOrdersTotal!,
-                            Date = currTime!,
+                            currDate = currTime!,
                             DateSeconds = currTimeSeconds!,
-                            Orders = userProductOrders,
+                            // Orders = userProductOrders,
                             };
                         //Adds to current user's store order list
                         _iubl.AddUserStoreOrder(currUser, userStoreOrder);
@@ -142,11 +143,6 @@ public class ShoppingCart : IMenuWithID {
                         //Iterate over dictionary with store indexes and corresponding product
                         List<Store> allStores = _sbl.GetAllStores();
                         foreach(KeyValuePair<int, List<ProductOrder>> kv in storeOrdersToPlace){
-                            //Get the store index from the current store ID [kv.Key]
-                            // int storeIndex =  _sbl.GetStoreIndexByID(kv.Key);
-                            // if(allStores[storeIndex].AllOrders == null) {
-                            //     allStores[storeIndex].AllOrders = new List<StoreOrder>();
-                            //     }   
                             //get new store Order id between 1 and 1,000,000
                             int sid = rnd.Next(1000000);
                             //calcuate total order value for list of product orders
@@ -155,7 +151,9 @@ public class ShoppingCart : IMenuWithID {
                             foreach(ProductOrder pOrd in kv.Value){
                                 StoreOrderTotalValue += pOrd.TotalPrice!;
                                 //Declare a store order id for the checked out product to be accessed later by database
-                                pOrd.storeOrderID = sid;
+                                //edit product order store order id
+                                _iubl.EditProductOrder(currUser, (int)pOrd.ID!, (int)pOrd.Quantity!,(decimal)pOrd.TotalPrice, sid);
+                                storeProductOrders.Add(pOrd);
                             }
                             StoreOrder storeOrderToAdd = new StoreOrder{
                                 ID = sid!,
@@ -163,9 +161,9 @@ public class ShoppingCart : IMenuWithID {
                                 referenceID = kv.Key,
                                 storeID = kv.Key,
                                 TotalAmount = StoreOrderTotalValue!,
-                                Date = currTime!,
+                                currDate = currTime!,
                                 DateSeconds = currTimeSeconds!,
-                                Orders = storeProductOrders 
+                                // Orders = storeProductOrders 
                             };
                             //Adds store order to current selected store
                             //kv.key is the store's ID
@@ -207,15 +205,16 @@ public class ShoppingCart : IMenuWithID {
                         //Current quantity of the amount of products in the shopping cart
                         int currentPOrderQuantity = (int)allProductOrders[prodOrderIndex].Quantity!;
                         try {
+                            decimal newTotalPrice = ((pOrder.TotalPrice / currentPOrderQuantity) * newQ);
                             //Tries for invalid quantity type
-                            _iubl.EditProductOrder(currUser, (int)pOrder.ID!, newQ!);
+                            _iubl.EditProductOrder(currUser, (int)pOrder.ID!, newQ!, newTotalPrice, 0);
                             //If the quantity is over the product's stock limit
                             if (newQ > (oldQ + currentPOrderQuantity)){
                                 //Gets total amount of products from the current amount in the product order and the current amount in stock
                                 Console.WriteLine(@$"The amount you selected is too high!" + 
                                 $"\nThe maximum amount of this product you can order is {(currentPOrderQuantity + oldQ)}.");
                                 //reset the product order to its original value
-                                _iubl.EditProductOrder(currUser, (int)pOrder.ID, currentPOrderQuantity!);
+                                _iubl.EditProductOrder(currUser, (int)pOrder.ID, currentPOrderQuantity!, pOrder.TotalPrice, 0);
                                 goto reEnter;
                             }
                             else{

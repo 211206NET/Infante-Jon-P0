@@ -85,7 +85,7 @@ public class DBStoreRepo : ISRepo {
                     ).ToList();
                 }
                 //Adds each product order to each store order in the list of stores
-                if(productTable != null){
+                if(productOrderTable != null){
                     foreach(StoreOrder storeOrder in store.AllOrders!){
                         storeOrder.Orders = productOrderTable!.AsEnumerable().Where(r => (int) r["storeOrderID"] == storeOrder.ID).Select(
                             r => new ProductOrder(r)
@@ -227,7 +227,7 @@ public class DBStoreRepo : ISRepo {
     public void AddStoreOrder(int storeID, StoreOrder storeOrderToAdd){
         using SqlConnection connection = new SqlConnection(_connectionString);
         connection.Open();
-        string sqlInsertCmd = "INSERT INTO StoreOrder (ID, userID, referenceID, storeID, Date, DateSeconds, TotalAmount) VALUES (@ID @uID, @refID, stID, date, dateS, tAmount)";
+        string sqlInsertCmd = "INSERT INTO StoreOrder (ID, userID, referenceID, storeID, currDate, DateSeconds, TotalAmount) VALUES (@ID, @uID, @refID, @stID, @date, @dateS, @tAmount)";
         //Creates the new sql command
         using SqlCommand cmd = new SqlCommand(sqlInsertCmd, connection);
         //Adds the paramaters to the insert command
@@ -235,7 +235,7 @@ public class DBStoreRepo : ISRepo {
         cmd.Parameters.AddWithValue("@uID", storeOrderToAdd.userID);
         cmd.Parameters.AddWithValue("@refID", storeOrderToAdd.referenceID);
         cmd.Parameters.AddWithValue("@stID", storeOrderToAdd.storeID);
-        cmd.Parameters.AddWithValue("@date", storeOrderToAdd.Date);
+        cmd.Parameters.AddWithValue("@date", storeOrderToAdd.currDate);
         cmd.Parameters.AddWithValue("@dateS", storeOrderToAdd.DateSeconds);
         cmd.Parameters.AddWithValue("@tAmount", storeOrderToAdd.TotalAmount);
         //Executes the insert command

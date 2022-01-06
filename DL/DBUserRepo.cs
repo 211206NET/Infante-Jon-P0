@@ -138,8 +138,22 @@ public class DBUserRepo : IURepo {
     /// <param name="currUser">current user selected</param>
     /// <param name="prodOrderID">ID of the product order selected to edit</param>
     /// <param name="quantity">New quantity to update</param>
-    public void EditProductOrder(User currUser, int prodOrderID, int quantity){
-
+    /// <param name="TotalPrice">New total price to update</param>
+    /// <param name="storeOrderID">Edit's the store order id when we checkout the cart</param>
+    public void EditProductOrder(User currUser, int prodOrderID, int quantity, decimal TotalPrice, int storeOrderID){
+        using SqlConnection connection = new SqlConnection(_connectionString);
+        connection.Open();
+        //Updates a single product by id, and passed in requirements
+        string sqlEditCmd = $"UPDATE ProductOrder SET Quantity = @qty, TotalPrice = @tPrice, storeOrderID = @sOrderID WHERE ID = @prodOrderID";
+        using SqlCommand cmdEditProdOrder = new SqlCommand(sqlEditCmd, connection);
+        //Adds the paramaters to the sql command
+        cmdEditProdOrder.Parameters.AddWithValue("@qty", quantity);
+        cmdEditProdOrder.Parameters.AddWithValue("@tPrice", TotalPrice);
+        cmdEditProdOrder.Parameters.AddWithValue("@prodOrderID", prodOrderID);
+        cmdEditProdOrder.Parameters.AddWithValue("@sOrderID", storeOrderID);
+        //Edits the current product selected
+        cmdEditProdOrder.ExecuteNonQuery();
+        connection.Close();
     }
 
     /// <summary>
@@ -148,7 +162,15 @@ public class DBUserRepo : IURepo {
     /// <param name="currUser">current user object inputted</param>
     /// <param name="prodOrderID">the product order ID of the product order we have selected</param>
     public void DeleteProductOrder(User currUser, int prodOrderID){
-
+        using SqlConnection connection = new SqlConnection(_connectionString);
+        connection.Open();
+        //Deletes a single product by id
+        string sqlDelCmd = $"DELETE FROM ProductOrder WHERE ID = @prodOrderID";
+        using SqlCommand cmdDelProdOrder = new SqlCommand(sqlDelCmd, connection);
+        cmdDelProdOrder.Parameters.AddWithValue("@prodOrderID", prodOrderID);
+        //Deletes the current product selected
+        cmdDelProdOrder.ExecuteNonQuery();
+        connection.Close();
     }
 
     /// <summary>
@@ -157,16 +179,26 @@ public class DBUserRepo : IURepo {
     /// <param name="currUser">current user object selected</param>
     /// <param name="currStoreOrder">storeOrder object to add to previous orders</param>
     public void AddUserStoreOrder(User currUser, StoreOrder currStoreOrder){
-
+        using SqlConnection connection = new SqlConnection(_connectionString);
+        connection.Open();
+        string sqlInsertCmd = "INSERT INTO StoreOrder (ID, userID, referenceID, storeID, currDate, DateSeconds, TotalAmount) VALUES (@ID, @uID, @refID, @stID, @date, @dateS, @tAmount)";
+        //Creates the new sql command
+        using SqlCommand cmd = new SqlCommand(sqlInsertCmd, connection);
+        //Adds the paramaters to the insert command
+        cmd.Parameters.AddWithValue("@ID", currStoreOrder.ID);
+        cmd.Parameters.AddWithValue("@uID", currStoreOrder.userID);
+        cmd.Parameters.AddWithValue("@refID", currStoreOrder.referenceID);
+        cmd.Parameters.AddWithValue("@stID", currStoreOrder.storeID);
+        cmd.Parameters.AddWithValue("@date", currStoreOrder.currDate);
+        cmd.Parameters.AddWithValue("@dateS", currStoreOrder.DateSeconds);
+        cmd.Parameters.AddWithValue("@tAmount", currStoreOrder.TotalAmount);
+        //Executes the insert command
+        cmd.ExecuteNonQuery();
+        connection.Close();
     }
 
-    /// <summary>
-    /// Removes every product order from the user's shopping cart, and deletes each instance inside the database
-    /// </summary>
-    /// <param name="currUser">current user object selected</param>
-    public void ClearShoppingCart(User currUser){
-        
-    }
+    //Unused with database implementation
+    public void ClearShoppingCart(User currUser){}
 
     //Unused with database implementation
     public int GetCurrentUserIndexByID(int userID){
