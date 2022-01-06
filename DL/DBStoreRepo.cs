@@ -154,8 +154,14 @@ public class DBStoreRepo : ISRepo {
         }
         return allStores;
     }
+    /// <summary>
+    /// Deletes an entire store from the database
+    /// </summary>
+    /// <param name="storeID">current store ID selected</param>
+    public void DeleteStore(int storeID){
+        
+    }
 
-    public void DeleteStore(int storeID){}
     /// <summary>
     /// Gets the current store details from the list of stores
     /// </summary>
@@ -177,7 +183,9 @@ public class DBStoreRepo : ISRepo {
     /// </summary>
     /// <param name="storeID">current storeID selected</param>
     /// <param name="productToAdd">Product object to add to t he database</param>
-    public void AddProduct(int storeID, Product productToAdd){}
+    public void AddProduct(int storeID, Product productToAdd){
+
+    }
 
     /// <summary>
     /// Returns a product by the ID given
@@ -194,7 +202,9 @@ public class DBStoreRepo : ISRepo {
     /// </summary>
     /// <param name="storeID">current store ID</param>
     /// <param name="prodID">selected product ID</param>
-    public void DeleteProduct(int storeID, int prodID){}
+    public void DeleteProduct(int storeID, int prodID){
+
+    }
 
     /// <summary>
     /// Edits a product and saves it back to the database
@@ -204,14 +214,18 @@ public class DBStoreRepo : ISRepo {
     /// <param name="description">New description to update</param>
     /// <param name="price">New price entered to update</param>
     /// <param name="quantity">New quantity to update</param>
-    public void EditProduct(int storeID, int prodID, string description, decimal price, int quantity){}
-    
+    public void EditProduct(int storeID, int prodID, string description, decimal price, int quantity){
+
+    }
+
     /// <summary>
     /// Adds a store order to the database with the correct information to be retrieved later
     /// </summary>
     /// <param name="storeID">current store ID</param>
     /// <param name="storeOrderToAdd">Store object to add to the database</param>
-    public void AddStoreOrder(int storeID, StoreOrder storeOrderToAdd){}
+    public void AddStoreOrder(int storeID, StoreOrder storeOrderToAdd){
+
+    }
         
     //Unused with database implementation
     public int GetProductIndexByID(int storeID, int prodID){
