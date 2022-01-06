@@ -171,8 +171,8 @@ public class ShoppingCart : IMenuWithID {
                             //kv.key is the store's ID
                             _sbl.AddStoreOrder(kv.Key, storeOrderToAdd);
                         }
-                        //Emptys current user's shopping cart
-                        _iubl.ClearShoppingCart(currUser);
+                        //Emptys current user's shopping cart [unused with database implementation]
+                        // _iubl.ClearShoppingCart(currUser);
                     }
                 }
             }
