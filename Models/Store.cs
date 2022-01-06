@@ -1,6 +1,3 @@
-using Microsoft.Data.SqlClient;
-using System.Data;
-
 namespace Models;
 
 public class Store {

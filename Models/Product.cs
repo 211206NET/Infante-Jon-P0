@@ -6,6 +6,15 @@ public class Product {
 
     public Product(){}
 
+    public Product(DataRow r){
+        ID = (int) r["ID"];
+        storeID = (int) r["storeID"];
+        Name = r["Name"].ToString() ?? "";
+        Description = r["Description"].ToString() ?? "";
+        Price = (decimal) r["Price"];
+        Quantity = (int) r["Quantity"];
+}
+
     public int? ID { get; set; }
 
     public int? storeID {get; set; }

@@ -1,6 +1,3 @@
-using Microsoft.Data.SqlClient;
-using System.Data;
-using System.Linq;
 
 namespace DL;
 
@@ -104,50 +101,23 @@ public class DBStoreRepo : ISRepo {
                 //Assigns each product corresponding to the current store
                 if (productTable != null){
                     store.Products = productTable.AsEnumerable().Where(r => (int) r["storeID"] == store.ID).Select(
-                        r =>
-                            new Product {
-                                ID = (int) r["ID"],
-                                storeID = (int) r["storeID"],
-                                Name = r["Name"].ToString() ?? "",
-                                Description = r["Description"].ToString() ?? "",
-                                Price = (decimal) r["Price"],
-                                Quantity = (int) r["Quantity"]
-                            }
+                        r => new Product(r)
                     ).ToList();
                 }
                 //Assigns each store order corresponding to the current store
                 if (storeOrderTable != null){
                     store.AllOrders = storeOrderTable.AsEnumerable().Where(r => (int) r["storeID"] == store.ID).Select(
-                        r =>
-                            new StoreOrder {
-                                ID = (int) r["ID"],
-                                userID = (int) r["userID"],
-                                referenceID = (int) r["referenceID"],
-                                storeID = (int) r["storeID"],
-                                Date = r["Date"].ToString() ?? "",
-                                DateSeconds = (double)r["DateSeconds"]
-                            }
+                        r => new StoreOrder(r)
                     ).ToList();
                 }
                 //Adds each product order to each store order in the list of stores
                 if(productTable != null){
                     foreach(StoreOrder storeOrder in store.AllOrders!){
                         storeOrder.Orders = productOrderTable!.AsEnumerable().Where(r => (int) r["storeOrderID"] == storeOrder.ID).Select(
-                            r =>
-                                new ProductOrder {
-                                    ID = (int) r["ID"],
-                                    userID = (int) r["userID"],
-                                    storeID = (int) r["storeID"],
-                                    storeOrderID = (int) r["storeOrderID"],
-                                    productID = (int)r["productID"],
-                                    ItemName = r["ItemName"].ToString() ?? "",
-                                    TotalPrice = (decimal)r["TotalPrice"],
-                                    Quantity = (int) r["Quantity"]
-                                }
+                            r => new ProductOrder(r)
                         ).ToList();
                         }
-                    }
-                
+                    }  
                 //Add each store to the list of stores
                 allStores.Add(store);
             }
@@ -184,7 +154,45 @@ public class DBStoreRepo : ISRepo {
     /// <param name="storeID">current storeID selected</param>
     /// <param name="productToAdd">Product object to add to t he database</param>
     public void AddProduct(int storeID, Product productToAdd){
+        string selectCmd = "SELECT * FROM Product";
+        using(SqlConnection connection = new SqlConnection(_connectionString)){
+            using(SqlDataAdapter dataAdapter = new SqlDataAdapter(selectCmd, connection)){
+                //DataSet is essentially just a container that holds data in memory
+                // it holds one or more DataTables
+                DataSet productSet = new DataSet();
+                //names table 'product'
+                dataAdapter.Fill(productSet, "Product");
 
+                DataTable productTable = productSet.Tables["Product"]!;
+
+                //Generates new row with the product table schema
+                DataRow newRow = productTable.NewRow()!;
+
+                //Fill with new product information
+                newRow["ID"] = productToAdd.ID;
+                newRow["storeID"] = productToAdd.storeID;
+                newRow["Name"] = productToAdd.Name ?? "";
+                newRow["Description"] = productToAdd.Description ?? "";
+                newRow["Price"] = productToAdd.Price;
+                newRow["Quantity"] = productToAdd.Quantity;
+                
+                //Add a new row to our restaurant table
+                productTable.Rows.Add(newRow);
+
+                //We need to set which query to execute for changes
+                //We need to set SqlDataAdapater.InsertCommand to let it know
+                //how to insert the new records into the productTable
+                string insertCmd = $"INSERT INTO Product (ID, storeID, Name, Description, Price, Quantity) VALUES ({productToAdd.ID}, {productToAdd.storeID}, '{productToAdd.Name}', '{productToAdd.Description}', {productToAdd.Price}, {productToAdd.Quantity})";
+
+                SqlCommandBuilder cmdBuilder = new SqlCommandBuilder(dataAdapter);
+
+                //we have to tell the adapter how to insert the data
+                dataAdapter.InsertCommand = cmdBuilder.GetInsertCommand();
+                
+                //Tell the datadapter to update the DB with changes
+                dataAdapter.Update(productTable);
+            }
+        }
     }
 
     /// <summary>
@@ -194,6 +202,13 @@ public class DBStoreRepo : ISRepo {
     /// <param name="prodID">product object ID selected</param>
     /// <returns>Product Object</returns>
     public Product GetProductByID(int storeID, int prodID){
+        Store currStore = GetStoreByID(storeID);
+        foreach(Product product in currStore.Products!){
+            if(product.ID == prodID){
+                return product;
+            }
+        }
+        //Cant find any Products with that id
         return new Product();
     }
 

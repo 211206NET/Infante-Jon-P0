@@ -6,6 +6,17 @@ public class ProductOrder {
 
     public ProductOrder(){}
 
+    public ProductOrder(DataRow r){
+        ID = (int) r["ID"];
+        userID = (int) r["userID"];
+        storeID = (int) r["storeID"];
+        storeOrderID = (int) r["storeOrderID"];
+        productID = (int)r["productID"];
+        ItemName = r["ItemName"].ToString() ?? "";
+        TotalPrice = (decimal)r["TotalPrice"];
+        Quantity = (int) r["Quantity"];
+    }
+
     public int? ID { get; set; }
 
     public int? userID { get; set; }

@@ -49,6 +49,7 @@ public class LoginMenu : IMenu {
                             };
 
                         _iubl.AddUser(newUser);
+                        Console.WriteLine("\nSuccessfully signed up and logged in!");
                         //User Menu initialization | id is the user's ID
                         MenuFactoryWithID.GetMenu("user").Start(id);
                     }

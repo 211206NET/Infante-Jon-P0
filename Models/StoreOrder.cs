@@ -4,6 +4,15 @@ public class StoreOrder{
 
     public StoreOrder(){}
 
+    public StoreOrder(DataRow r){
+        ID = (int) r["ID"];
+        userID = (int) r["userID"];
+        referenceID = (int) r["referenceID"];
+        storeID = (int) r["storeID"];
+        Date = r["Date"].ToString() ?? "";
+        DateSeconds = (double)r["DateSeconds"];
+    }
+
     public int? ID { get; set; }
 
     public int? userID { get; set; }
