@@ -26,19 +26,19 @@ public class AllStoresMenu : IMenu {
             ColorWrite.wc("\n Select the store's ID to view its details.\n   Or enter [r] to [Return] to the Admin Menu.", ConsoleColor.DarkYellow);
             Console.WriteLine("=============================================");
             string? select = Console.ReadLine();
-            int storeID;
+            int storeIndex;
             //Returns to menu
             if (select == "r"){
                 valid = true;
                 }
             else {
                 //Checks for valid integer
-                if(!int.TryParse(select, out storeID)){
+                if(!int.TryParse(select, out storeIndex)){
                     Console.WriteLine("\nPlease select a valid input!");
                 }
                 else{
-                    if (storeID >= 0 && storeID < allStores.Count){
-                        storeID = (int)allStores[storeID].ID!;
+                    if (storeIndex >= 0 && storeIndex < allStores.Count){
+                        int storeID = (int)allStores[storeIndex].ID!;
                         valid = true;
                         //Initializes store menu                        
                         MenuFactoryWithID.GetMenu("store").Start(storeID);

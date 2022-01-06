@@ -125,7 +125,7 @@ public class ShoppingCart : IMenuWithID {
                         _iubl.AddUserStoreOrder(currUser, userStoreOrder);
                         //Get each corresponding store from each product's ID and add to a dictionary
                         Dictionary<int, List<ProductOrder>> storeOrdersToPlace = new Dictionary<int,List<ProductOrder>>();
-                        foreach(ProductOrder pOrder in userProductOrders){
+                        foreach(ProductOrder pOrder in allProductOrders){
                             //Getting the ID of the current store from the product id's string id code
                             int currStoreID = (int)pOrder.storeID!;
                             if (storeOrdersToPlace.ContainsKey(currStoreID)){
@@ -143,16 +143,19 @@ public class ShoppingCart : IMenuWithID {
                         List<Store> allStores = _sbl.GetAllStores();
                         foreach(KeyValuePair<int, List<ProductOrder>> kv in storeOrdersToPlace){
                             //Get the store index from the current store ID [kv.Key]
-                            int storeIndex =  _sbl.GetStoreIndexByID(kv.Key);
-                            if(allStores[storeIndex].AllOrders == null) {
-                                allStores[storeIndex].AllOrders = new List<StoreOrder>();
-                                }   
+                            // int storeIndex =  _sbl.GetStoreIndexByID(kv.Key);
+                            // if(allStores[storeIndex].AllOrders == null) {
+                            //     allStores[storeIndex].AllOrders = new List<StoreOrder>();
+                            //     }   
                             //get new store Order id between 1 and 1,000,000
                             int sid = rnd.Next(1000000);
                             //calcuate total order value for list of product orders
                             decimal StoreOrderTotalValue = 0;
+                            List<ProductOrder> storeProductOrders = new List<ProductOrder>();
                             foreach(ProductOrder pOrd in kv.Value){
                                 StoreOrderTotalValue += pOrd.TotalPrice!;
+                                //Declare a store order id for the checked out product to be accessed later by database
+                                pOrd.storeOrderID = sid;
                             }
                             StoreOrder storeOrderToAdd = new StoreOrder{
                                 ID = sid!,
@@ -162,7 +165,7 @@ public class ShoppingCart : IMenuWithID {
                                 TotalAmount = StoreOrderTotalValue!,
                                 Date = currTime!,
                                 DateSeconds = currTimeSeconds!,
-                                Orders = kv.Value
+                                Orders = storeProductOrders 
                             };
                             //Adds store order to current selected store
                             //kv.key is the store's ID

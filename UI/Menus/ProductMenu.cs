@@ -31,8 +31,8 @@ public class ProductMenu : IMenuWithID {
             string? select = Console.ReadLine();
             int prodIndex;
             //Get the current product id by prodID
-            List<Store> allStores = _sbl.GetAllStores();
-            int currStoreIndex = _sbl.GetStoreIndexByID(storeID);
+            // List<Store> allStores = _sbl.GetAllStores();
+            // int currStoreIndex = _sbl.GetStoreIndexByID(storeID); unused
             //Nesting to get current product id by prod index
 
             //Return to the Product Menu
@@ -54,7 +54,7 @@ public class ProductMenu : IMenuWithID {
                 else {
                     if (prodIndex >= 0 && prodIndex < allProducts.Count){
                         //get current product id
-                        int prodID = (int)allStores[currStoreIndex].Products![prodIndex].ID!;
+                        int prodID = (int)currStore.Products![prodIndex].ID!;
                         //Calls the business logic of deleting a product by both indices
                         _sbl.DeleteProduct(storeID, prodID);
 
@@ -73,7 +73,7 @@ public class ProductMenu : IMenuWithID {
                     //Check if index is in range
                     if (prodIndex >= 0 && prodIndex < allProducts.Count){
                         //get current product ID
-                        int prodID = (int)allStores[currStoreIndex].Products![prodIndex].ID!;
+                        int prodID = (int)currStore.Products![prodIndex].ID!;
                         //Get our current product selected
                         Product currProduct = _sbl.GetProductByID(storeID, prodID);
                         Console.WriteLine($"\n{currProduct.Name}\nEdit Description: ");
