@@ -201,6 +201,12 @@ public class ShoppingCart : IMenuWithID {
                             Console.WriteLine("New Quantity must be an integer.");
                             goto reEnter;
                         }
+                        else{
+                            if (newQ <= 0){
+                                Console.WriteLine("New Quantity must be greater than 0.");
+                                goto reEnter;
+                            }
+                        }
                         int oldQ = (int)productSelected!.Quantity!;
                         //Current quantity of the amount of products in the shopping cart
                         int currentPOrderQuantity = (int)allProductOrders[prodOrderIndex].Quantity!;

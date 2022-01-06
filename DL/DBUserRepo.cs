@@ -115,13 +115,14 @@ public class DBUserRepo : IURepo {
         using SqlConnection connection = new SqlConnection(_connectionString);
         connection.Open();
         //Our insert command to add a product order
-        string sqlCmd = "INSERT INTO ProductOrder (ID, userID, storeID, storeOrderID, productID, ItemName, TotalPrice, Quantity) VALUES (@ID, @userID, @storeID, @storeOrderID, @productID, @itemName, @totPrice, @qty)"; 
+        string sqlCmd = "INSERT INTO ProductOrder (ID, userID, storeID, storeOrderID, userOrderID, productID, ItemName, TotalPrice, Quantity) VALUES (@ID, @userID, @storeID, @storeOrderID, @userOrderID, @productID, @itemName, @totPrice, @qty)"; 
         using SqlCommand cmdAddProductOrder= new SqlCommand(sqlCmd, connection);
         //Adding paramaters
         cmdAddProductOrder.Parameters.AddWithValue("@ID", currProdOrder.ID);
         cmdAddProductOrder.Parameters.AddWithValue("@userID", currProdOrder.userID);
         cmdAddProductOrder.Parameters.AddWithValue("@storeID", currProdOrder.storeID);
         cmdAddProductOrder.Parameters.AddWithValue("@storeOrderID", currProdOrder.storeOrderID);
+        cmdAddProductOrder.Parameters.AddWithValue("@userOrderID", currProdOrder.userOrderID);
         cmdAddProductOrder.Parameters.AddWithValue("@productID", currProdOrder.productID);
         cmdAddProductOrder.Parameters.AddWithValue("@itemName", currProdOrder.ItemName);
         cmdAddProductOrder.Parameters.AddWithValue("@totPrice", currProdOrder.TotalPrice);
