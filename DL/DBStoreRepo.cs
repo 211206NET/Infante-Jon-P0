@@ -14,49 +14,23 @@ public class DBStoreRepo : ISRepo {
     /// </summary>
     /// <param name="storeToAdd"></param>
     public void AddStore(Store storeToAdd){
-        string selectCmd = "SELECT * FROM Store";
-        using(SqlConnection connection = new SqlConnection(_connectionString)){
-            using(SqlDataAdapter dataAdapter = new SqlDataAdapter(selectCmd, connection)){
-                //DataSet is essentially just a container that holds data in memory
-                // it holds one or more DataTables
-                DataSet storeSet = new DataSet();
-                //names table 'Store'
-                dataAdapter.Fill(storeSet, "Store");
-
-                DataTable storeTable = storeSet.Tables["Store"]!;
-
-                //Generates new row with the store table schema
-                DataRow newRow = storeTable.NewRow()!;
-
-                //Fill with new store information
-                newRow["ID"] = storeToAdd.ID;
-                newRow["Address"] = storeToAdd.Address ?? "";
-                newRow["Name"] = storeToAdd.Name;
-                newRow["City"] = storeToAdd.City ?? "";
-                newRow["State"] = storeToAdd.State ?? "";
-                
-                //Add a new row to our restaurant table
-                storeTable.Rows.Add(newRow);
-
-                //We need to set which query to execute for changes
-                //We need to set SqlDataAdapater.InsertCommand to let it know
-                //how to insert the new records into the storeTable
-
-                string insertCmd = $"INSERT INTO Store (ID, Address, Name, City, State) VALUES ({storeToAdd.ID}, '{storeToAdd.Address}', '{storeToAdd.Name}', '{storeToAdd.City}', '{storeToAdd.State}')";
-
-                SqlCommandBuilder cmdBuilder = new SqlCommandBuilder(dataAdapter);
-
-                //we have to tell the adapter how to insert the data
-                dataAdapter.InsertCommand = cmdBuilder.GetInsertCommand();
-                //GetUpdateCommand, GetDeleteCommand
-                //SqlDataAdapter.UpdateCommand (for your put/update operations)
-                //SqlDataAdapter.DeleteCommand (for delete/destroy operations)
-                
-                //Tell the datadapter to update the DB with changes
-                dataAdapter.Update(storeTable);
-            }
-        }
+        //Establishing new connection
+        using SqlConnection connection = new SqlConnection(_connectionString);
+        connection.Open();
+        //Our insert command to add a store
+        string sqlCmd = "INSERT INTO Store (ID, Address, Name, City, State) VALUES (@ID, @address, @name, @city, @state)"; 
+        using SqlCommand cmdAddStore = new SqlCommand(sqlCmd, connection);
+        //Adding paramaters
+        cmdAddStore.Parameters.AddWithValue("@ID", storeToAdd.ID);
+        cmdAddStore.Parameters.AddWithValue("@address", storeToAdd.Address);
+        cmdAddStore.Parameters.AddWithValue("@name", storeToAdd.Name);
+        cmdAddStore.Parameters.AddWithValue("@city", storeToAdd.City);
+        cmdAddStore.Parameters.AddWithValue("@state", storeToAdd.State);
+        //Executing command
+        cmdAddStore.ExecuteNonQuery();
+        connection.Close();
     }
+
 
     /// <summary>
     /// Gets a list of all the stores from the database. Fills in the nested lists within each store for
@@ -132,10 +106,13 @@ public class DBStoreRepo : ISRepo {
         using SqlConnection connection = new SqlConnection(_connectionString);
         connection.Open();
         //Deletes all the products of the current store
-        string sqlCascadeDelCmd = $"DELETE FROM Product WHERE storeID={storeID}";
-        string sqlDelCmd = $"DELETE FROM Store WHERE ID={storeID}";
+        string sqlCascadeDelCmd = $"DELETE FROM Product WHERE storeID=@stID";
+        string sqlDelCmd = $"DELETE FROM Store WHERE ID=@storeID";
         using SqlCommand cmdcasc = new SqlCommand(sqlCascadeDelCmd, connection);
+        cmdcasc.Parameters.AddWithValue("@stID", storeID);
         using SqlCommand cmddelstore = new SqlCommand(sqlDelCmd, connection);
+        cmddelstore.Parameters.AddWithValue("@storeID", storeID);
+
         //Deletes all the products with the storeID selected
         cmdcasc.ExecuteNonQuery();
         //Deletes the current store after all products with the store id are removed
@@ -165,45 +142,23 @@ public class DBStoreRepo : ISRepo {
     /// <param name="storeID">current storeID selected</param>
     /// <param name="productToAdd">Product object to add to t he database</param>
     public void AddProduct(int storeID, Product productToAdd){
-        string selectCmd = "SELECT * FROM Product";
-        using(SqlConnection connection = new SqlConnection(_connectionString)){
-            using(SqlDataAdapter dataAdapter = new SqlDataAdapter(selectCmd, connection)){
-                //DataSet is essentially just a container that holds data in memory
-                // it holds one or more DataTables
-                DataSet productSet = new DataSet();
-                //names table 'product'
-                dataAdapter.Fill(productSet, "Product");
-
-                DataTable productTable = productSet.Tables["Product"]!;
-
-                //Generates new row with the product table schema
-                DataRow newRow = productTable.NewRow()!;
-
-                //Fill with new product information
-                newRow["ID"] = productToAdd.ID;
-                newRow["storeID"] = productToAdd.storeID;
-                newRow["Name"] = productToAdd.Name ?? "";
-                newRow["Description"] = productToAdd.Description ?? "";
-                newRow["Price"] = productToAdd.Price;
-                newRow["Quantity"] = productToAdd.Quantity;
-                
-                //Add a new row to our restaurant table
-                productTable.Rows.Add(newRow);
-
-                //We need to set which query to execute for changes
-                //We need to set SqlDataAdapater.InsertCommand to let it know
-                //how to insert the new records into the productTable
-                string insertCmd = $"INSERT INTO Product (ID, storeID, Name, Description, Price, Quantity) VALUES ({productToAdd.ID}, {productToAdd.storeID}, '{productToAdd.Name}', '{productToAdd.Description}', {productToAdd.Price}, {productToAdd.Quantity})";
-
-                SqlCommandBuilder cmdBuilder = new SqlCommandBuilder(dataAdapter);
-
-                //we have to tell the adapter how to insert the data
-                dataAdapter.InsertCommand = cmdBuilder.GetInsertCommand();
-                
-                //Tell the datadapter to update the DB with changes
-                dataAdapter.Update(productTable);
-            }
-        }
+        //Establishing new connection
+        using SqlConnection connection = new SqlConnection(_connectionString);
+        connection.Open();
+        //Our insert command to add a product
+        string sqlCmd = "INSERT INTO Product (ID, storeID, Name, Description, Price, Quantity) VALUES (@ID, @storeID, @name, @desc, @price, @qty)"; 
+        using SqlCommand cmdAddProduct = new SqlCommand(sqlCmd, connection);
+        //Adding paramaters
+        cmdAddProduct.Parameters.AddWithValue("@ID", productToAdd.ID);
+        cmdAddProduct.Parameters.AddWithValue("@storeID", productToAdd.storeID);
+        cmdAddProduct.Parameters.AddWithValue("@name", productToAdd.Name);
+        cmdAddProduct.Parameters.AddWithValue("@desc", productToAdd.Description);
+        cmdAddProduct.Parameters.AddWithValue("@price", productToAdd.Price);
+        cmdAddProduct.Parameters.AddWithValue("@qty", productToAdd.Quantity);
+        //Executing command
+        cmdAddProduct.ExecuteNonQuery();
+        connection.Close();
+        
     }
 
     /// <summary>
@@ -232,8 +187,9 @@ public class DBStoreRepo : ISRepo {
         using SqlConnection connection = new SqlConnection(_connectionString);
         connection.Open();
         //Deletes a single product by id
-        string sqlDelCmd = $"DELETE FROM Product WHERE ID = {prodID}";
+        string sqlDelCmd = $"DELETE FROM Product WHERE ID = @prodID";
         using SqlCommand cmdDelProd = new SqlCommand(sqlDelCmd, connection);
+        cmdDelProd.Parameters.AddWithValue("@prodID", prodID);
         //Deletes the current product selected
         cmdDelProd.ExecuteNonQuery();
         connection.Close();
@@ -251,12 +207,13 @@ public class DBStoreRepo : ISRepo {
         using SqlConnection connection = new SqlConnection(_connectionString);
         connection.Open();
         //Updates a single product by id, and passed in requirements
-        string sqlEditCmd = $"UPDATE Product SET Description = @desc, Price = @prc, Quantity = @qty WHERE ID = {prodID}";
+        string sqlEditCmd = $"UPDATE Product SET Description = @desc, Price = @prc, Quantity = @qty WHERE ID = @prodID";
         using SqlCommand cmdEditProd = new SqlCommand(sqlEditCmd, connection);
         //Adds the paramaters to the sql command
         cmdEditProd.Parameters.AddWithValue("@desc", description);
         cmdEditProd.Parameters.AddWithValue("@prc", price);
         cmdEditProd.Parameters.AddWithValue("@qty", quantity);
+        cmdEditProd.Parameters.AddWithValue("@prodID", prodID);
         //Edits the current product selected
         cmdEditProd.ExecuteNonQuery();
         connection.Close();
@@ -268,7 +225,22 @@ public class DBStoreRepo : ISRepo {
     /// <param name="storeID">current store ID</param>
     /// <param name="storeOrderToAdd">Store object to add to the database</param>
     public void AddStoreOrder(int storeID, StoreOrder storeOrderToAdd){
-
+        using SqlConnection connection = new SqlConnection(_connectionString);
+        connection.Open();
+        string sqlInsertCmd = "INSERT INTO StoreOrder (ID, userID, referenceID, storeID, Date, DateSeconds, TotalAmount) VALUES (@ID @uID, @refID, stID, date, dateS, tAmount)";
+        //Creates the new sql command
+        using SqlCommand cmd = new SqlCommand(sqlInsertCmd, connection);
+        //Adds the paramaters to the insert command
+        cmd.Parameters.AddWithValue("@ID", storeOrderToAdd.ID);
+        cmd.Parameters.AddWithValue("@uID", storeOrderToAdd.userID);
+        cmd.Parameters.AddWithValue("@refID", storeOrderToAdd.referenceID);
+        cmd.Parameters.AddWithValue("@stID", storeOrderToAdd.storeID);
+        cmd.Parameters.AddWithValue("@date", storeOrderToAdd.Date);
+        cmd.Parameters.AddWithValue("@dateS", storeOrderToAdd.DateSeconds);
+        cmd.Parameters.AddWithValue("@tAmount", storeOrderToAdd.TotalAmount);
+        //Executes the insert command
+        cmd.ExecuteNonQuery();
+        connection.Close();
     }
         
     //Unused with database implementation

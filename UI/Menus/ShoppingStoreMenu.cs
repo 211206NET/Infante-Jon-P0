@@ -86,7 +86,7 @@ public class ShoppingStoreMenu {
                                         ID = id!,
                                         userID = userID,
                                         storeID = storeID,
-                                        storeOrderID = null,
+                                        storeOrderID = 0,
                                         productID = selectedProduct.ID,
                                         ItemName = selectedProduct.Name!,
                                         TotalPrice = (selectedQuantity * prodPrice),
@@ -94,6 +94,8 @@ public class ShoppingStoreMenu {
                                     };
                                 //Add product order to user's shopping cart
                                 _iubl.AddProductOrder(currUser, currOrder);
+
+                                Console.WriteLine("\nYour order has been added to your shopping cart!");
                             }
                         }
                     }

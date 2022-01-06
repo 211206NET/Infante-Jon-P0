@@ -13,47 +13,19 @@ public class DBUserRepo : IURepo {
     /// </summary>
     /// <param name="userToAdd"></param>
     public void AddUser(User userToAdd){
-        string selectCmd = "SELECT * FROM Customer";
-        using(SqlConnection connection = new SqlConnection(_connectionString)){
-            using(SqlDataAdapter dataAdapter = new SqlDataAdapter(selectCmd, connection)){
-                //DataSet is essentially just a container that holds data in memory
-                // it holds one or more DataTables
-                DataSet customerSet = new DataSet();
-                //names table 'customer'
-                dataAdapter.Fill(customerSet, "Customer");
-
-                DataTable customerTable = customerSet.Tables["customer"]!;
-
-                //Generates new row with the customer table schema
-                DataRow newRow = customerTable.NewRow()!;
-
-                //Fill with new customer information
-                newRow["ID"] = userToAdd.ID;
-                newRow["Username"] = userToAdd.Username ?? "";
-                newRow["Password"] = userToAdd.Password ?? "";
-                
-                //Add a new row to our restaurant table
-                customerTable.Rows.Add(newRow);
-
-                //We need to set which query to execute for changes
-                //We need to set SqlDataAdapater.InsertCommand to let it know
-                //how to insert the new records into the customerTable
-
-                string insertCmd = $"INSERT INTO Customer (ID, Username, Password) VALUES ({userToAdd.ID}, '{userToAdd.Username}', '{userToAdd.Password}')";
-
-                SqlCommandBuilder cmdBuilder = new SqlCommandBuilder(dataAdapter);
-
-                //we have to tell the adapter how to insert the data
-                dataAdapter.InsertCommand = cmdBuilder.GetInsertCommand();
-                //GetUpdateCommand, GetDeleteCommand
-                //SqlDataAdapter.UpdateCommand (for your put/update operations)
-                //SqlDataAdapter.DeleteCommand (for delete/destroy operations)
-                
-                //Tell the datadapter to update the DB with changes
-                dataAdapter.Update(customerTable);
-
-        }
-    }
+        //Establishing new connection
+        using SqlConnection connection = new SqlConnection(_connectionString);
+        connection.Open();
+        //Our insert command to add a user
+        string sqlCmd = "INSERT INTO Customer (ID, Username, Password) VALUES (@ID, @username, @pass)"; 
+        using SqlCommand cmdAddUser= new SqlCommand(sqlCmd, connection);
+        //Adding paramaters
+        cmdAddUser.Parameters.AddWithValue("@ID", userToAdd.ID);
+        cmdAddUser.Parameters.AddWithValue("@username", userToAdd.Username);
+        cmdAddUser.Parameters.AddWithValue("@pass", userToAdd.Password);
+        //Executing command
+        cmdAddUser.ExecuteNonQuery();
+        connection.Close();
     }
 
     /// <summary>
@@ -93,7 +65,7 @@ public class DBUserRepo : IURepo {
 
                 //Assigns each product order corresponding to the current user
                 if (productOrderTable != null){
-                    user.ShoppingCart = productOrderTable.AsEnumerable().Where(r => (int) r["userID"] == user.ID && r["storeOrderID"] == null).Select(
+                    user.ShoppingCart = productOrderTable.AsEnumerable().Where(r => (int) r["userID"] == user.ID && (int)r["storeOrderID"] == 0).Select(
                         r => new ProductOrder(r)
                     ).ToList();
                 }
@@ -140,8 +112,25 @@ public class DBUserRepo : IURepo {
     /// <param name="currUser">current user object inputted</param>
     /// <param name="currProdOrder">product order object to add to the database</param>
     public void AddProductOrder(User currUser, ProductOrder currProdOrder){
-
-    }
+        //Establishing new connection
+        using SqlConnection connection = new SqlConnection(_connectionString);
+        connection.Open();
+        //Our insert command to add a product order
+        string sqlCmd = "INSERT INTO ProductOrder (ID, userID, storeID, storeOrderID, productID, ItemName, TotalPrice, Quantity) VALUES (@ID, @userID, @storeID, @storeOrderID, @productID, @itemName, @totPrice, @qty)"; 
+        using SqlCommand cmdAddProductOrder= new SqlCommand(sqlCmd, connection);
+        //Adding paramaters
+        cmdAddProductOrder.Parameters.AddWithValue("@ID", currProdOrder.ID);
+        cmdAddProductOrder.Parameters.AddWithValue("@userID", currProdOrder.userID);
+        cmdAddProductOrder.Parameters.AddWithValue("@storeID", currProdOrder.storeID);
+        cmdAddProductOrder.Parameters.AddWithValue("@storeOrderID", currProdOrder.storeOrderID);
+        cmdAddProductOrder.Parameters.AddWithValue("@productID", currProdOrder.productID);
+        cmdAddProductOrder.Parameters.AddWithValue("@itemName", currProdOrder.ItemName);
+        cmdAddProductOrder.Parameters.AddWithValue("@totPrice", currProdOrder.TotalPrice);
+        cmdAddProductOrder.Parameters.AddWithValue("@qty", currProdOrder.Quantity);
+        //Executing command
+        cmdAddProductOrder.ExecuteNonQuery();
+        connection.Close();
+        }
 
     /// <summary>
     /// Edits a selected product order in the user's shopping cart, and saves it back to the database
