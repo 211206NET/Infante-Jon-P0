@@ -32,10 +32,10 @@ public class StoreOrderMenu : IMenuWithID {
                 Console.WriteLine($"| Total Price: ${storeorder.TotalAmount}");
             }
             if(!timeSort){
-                ColorWrite.wc("\nEnter [s] to to [Sort] orders by most recent", ConsoleColor.Magenta);
+                ColorWrite.wc("\n  Enter [s] to to [Sort] orders by most recent", ConsoleColor.Magenta);
             }
             else{
-                ColorWrite.wc("\nEnter [s] to to [Sort] orders by first ordered", ConsoleColor.Magenta);
+                ColorWrite.wc("\n Enter [s] to to [Sort] orders by first ordered", ConsoleColor.Magenta);
             }
             if(costSort){
                 ColorWrite.wc(" Enter [c] to [Sort] orders by most expensive", ConsoleColor.Green);

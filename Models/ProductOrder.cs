@@ -24,6 +24,8 @@ public class ProductOrder {
     public int? storeID { get; set; }
     
     public int? storeOrderID { get; set;}
+
+    public int? userOrderID { get; set; }
     
     public int? productID { get; set; }
 

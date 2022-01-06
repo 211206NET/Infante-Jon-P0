@@ -107,7 +107,7 @@ public class ShoppingCart : IMenuWithID {
                             userpOrdersTotal += checkoutProduct.TotalPrice!;
                             //Declare a store order id for the checked out product to be accessed later by database
                             //edit product order store order id
-                             _iubl.EditProductOrder(currUser, (int)checkoutProduct.ID!, (int)checkoutProduct.Quantity!, checkoutProduct.TotalPrice, id);
+                             _iubl.EditProductOrder(currUser, (int)checkoutProduct.ID!, (int)checkoutProduct.Quantity!, checkoutProduct.TotalPrice, 0, id);
                             userProductOrders.Add(checkoutProduct);
                         } 
                         string currTime = DateTime.Now.ToString();
@@ -152,7 +152,7 @@ public class ShoppingCart : IMenuWithID {
                                 StoreOrderTotalValue += pOrd.TotalPrice!;
                                 //Declare a store order id for the checked out product to be accessed later by database
                                 //edit product order store order id
-                                _iubl.EditProductOrder(currUser, (int)pOrd.ID!, (int)pOrd.Quantity!,(decimal)pOrd.TotalPrice, sid);
+                                _iubl.EditProductOrder(currUser, (int)pOrd.ID!, (int)pOrd.Quantity!,(decimal)pOrd.TotalPrice, sid, id);
                                 storeProductOrders.Add(pOrd);
                             }
                             StoreOrder storeOrderToAdd = new StoreOrder{
@@ -207,14 +207,14 @@ public class ShoppingCart : IMenuWithID {
                         try {
                             decimal newTotalPrice = ((pOrder.TotalPrice / currentPOrderQuantity) * newQ);
                             //Tries for invalid quantity type
-                            _iubl.EditProductOrder(currUser, (int)pOrder.ID!, newQ!, newTotalPrice, 0);
+                            _iubl.EditProductOrder(currUser, (int)pOrder.ID!, newQ!, newTotalPrice, 0, 0);
                             //If the quantity is over the product's stock limit
                             if (newQ > (oldQ + currentPOrderQuantity)){
                                 //Gets total amount of products from the current amount in the product order and the current amount in stock
                                 Console.WriteLine(@$"The amount you selected is too high!" + 
                                 $"\nThe maximum amount of this product you can order is {(currentPOrderQuantity + oldQ)}.");
                                 //reset the product order to its original value
-                                _iubl.EditProductOrder(currUser, (int)pOrder.ID, currentPOrderQuantity!, pOrder.TotalPrice, 0);
+                                _iubl.EditProductOrder(currUser, (int)pOrder.ID, currentPOrderQuantity!, pOrder.TotalPrice, 0, 0);
                                 goto reEnter;
                             }
                             else{

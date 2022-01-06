@@ -12,7 +12,6 @@ public interface ISBL{
 
     Product GetProductByID(int storeID, int prodID);
 
-    
     int GetProductIndexByID(int storeID, int prodID);
     
     void AddProduct(int storeID, Product productToAdd);

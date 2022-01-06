@@ -5,7 +5,6 @@ public class DBUserRepo : IURepo {
     private string _connectionString;
     public DBUserRepo(string connectionString){
         _connectionString = connectionString;
-
     }
 
     /// <summary>
@@ -78,7 +77,7 @@ public class DBUserRepo : IURepo {
                 //Adds each product order to each store order in the list of users
                 if(productOrderTable != null){
                     foreach(StoreOrder storeOrder in user.FinishedOrders!){
-                        storeOrder.Orders = productOrderTable!.AsEnumerable().Where(r => (int) r["storeOrderID"] == storeOrder.ID).Select(
+                        storeOrder.Orders = productOrderTable!.AsEnumerable().Where(r => (int) r["userOrderID"] == storeOrder.ID).Select(
                             r => new ProductOrder(r)
                         ).ToList();
                         }
@@ -140,17 +139,19 @@ public class DBUserRepo : IURepo {
     /// <param name="quantity">New quantity to update</param>
     /// <param name="TotalPrice">New total price to update</param>
     /// <param name="storeOrderID">Edit's the store order id when we checkout the cart</param>
-    public void EditProductOrder(User currUser, int prodOrderID, int quantity, decimal TotalPrice, int storeOrderID){
+    /// <param name="userOrderID">Edit's the user's order id when we checkout the cart</param>
+    public void EditProductOrder(User currUser, int prodOrderID, int quantity, decimal TotalPrice, int storeOrderID, int userOrderID){
         using SqlConnection connection = new SqlConnection(_connectionString);
         connection.Open();
         //Updates a single product by id, and passed in requirements
-        string sqlEditCmd = $"UPDATE ProductOrder SET Quantity = @qty, TotalPrice = @tPrice, storeOrderID = @sOrderID WHERE ID = @prodOrderID";
+        string sqlEditCmd = $"UPDATE ProductOrder SET Quantity = @qty, TotalPrice = @tPrice, storeOrderID = @sOrderID, userOrderID = @uOrderID WHERE ID = @prodOrderID";
         using SqlCommand cmdEditProdOrder = new SqlCommand(sqlEditCmd, connection);
         //Adds the paramaters to the sql command
         cmdEditProdOrder.Parameters.AddWithValue("@qty", quantity);
         cmdEditProdOrder.Parameters.AddWithValue("@tPrice", TotalPrice);
         cmdEditProdOrder.Parameters.AddWithValue("@prodOrderID", prodOrderID);
         cmdEditProdOrder.Parameters.AddWithValue("@sOrderID", storeOrderID);
+        cmdEditProdOrder.Parameters.AddWithValue("@uOrderID", userOrderID);
         //Edits the current product selected
         cmdEditProdOrder.ExecuteNonQuery();
         connection.Close();

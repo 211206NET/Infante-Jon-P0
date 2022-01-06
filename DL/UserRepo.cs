@@ -85,7 +85,8 @@ public class UserRepo : IURepo {
     /// <param name="quantity">New Updates quantity</param>
     /// <param name="TotalPrice">New Updates for total price</param>
     /// <param name="storeOrderID">Edits the store order id when we check out the cart</param>
-    public void EditProductOrder(User currUser, int prodOrderID, int quantity,decimal TotalPrice, int storeOrderID){
+    /// <param name="suserOrderID">Edits the user's order id when we check out the cart</param>
+    public void EditProductOrder(User currUser, int prodOrderID, int quantity,decimal TotalPrice, int storeOrderID, int userOrderID){
         List<User> allUsers = GetAllUsers();
         //Selected the currrent product based off the current user and the product order's iD in the shopping cart
         List<ProductOrder> allProdOrders = currUser.ShoppingCart!;
