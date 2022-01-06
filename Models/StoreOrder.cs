@@ -11,6 +11,7 @@ public class StoreOrder{
         storeID = (int) r["storeID"];
         currDate = r["currDate"].ToString() ?? "";
         DateSeconds = (double)r["DateSeconds"];
+        TotalAmount = (decimal)r["TotalAmount"];
     }
 
     public int? ID { get; set; }
