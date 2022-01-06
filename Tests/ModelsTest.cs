@@ -184,7 +184,7 @@ public class ModelsTest{
         int ID = 9032;
         int userID = 222935;
         int referenceID = 222935;
-        string Date = "12/30/21 5:43PM";
+        string currDate = "12/30/21 5:43PM";
         double DateSeconds = 999432.3377;
         decimal TotalAmount = 3829.98M;
         List<ProductOrder> Orders = new List<ProductOrder>();
@@ -193,7 +193,7 @@ public class ModelsTest{
         testStoreOrder.ID = ID;
         testStoreOrder.userID = userID;
         testStoreOrder.referenceID = referenceID;
-        testStoreOrder.Date = Date;
+        testStoreOrder.currDate = currDate;
         testStoreOrder.DateSeconds = DateSeconds;
         testStoreOrder.TotalAmount = TotalAmount;
         testStoreOrder.Orders = Orders;
@@ -201,7 +201,7 @@ public class ModelsTest{
         //Assert
         Assert.Equal(ID, testStoreOrder.ID);
         Assert.Equal(userID, testStoreOrder.userID);
-        Assert.Equal(Date, testStoreOrder.Date);
+        Assert.Equal(currDate, testStoreOrder.currDate);
         Assert.Equal(DateSeconds, testStoreOrder.DateSeconds);
         Assert.Equal(TotalAmount, testStoreOrder.TotalAmount);
         Assert.Equal(Orders, testStoreOrder.Orders);
