@@ -229,7 +229,14 @@ public class DBStoreRepo : ISRepo {
     /// <param name="storeID">current store ID</param>
     /// <param name="prodID">selected product ID</param>
     public void DeleteProduct(int storeID, int prodID){
-
+        using SqlConnection connection = new SqlConnection(_connectionString);
+        connection.Open();
+        //Deletes a single product by id
+        string sqlDelCmd = $"DELETE FROM Product WHERE ID = {prodID}";
+        using SqlCommand cmdDelProd = new SqlCommand(sqlDelCmd, connection);
+        //Deletes the current product selected
+        cmdDelProd.ExecuteNonQuery();
+        connection.Close();
     }
 
     /// <summary>
@@ -241,7 +248,18 @@ public class DBStoreRepo : ISRepo {
     /// <param name="price">New price entered to update</param>
     /// <param name="quantity">New quantity to update</param>
     public void EditProduct(int storeID, int prodID, string description, decimal price, int quantity){
-
+        using SqlConnection connection = new SqlConnection(_connectionString);
+        connection.Open();
+        //Updates a single product by id, and passed in requirements
+        string sqlEditCmd = $"UPDATE Product SET Description = @desc, Price = @prc, Quantity = @qty WHERE ID = {prodID}";
+        using SqlCommand cmdEditProd = new SqlCommand(sqlEditCmd, connection);
+        //Adds the paramaters to the sql command
+        cmdEditProd.Parameters.AddWithValue("@desc", description);
+        cmdEditProd.Parameters.AddWithValue("@prc", price);
+        cmdEditProd.Parameters.AddWithValue("@qty", quantity);
+        //Edits the current product selected
+        cmdEditProd.ExecuteNonQuery();
+        connection.Close();
     }
 
     /// <summary>
