@@ -129,7 +129,18 @@ public class DBStoreRepo : ISRepo {
     /// </summary>
     /// <param name="storeID">current store ID selected</param>
     public void DeleteStore(int storeID){
-        
+        using SqlConnection connection = new SqlConnection(_connectionString);
+        connection.Open();
+        //Deletes all the products of the current store
+        string sqlCascadeDelCmd = $"DELETE FROM Product WHERE storeID={storeID}";
+        string sqlDelCmd = $"DELETE FROM Store WHERE ID={storeID}";
+        using SqlCommand cmdcasc = new SqlCommand(sqlCascadeDelCmd, connection);
+        using SqlCommand cmddelstore = new SqlCommand(sqlDelCmd, connection);
+        //Deletes all the products with the storeID selected
+        cmdcasc.ExecuteNonQuery();
+        //Deletes the current store after all products with the store id are removed
+        cmddelstore.ExecuteNonQuery();
+        connection.Close();
     }
 
     /// <summary>
