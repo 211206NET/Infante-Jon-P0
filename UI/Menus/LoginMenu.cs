@@ -41,11 +41,12 @@ public class LoginMenu : IMenu {
                     if (!userFound){
                         Console.WriteLine("Password: ");
                         string? password = Console.ReadLine();
-
+                        //Generate hashed password
+                        string hashedPassword = PasswordHash.GenerateHashedPassword(password!);
                         User newUser = new User{
                             ID = id!,
                             Username = username!,
-                            Password = password!,
+                            Password = hashedPassword!,
                             };
 
                         _iubl.AddUser(newUser);
@@ -74,8 +75,8 @@ public class LoginMenu : IMenu {
                     else{
                         Console.WriteLine("Password");
                         string? getPassword = Console.ReadLine();
-                        //Validates for the correct password
-                        if (getPassword == currUser.Password){
+                        //Validates for the correct password from store hashed password
+                        if(PasswordHash.VeryifyHashedPassword(getPassword!, currUser.Password!)){
                             Console.WriteLine("\nLogin successful!");
                             //User Menu initialization
                             MenuFactoryWithID.GetMenu("user").Start((int)currUser.ID!);     
