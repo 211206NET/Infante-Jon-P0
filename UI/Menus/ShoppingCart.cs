@@ -115,6 +115,7 @@ public class ShoppingCart : IMenuWithID {
                         StoreOrder userStoreOrder = new StoreOrder{
                             ID = id!,
                             userID = currUser.ID,
+                            userName = currUser.Username,
                             referenceID = currUser.ID,
                             storeID = 0,
                             TotalAmount = userpOrdersTotal!,
@@ -158,6 +159,7 @@ public class ShoppingCart : IMenuWithID {
                             StoreOrder storeOrderToAdd = new StoreOrder{
                                 ID = sid!,
                                 userID = currUser.ID!,
+                                userName = currUser.Username,
                                 referenceID = kv.Key,
                                 storeID = kv.Key,
                                 TotalAmount = StoreOrderTotalValue!,

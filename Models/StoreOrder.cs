@@ -7,6 +7,7 @@ public class StoreOrder{
     public StoreOrder(DataRow r){
         ID = (int) r["ID"];
         userID = (int) r["userID"];
+        userName = r["userName"].ToString() ?? "";
         referenceID = (int) r["referenceID"];
         storeID = (int) r["storeID"];
         currDate = r["currDate"].ToString() ?? "";
@@ -17,6 +18,8 @@ public class StoreOrder{
     public int? ID { get; set; }
 
     public int? userID { get; set; }
+
+    public string? userName { get; set; }
 
     public int? referenceID { get; set; }
 

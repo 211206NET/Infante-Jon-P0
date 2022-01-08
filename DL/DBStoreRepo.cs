@@ -227,12 +227,13 @@ public class DBStoreRepo : ISRepo {
     public void AddStoreOrder(int storeID, StoreOrder storeOrderToAdd){
         using SqlConnection connection = new SqlConnection(_connectionString);
         connection.Open();
-        string sqlInsertCmd = "INSERT INTO StoreOrder (ID, userID, referenceID, storeID, currDate, DateSeconds, TotalAmount) VALUES (@ID, @uID, @refID, @stID, @date, @dateS, @tAmount)";
+        string sqlInsertCmd = "INSERT INTO StoreOrder (ID, userID, userName, referenceID, storeID, currDate, DateSeconds, TotalAmount) VALUES (@ID, @uID, @username, @refID, @stID, @date, @dateS, @tAmount)";
         //Creates the new sql command
         using SqlCommand cmd = new SqlCommand(sqlInsertCmd, connection);
         //Adds the paramaters to the insert command
         cmd.Parameters.AddWithValue("@ID", storeOrderToAdd.ID);
         cmd.Parameters.AddWithValue("@uID", storeOrderToAdd.userID);
+        cmd.Parameters.AddWithValue("@username", storeOrderToAdd.userName);
         cmd.Parameters.AddWithValue("@refID", storeOrderToAdd.referenceID);
         cmd.Parameters.AddWithValue("@stID", storeOrderToAdd.storeID);
         cmd.Parameters.AddWithValue("@date", storeOrderToAdd.currDate);

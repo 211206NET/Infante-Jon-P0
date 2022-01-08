@@ -22,8 +22,7 @@ public class StoreOrderMenu : IMenuWithID {
             else{
             ColorWrite.wc("\n====================[Orders]===================", ConsoleColor.DarkCyan);
             foreach(StoreOrder storeorder in allOrders!){
-                User userWhoOrdered = _iubl.GetCurrentUserByID((int)storeorder.userID!);
-                Console.WriteLine($"\nPlaced on {storeorder.currDate} by {userWhoOrdered.Username}");
+                Console.WriteLine($"\nPlaced on {storeorder.currDate} by {storeorder.userName}");
                 Console.WriteLine("|-------------------------------------------|");
                 foreach(ProductOrder pOrder in storeorder.Orders!){
                     Console.WriteLine($"| {pOrder.ItemName} | Qty: {pOrder.Quantity} || ${pOrder.TotalPrice}");
