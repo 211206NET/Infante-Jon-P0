@@ -1,0 +1,32 @@
+2022-01-08 14:43:14.496 -05:00 [INF] The user Jon has been added to the database with the ID 777249793
+2022-01-08 14:43:33.199 -05:00 [INF] A new store has been added with Name: Atlantic Hardware Branch, City: Charleston, State: SC, Address: 101 King St and ID of 777249813
+2022-01-08 14:43:54.008 -05:00 [INF] The product IPhone 13 Pro with a price of 1099.99 and a quantity of 15, has been added to the store with an ID of 777249813
+2022-01-08 14:44:59.994 -05:00 [INF] The product MacBook Pro (15-inch, 2016) with a price of 1399.99 and a quantity of 10, has been added to the store with an ID of 777249813
+2022-01-08 14:45:17.208 -05:00 [INF] The product with an ID of 777249838 has been update with a description of Small scratches and damage, price of 1299.99, and a quantity of 15
+2022-01-08 14:45:58.545 -05:00 [INF] The product ProductToDelete with a price of 99.99 and a quantity of 50, has been added to the store with an ID of 777249813
+2022-01-08 14:46:05.372 -05:00 [INF] The product with an ID of 777249948 has been deleted from the store with an ID of 777249813
+2022-01-08 14:49:15.352 -05:00 [INF] A new store has been added with Name: Pacific Branch, City: SF, State: CA, Address: 611 Jones St and ID of 777250155
+2022-01-08 14:49:47.216 -05:00 [INF] The product Pixel 4 with a price of 899.99 and a quantity of 14, has been added to the store Pacific Branch
+2022-01-08 14:50:10.369 -05:00 [INF] The product MacBook Air (2018) with a price of 1299.99 and a quantity of 5, has been added to the store Pacific Branch
+2022-01-08 14:50:21.713 -05:00 [INF] A new store has been added with Name: StoreToDelete, City: Delete me, State: now, Address: ok and ID of 777250221
+2022-01-08 14:50:44.656 -05:00 [INF] The store null has been deleted as well as all their products that had an ID of 777250221
+2022-01-08 14:52:32.812 -05:00 [INF] The user Alex has been added to the database with the ID 777250351
+2022-01-08 14:52:47.409 -05:00 [INF] A new store has been added with Name: Another store to delete, City: SF, State: CA, Address: banana and ID of 777250367
+2022-01-08 14:52:58.611 -05:00 [INF] The store Another store to delete with an ID of 777250367 has been deleted as well as all of its corresponding products in its inventory
+2022-01-08 14:53:57.520 -05:00 [INF] The product IPhone 13 Pro has been updated with a description of Partially used, price of 1099.99, and a quantity of 12
+2022-01-08 14:53:57.636 -05:00 [INF] A product order of 3 IPhone 13 Pros has been placed with the ID of 777250437 to the user Alex's shopping cart
+2022-01-08 14:54:02.753 -05:00 [INF] The product MacBook Pro (15-inch, 2016) has been updated with a description of Small scratches and damage, price of 1299.99, and a quantity of 13
+2022-01-08 14:54:02.995 -05:00 [INF] A product order of 2 MacBook Pro (15-inch, 2016)s has been placed with the ID of 777250442 to the user Alex's shopping cart
+2022-01-08 14:54:08.211 -05:00 [INF] The product MacBook Pro (15-inch, 2016) has been updated with a description of Small scratches and damage, price of 1299.99, and a quantity of 11
+2022-01-08 14:54:08.451 -05:00 [INF] A product order of 2 MacBook Pro (15-inch, 2016)s has been placed with the ID of 777250448 to the user Alex's shopping cart
+2022-01-08 14:55:13.390 -05:00 [INF] The product MacBook Pro (15-inch, 2016) has been updated with a description of Small scratches and damage, price of 1299.99, and a quantity of 13
+2022-01-08 14:55:13.643 -05:00 [INF] The product order with ID 777250448 has been deleted from the user Alex's shopping cart
+2022-01-08 14:55:38.415 -05:00 [INF] The product order with ID 777250442 has been edited with a new quantity of 99 for user Alex
+2022-01-08 14:55:38.687 -05:00 [INF] The product order with ID 777250442 has been edited with a new quantity of 2 for user Alex
+2022-01-08 14:55:59.204 -05:00 [INF] The product order with ID 777250442 has been edited with a new quantity of 5 for user Alex
+2022-01-08 14:56:00.105 -05:00 [INF] The product MacBook Pro (15-inch, 2016) has been updated with a description of Small scratches and damage, price of 1299.99, and a quantity of 10
+2022-01-08 14:56:40.891 -05:00 [INF] The product Pixel 4 has been updated with a description of Brand new, price of 899.99, and a quantity of 8
+2022-01-08 14:56:41.164 -05:00 [INF] A product order of 6 Pixel 4s has been placed with the ID of 777250600 to the user Alex's shopping cart
+2022-01-08 14:57:03.156 -05:00 [INF] The user Alex has checked out and created a new store order with ID 578750 with a total amount of 15199.86
+2022-01-08 14:57:05.075 -05:00 [INF] An order has been added to the store Atlantic Hardware Branch from the user Alex with a total amount of 9799.92
+2022-01-08 14:57:06.399 -05:00 [INF] An order has been added to the store Pacific Branch from the user Alex with a total amount of 5399.94

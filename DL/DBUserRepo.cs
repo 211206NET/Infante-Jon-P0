@@ -25,6 +25,8 @@ public class DBUserRepo : IURepo {
         //Executing command
         cmdAddUser.ExecuteNonQuery();
         connection.Close();
+        //Log user has been added
+        Log.Information("The user {user} has been added to the database with the ID {ID}", userToAdd.Username, userToAdd.ID);
     }
 
     /// <summary>
@@ -130,6 +132,7 @@ public class DBUserRepo : IURepo {
         //Executing command
         cmdAddProductOrder.ExecuteNonQuery();
         connection.Close();
+        Log.Information("A product order of {quantity} {itemName}s has been placed with the ID of {ID} to the user {currUsername}'s shopping cart",currProdOrder.Quantity, currProdOrder.ItemName, currProdOrder.ID, currUser.Username);
         }
 
     /// <summary>
@@ -156,6 +159,11 @@ public class DBUserRepo : IURepo {
         //Edits the current product selected
         cmdEditProdOrder.ExecuteNonQuery();
         connection.Close();
+        //If the user order id is 0, that means the product order is still in the cart.
+        //When the user checks out, the user order id is changed to match for the store orders and we don't want to call the edit product logger
+        if (userOrderID == 0){
+            Log.Information("The product order with ID {ID} has been edited with a new quantity of {quantity} for user {currUsername}",prodOrderID, quantity, currUser.Username);
+        }
     }
 
     /// <summary>
@@ -173,6 +181,8 @@ public class DBUserRepo : IURepo {
         //Deletes the current product selected
         cmdDelProdOrder.ExecuteNonQuery();
         connection.Close();
+        Log.Information("The product order with ID {ID} has been deleted from the user {user}'s shopping cart", prodOrderID, currUser.Username);
+
     }
 
     /// <summary>
@@ -197,6 +207,7 @@ public class DBUserRepo : IURepo {
         //Executes the insert command
         cmd.ExecuteNonQuery();
         connection.Close();
+        Log.Information("The user {currUsername} has checked out and created a new store order with ID {ID} with a total amount of ${totAmount}",currUser.Username, currStoreOrder.ID, currStoreOrder.TotalAmount);
     }
 
     //Unused with database implementation

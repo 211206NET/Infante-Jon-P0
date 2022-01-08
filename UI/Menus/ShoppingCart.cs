@@ -59,10 +59,9 @@ public class ShoppingCart : IMenuWithID {
                     if(!int.TryParse(indexSelection, out prodOrderIndex)){
                         Console.WriteLine("\nPlease select a valid input!");
                     }
-                    //Valid index found to delete the product
+                    //Valid index found to delete the product order
                     else {
                         if (prodOrderIndex >= 0 && prodOrderIndex < allProductOrders.Count){
-
                             //Gets the current product order, storeID, productID, and product by product order index
                             ProductOrder prodOrder = allProductOrders[prodOrderIndex];
                             int prodOrderID = (int)prodOrder.ID!;

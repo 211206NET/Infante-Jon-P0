@@ -6,7 +6,6 @@ public class DBStoreRepo : ISRepo {
     private string _connectionString;
     public DBStoreRepo(string connectionString){
         _connectionString = connectionString;
-
     }
 
     /// <summary>
@@ -29,6 +28,7 @@ public class DBStoreRepo : ISRepo {
         //Executing command
         cmdAddStore.ExecuteNonQuery();
         connection.Close();
+        Log.Information("A new store has been added with Name: {name}, City: {city}, State: {state}, Address: {address} and ID of {ID}",storeToAdd.Name, storeToAdd.City, storeToAdd.State, storeToAdd.Address, storeToAdd.ID);
     }
 
 
@@ -103,6 +103,7 @@ public class DBStoreRepo : ISRepo {
     /// </summary>
     /// <param name="storeID">current store ID selected</param>
     public void DeleteStore(int storeID){
+        string storeName = GetStoreByID(storeID).Name!;
         using SqlConnection connection = new SqlConnection(_connectionString);
         connection.Open();
         //Deletes all the products of the current store
@@ -118,6 +119,8 @@ public class DBStoreRepo : ISRepo {
         //Deletes the current store after all products with the store id are removed
         cmddelstore.ExecuteNonQuery();
         connection.Close();
+        Log.Information("The store {storename} with an ID of {storeID} has been deleted as well as all of its corresponding products in its inventory", storeName, storeID);
+
     }
 
     /// <summary>
@@ -158,7 +161,7 @@ public class DBStoreRepo : ISRepo {
         //Executing command
         cmdAddProduct.ExecuteNonQuery();
         connection.Close();
-        
+        Log.Information("The product {productname} with a price of {price} and a quantity of {quantity}, has been added to the store {storename}", productToAdd.Name, productToAdd.Price, productToAdd.Quantity,  GetStoreByID(storeID).Name);
     }
 
     /// <summary>
@@ -193,6 +196,7 @@ public class DBStoreRepo : ISRepo {
         //Deletes the current product selected
         cmdDelProd.ExecuteNonQuery();
         connection.Close();
+        Log.Information("The product with an ID of {productID} has been deleted from the store {storename}}", prodID, GetStoreByID(storeID).Name);
     }
 
     /// <summary>
@@ -217,6 +221,8 @@ public class DBStoreRepo : ISRepo {
         //Edits the current product selected
         cmdEditProd.ExecuteNonQuery();
         connection.Close();
+        Log.Information("The product {productname} has been updated with a description of {description}, price of {price}, and a quantity of {quantity}", GetProductByID(storeID, prodID).Name, description, price, quantity);
+
     }
 
     /// <summary>
@@ -242,6 +248,8 @@ public class DBStoreRepo : ISRepo {
         //Executes the insert command
         cmd.ExecuteNonQuery();
         connection.Close();
+        Log.Information("An order has been added to the store {storename} from the user {username} with a total amount of ${totAmount}", GetStoreByID(storeID).Name, storeOrderToAdd.userName, storeOrderToAdd.TotalAmount);
+
     }
         
     //Unused with database implementation
