@@ -85,7 +85,7 @@ public class DBStoreRepo : ISRepo {
                     ).ToList();
                 }
                 //Adds each product order to each store order in the list of stores
-                if(productOrderTable != null){
+                if (productOrderTable != null){
                     foreach(StoreOrder storeOrder in store.AllOrders!){
                         storeOrder.Orders = productOrderTable!.AsEnumerable().Where(r => (int) r["storeOrderID"] == storeOrder.ID).Select(
                             r => new ProductOrder(r)
@@ -107,17 +107,25 @@ public class DBStoreRepo : ISRepo {
         using SqlConnection connection = new SqlConnection(_connectionString);
         connection.Open();
         //Deletes all the products of the current store
-        string sqlCascadeDelCmd = $"DELETE FROM Product WHERE storeID=@stID";
-        string sqlDelCmd = $"DELETE FROM Store WHERE ID=@storeID";
-        using SqlCommand cmdcasc = new SqlCommand(sqlCascadeDelCmd, connection);
-        cmdcasc.Parameters.AddWithValue("@stID", storeID);
-        using SqlCommand cmddelstore = new SqlCommand(sqlDelCmd, connection);
-        cmddelstore.Parameters.AddWithValue("@storeID", storeID);
-
+        string sqlCascadeDelPOrder = $"DELETE FROM ProductOrder WHERE storeOrderID = @0 AND storeID = @stID";
+        string sqlCascadeDelProd = $"DELETE FROM Product WHERE storeID = @st2ID";
+        string sqlDelCmd = $"DELETE FROM Store WHERE ID = @st3ID";
+        //Delete product order sql
+        using SqlCommand cmdPOrder = new SqlCommand(sqlCascadeDelPOrder, connection);
+        cmdPOrder.Parameters.AddWithValue("@0", 0);
+        cmdPOrder.Parameters.AddWithValue("@stID",storeID);
+        //Delete product sql
+        using SqlCommand cmdProd = new SqlCommand(sqlCascadeDelProd, connection);
+        cmdProd.Parameters.AddWithValue("@st2ID", storeID);
+        //Delete store sql
+        using SqlCommand cmdDelStore = new SqlCommand(sqlDelCmd, connection);
+        cmdDelStore.Parameters.AddWithValue("@st3ID", storeID);
+        //Deletes all the product orders in the shopping cart with the storeID selected
+        cmdPOrder.ExecuteNonQuery();
         //Deletes all the products with the storeID selected
-        cmdcasc.ExecuteNonQuery();
+        cmdProd.ExecuteNonQuery();
         //Deletes the current store after all products with the store id are removed
-        cmddelstore.ExecuteNonQuery();
+        cmdDelStore.ExecuteNonQuery();
         connection.Close();
         Log.Information("The store {storename} with an ID of {storeID} has been deleted as well as all of its corresponding products in its inventory", storeName, storeID);
 
@@ -189,10 +197,19 @@ public class DBStoreRepo : ISRepo {
     public void DeleteProduct(int storeID, int prodID){
         using SqlConnection connection = new SqlConnection(_connectionString);
         connection.Open();
-        //Deletes a single product by id
-        string sqlDelCmd = $"DELETE FROM Product WHERE ID = @prodID";
+        //Deletes all the products orders of the current store
+        string sqlCascadeDelPOrder = $"DELETE FROM ProductOrder WHERE storeOrderID = @0 AND productID = @prodID1";
+        //Delets a single product by id
+        string sqlDelCmd = $"DELETE FROM Product WHERE ID = @prodID2";
+        //Delete product order sql
+        using SqlCommand cmdDelPOrder = new SqlCommand(sqlCascadeDelPOrder, connection);
+        cmdDelPOrder.Parameters.AddWithValue("@0", 0);
+        cmdDelPOrder.Parameters.AddWithValue("@prodID1", prodID);
+        //delets the product
         using SqlCommand cmdDelProd = new SqlCommand(sqlDelCmd, connection);
-        cmdDelProd.Parameters.AddWithValue("@prodID", prodID);
+        cmdDelProd.Parameters.AddWithValue("@prodID2", prodID);
+         //Deletes the currentorders in any user's shopping cart selected
+        cmdDelPOrder.ExecuteNonQuery();
         //Deletes the current product selected
         cmdDelProd.ExecuteNonQuery();
         connection.Close();
